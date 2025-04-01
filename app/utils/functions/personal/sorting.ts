@@ -1,15 +1,15 @@
 export function sortingRouteManager(
-  sortingState: [{ id: string | undefined; desc: boolean | undefined }]
+	sortingState: [{ id: string; desc: boolean | undefined }]
 ) {
-  const router = useRouter();
-  const query = {
-    sorting: sortingState[0].id,
-    order: sortingState[0].desc ? "desc" : "asc",
-  };
+	const router = useRouter();
+	const query = Object.assign({}, router.currentRoute.value.query);
 
-  router.push({
-    query: query,
-  });
-  console.log(query);
-  return query;
+	query.sorting = sortingState[0].id;
+	query.order = sortingState[0].desc ? "desc" : "asc";
+
+	router.push({
+		query: query,
+	});
+	console.log(query);
+	return query;
 }
