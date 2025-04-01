@@ -5,5 +5,16 @@ export default defineAppConfig({
       primary: "amber",
       neutral: "stone",
     },
+    input: {
+      slots: {
+        root: "w-full",
+      },
+    },
+    formField: {
+      slots: {
+        root: "w-full",
+        wrapper: "w-full",
+      },
+    },
   },
 });
