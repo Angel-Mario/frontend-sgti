@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { Usuario } from './types'
+import type { Usuario } from '../../utils/types'
 
 const props = defineProps({
   usuario: {
@@ -13,7 +13,7 @@ const password = z.string().min(8, 'Al menos 8 characters').regex(/(?:(?=.*\d)|(
 
 const schema = z.object({
   nombre_u: z.string().min(3, 'Al menos 3 caracteres').regex(/([a-z])/),
-  nombre_apellidos: z.string().min(10, 'Al menos 10 caracteres'),
+  nombre_apellidos: z.string().min(8, 'Al menos 8 caracteres'),
   correo: z.string().email('No es un correo valido'),
   password: props.usuario ? password.optional() : password,
   telefono: z.string()

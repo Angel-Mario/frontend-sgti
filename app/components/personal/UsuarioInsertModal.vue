@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Usuario } from './types'
+import type { Usuario } from '../../utils/types'
 
 const props = defineProps({
   open: {
