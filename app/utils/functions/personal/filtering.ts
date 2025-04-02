@@ -20,4 +20,5 @@ export function filteringRouteManager(filteringState: {
 			query: query,
 		});
 	}
+	return query;
 }

@@ -1,0 +1,65 @@
+export default defineEventHandler(async (event) => {
+	await new Promise((resolve) => setTimeout(resolve, 1000));
+
+	return [
+		{
+			id: "1",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "james.anderson",
+			nombre: "James Anderson",
+			estado: "activo",
+			rol: "Chofer",
+		},
+		{
+			id: "2",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "james.anderson",
+			nombre: "Anderson",
+			estado: "activo",
+			telefono: "5356463650",
+			rol: "Administrador",
+		},
+		{
+			id: "3",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "paco.anderson",
+			nombre: "James Anderson",
+			estado: "activo",
+			telefono: "5356463650",
+			rol: "Administrador",
+		},
+		{
+			id: "4600",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "james.anderson",
+			nombre: "James Anderson",
+			estado: "activo",
+			telefono: "5356463650",
+			rol: "Administrador",
+		},
+		{
+			id: "4600",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "james.anderson",
+			nombre: "Joonas Anderson",
+			estado: "activo",
+			telefono: "5356463650",
+			rol: "Administrador",
+		},
+		{
+			id: "4600",
+			carnet: 123456789,
+			correo: "james.anderson@example.com",
+			usuario: "james.anderson",
+			nombre: "Richard Anderson",
+			estado: "activo",
+			telefono: "5356463650",
+			rol: "Administrador",
+		},
+	];
+});

@@ -16,67 +16,30 @@ const UCheckbox = resolveComponent("UCheckbox");
 const overlay = useOverlay();
 const toast = useToast();
 
-const data = ref<Usuario[]>([
+const paramFilterSort = ref({});
+
+// https://nuxt.com/docs/api/composables/use-fetch
+// https://tanstack.com/table/latest/docs/framework/vue/examples/pagination?path=examples%2Fvue%2Fpagination%2Fsrc%2FApp.vue
+
+const { data, status, error, refresh } = await useFetch<Usuario[]>(
+	"personal/usuarios",
 	{
-		id: "1",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "james.anderson",
-		nombre: "James Anderson",
-		estado: "activo",
-		rol: "Chofer",
-	},
-	{
-		id: "2",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "james.anderson",
-		nombre: "Anderson",
-		estado: "activo",
-		telefono: "5356463650",
-		rol: "Administrador",
-	},
-	{
-		id: "3",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "paco.anderson",
-		nombre: "James Anderson",
-		estado: "activo",
-		telefono: "5356463650",
-		rol: "Administrador",
-	},
-	{
-		id: "4600",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "james.anderson",
-		nombre: "James Anderson",
-		estado: "activo",
-		telefono: "5356463650",
-		rol: "Administrador",
-	},
-	{
-		id: "4600",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "james.anderson",
-		nombre: "Joonas Anderson",
-		estado: "activo",
-		telefono: "5356463650",
-		rol: "Administrador",
-	},
-	{
-		id: "4600",
-		carnet: 123456789,
-		correo: "james.anderson@example.com",
-		usuario: "james.anderson",
-		nombre: "Richard Anderson",
-		estado: "activo",
-		telefono: "5356463650",
-		rol: "Administrador",
-	},
-]);
+		query: paramFilterSort,
+		baseURL: "http://localhost:3000/api/",
+		// baseURL: useRuntimeConfig().public.apiUrl,
+		onRequest({ request, options }) {
+			// Set the request headers
+			// note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
+			options.headers.set("Authorization", "...");
+		},
+		onRequestError({ request, options, error }) {},
+		onResponse({ request, response, options }) {
+			// localStorage.setItem("token", response._data.token);
+		},
+		onResponseError({ request, response, options }) {},
+		lazy: true,
+	}
+);
 
 const colmnHeader = (column: Column<Usuario>, headerName: string) => {
 	const isSorted = column.getIsSorted();
@@ -264,7 +227,9 @@ const pagination = ref({
 	pageSize: 4,
 });
 
-const globalFilter = ref("");
+const globalFilter = shallowRef("");
+const debounced = refDebounced(globalFilter, 1000);
+
 const filterOptions = [
 	"id",
 	"carnet",
@@ -276,6 +241,29 @@ const filterOptions = [
 	"rol",
 ];
 const filterOption = ref(filterOptions[1]);
+
+watch(debounced, () => {
+	{
+		paramFilterSort.value = filteringRouteManager({
+			column: filterOption.value as string,
+			search: debounced.value as string,
+		});
+	}
+});
+
+// function rerender() {
+//   data.value = defaultData
+// }
+
+// function handleGoToPage(e) {
+//   const page = e.target.value ? Number(e.target.value) - 1 : 0
+//   goToPageNumber.value = page + 1
+//   table.value?.tableApi?.setPageIndex(page)
+// }
+
+// function handlePageSizeChange(e) {
+//   table.value?.tableApi?.setPageSize(Number(e.target.value))
+// }
 </script>
 
 <template>
@@ -290,9 +278,9 @@ const filterOption = ref(filterOptions[1]);
 					class="max-w-48"
 					placeholder="Filtrar por..."
 					@keyup.enter="
-						filteringRouteManager({
+						paramFilterSort = filteringRouteManager({
 							column: filterOption as string,
-							search: globalFilter as string,
+							search: debounced as string,
 						})
 					"
 				/>
@@ -359,14 +347,14 @@ const filterOption = ref(filterOptions[1]);
 			:pagination-options="{
 				getPaginationRowModel: getPaginationRowModel(),
 			}"
+			:loading="status === 'pending'"
 			sticky
 			:data="data"
 			:columns="columns"
 			@update:sorting="
 				(event) => {
-					console.log(event);
 					const [id] = event;
-					sortingRouteManager([{ id: id?.id as string, desc: id?.desc }]);
+					paramFilterSort = sortingRouteManager([{ id: id?.id as string, desc: id?.desc }]);
 				}
 			"
 		/>
