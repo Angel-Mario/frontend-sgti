@@ -10,6 +10,5 @@ export function sortingRouteManager(
 	router.push({
 		query: query,
 	});
-	console.log(query);
 	return query;
 }

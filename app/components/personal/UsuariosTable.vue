@@ -8,6 +8,7 @@ import type { Usuario } from "../../utils/types";
 import { LazyPersonalUsuarioInsertModal } from "#components";
 import { sortingRouteManager } from "~/utils/functions/personal/sorting";
 import { filteringRouteManager } from "../../utils/functions/personal/filtering";
+import { paginationRouteManager } from "../../utils/functions/personal/pagination";
 
 const UButton = resolveComponent("UButton");
 const UBadge = resolveComponent("UBadge");
@@ -16,30 +17,41 @@ const UCheckbox = resolveComponent("UCheckbox");
 const overlay = useOverlay();
 const toast = useToast();
 
-const paramFilterSort = ref({});
+const page = ref("1");
+const pageSize = ref(useRuntimeConfig().public.defaultPageSize);
+
+const paramFilterSortPagination = ref<
+	| { page: number; pageSize: number }
+	| { column: string; search: string }
+	| { page?: string; pageSize?: string; column?: string; search?: string }
+>({
+	page: page.value,
+	pageSize: useRuntimeConfig().public.defaultPageSize,
+});
 
 // https://nuxt.com/docs/api/composables/use-fetch
 // https://tanstack.com/table/latest/docs/framework/vue/examples/pagination?path=examples%2Fvue%2Fpagination%2Fsrc%2FApp.vue
 
-const { data, status, error, refresh } = await useFetch<Usuario[]>(
-	"personal/usuarios",
-	{
-		query: paramFilterSort,
-		baseURL: "http://localhost:3000/api/",
-		// baseURL: useRuntimeConfig().public.apiUrl,
-		onRequest({ request, options }) {
-			// Set the request headers
-			// note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
-			options.headers.set("Authorization", "...");
-		},
-		onRequestError({ request, options, error }) {},
-		onResponse({ request, response, options }) {
-			// localStorage.setItem("token", response._data.token);
-		},
-		onResponseError({ request, response, options }) {},
-		lazy: true,
-	}
-);
+const { data, status, error, refresh } = await useFetch<{
+	count: number;
+	totalPages: number;
+	data: Usuario[];
+}>("personal/usuarios", {
+	query: paramFilterSortPagination,
+	baseURL: "http://localhost:3000/api/",
+	// baseURL: useRuntimeConfig().public.apiUrl,
+	onRequest({ request, options }) {
+		// Set the request headers
+		// note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
+		// options.headers.set("Authorization", "...");
+	},
+	onRequestError({ request, options, error }) {},
+	onResponse({ request, response, options }) {
+		// localStorage.setItem("token", response._data.token);
+	},
+	onResponseError({ request, response, options }) {},
+	lazy: true,
+});
 
 const colmnHeader = (column: Column<Usuario>, headerName: string) => {
 	const isSorted = column.getIsSorted();
@@ -167,10 +179,10 @@ const openInsertModal = async () => {
 	await modal.open();
 };
 const sorting = ref([
-	// {
-	// 	id: "usuario",
-	// 	desc: false,
-	// },
+	{
+		id: "nombre",
+		desc: false,
+	},
 ]);
 
 function getRowItems(row: Row<Usuario>) {
@@ -222,9 +234,15 @@ const columnVisibility = ref({
 	id: false,
 	correo: false,
 });
-const pagination = ref({
-	pageIndex: 0,
-	pageSize: 4,
+
+const totalItems = ref(data.value?.count || 0);
+
+const pagination = computed(() => {
+	console.log(pageSize.value);
+	return {
+		pageIndex: 0,
+		pageSize: Number(pageSize.value),
+	};
 });
 
 const globalFilter = shallowRef("");
@@ -244,26 +262,32 @@ const filterOption = ref(filterOptions[1]);
 
 watch(debounced, () => {
 	{
-		paramFilterSort.value = filteringRouteManager({
+		paramFilterSortPagination.value = filteringRouteManager({
 			column: filterOption.value as string,
 			search: debounced.value as string,
 		});
 	}
 });
+watch(data, () => {
+	totalItems.value = data.value?.count || 0;
+});
 
-// function rerender() {
-//   data.value = defaultData
-// }
+function handlePageSizeChange(e: string) {
+	console.log(page.value, "page");
+	page.value = "1";
+	paramFilterSortPagination.value = paginationRouteManager({
+		page: "1",
+		pageSize: e,
+	});
+}
 
-// function handleGoToPage(e) {
-//   const page = e.target.value ? Number(e.target.value) - 1 : 0
-//   goToPageNumber.value = page + 1
-//   table.value?.tableApi?.setPageIndex(page)
-// }
-
-// function handlePageSizeChange(e) {
-//   table.value?.tableApi?.setPageSize(Number(e.target.value))
-// }
+function handleGoToPage(e: number) {
+	page.value = `${e}`;
+	paramFilterSortPagination.value = paginationRouteManager({
+		page: page.value,
+		pageSize: pageSize.value as string,
+	});
+}
 </script>
 
 <template>
@@ -278,7 +302,7 @@ watch(debounced, () => {
 					class="max-w-48"
 					placeholder="Filtrar por..."
 					@keyup.enter="
-						paramFilterSort = filteringRouteManager({
+						paramFilterSortPagination = filteringRouteManager({
 							column: filterOption as string,
 							search: debounced as string,
 						})
@@ -349,23 +373,28 @@ watch(debounced, () => {
 			}"
 			:loading="status === 'pending'"
 			sticky
-			:data="data"
+			:data="data?.data"
 			:columns="columns"
+			class="max-h-[63vh] cool-scrollbar-dark"
 			@update:sorting="
 				(event) => {
 					const [id] = event;
-					paramFilterSort = sortingRouteManager([{ id: id?.id as string, desc: id?.desc }]);
+					paramFilterSortPagination = sortingRouteManager([{ id: id?.id as string, desc: id?.desc }]);
 				}
 			"
 		/>
-		<div class="flex justify-center border-t border-(--ui-border) pt-4">
+		<div class="flex justify-center border-t border-(--ui-border) pb-2 pt-2">
 			<UPagination
-				:default-page="
-					(table?.tableApi?.getState().pagination.pageIndex || 0) + 1
-				"
-				:items-per-page="table?.tableApi?.getState().pagination.pageSize"
-				:total="table?.tableApi?.getFilteredRowModel().rows.length"
-				@update:page="(p) => table?.tableApi?.setPageIndex(p - 1)"
+				:page="Number(page)"
+				:total="totalItems"
+				:items-per-page="Number(pageSize)"
+				@update:page="handleGoToPage"
+			/>
+			<USelect
+				v-model="pageSize"
+				:items="['5', '10', '20', '50']"
+				class="w-20 ml-2"
+				@update:model-value="handlePageSizeChange"
 			/>
 		</div>
 
@@ -375,7 +404,7 @@ watch(debounced, () => {
 		>
 			{{ table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0 }}
 			de
-			{{ table?.tableApi?.getFilteredRowModel().rows.length || 0 }}
+			{{ totalItems || 0 }}
 			fila(s) seleccionadas.
 		</div>
 	</div>

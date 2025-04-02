@@ -2,17 +2,35 @@
 @import "@nuxt/ui";
 
 @theme {
-  --color-navbardark-500: #24211f;
-  --color-navbardark-700: #1e1b18;
+	--color-navbardark-500: #24211f;
+	--color-navbardark-700: #1e1b18;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+/* .cool-scrollbar {
+	@apply [&::-webkit-scrollbar]:w-1
+  [&::-webkit-scrollbar-thumb]:cursor-pointer
+  [&::-webkit-scrollbar-track]:rounded-full
+[&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:rounded-full
+[&::-webkit-scrollbar-thumb]:bg-gray-300;
+} */
+
+.cool-scrollbar-dark {
+	@apply [&::-webkit-scrollbar]:w-1
+	[&::-webkit-scrollbar]:h-1
+  [&::-webkit-scrollbar-thumb]:cursor-pointer
+[&::-webkit-scrollbar-track]:bg-transparent
+  [&::-webkit-scrollbar-thumb]:rounded-full
+[&::-webkit-scrollbar-thumb]:bg-primary-500;
 }
