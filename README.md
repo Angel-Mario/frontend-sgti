@@ -1,75 +1,56 @@
-# Nuxt Minimal Starter
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# 🚍 STGI-UCI - Sistema de Gestión del Transporte Interno UCI
 
-## Setup
+STGIUC es una plataforma digital diseñada para optimizar y gestionar el transporte interno dentro de la Universidad de Ciencias Informáticas (UCI). Este sistema centraliza la administración de rutas, vehículos, conductores y solicitudes de transporte, mejorando la eficiencia y la experiencia de la comunidad universitaria.
 
-Make sure to install dependencies:
+🎯 Objetivos
 
-```bash
-# npm
-npm install
+✔ Automatizar la gestión de transporte interno.
 
-# pnpm
-pnpm install
+✔ Optimizar rutas para reducir tiempos de espera y consumo de combustible.
 
-# yarn
-yarn install
+✔ Facilitar la solicitud de servicios para estudiantes, profesores y trabajadores.
 
-# bun
-bun install
-```
+## 🛠Tech Stack
 
-## Development Server
+**Client:** Vue, TailwindCSS, Nuxt, Nuxtui
 
-Start the development server on `http://localhost:3000`:
+**Server:** NestJS, Postgres
+
+## 📦Correr Localmente
+
+Clonar el projecto
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+  git clone https://github.com/Angel-Mario/frontend-sgti
 ```
 
-## Production
-
-Build the application for production:
+Ir al directorio del projecto
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+  cd frontend-sgti
 ```
 
-Locally preview production build:
+Instalar dependencias
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+  bun install
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Correr el servidor
+
+```bash
+  bun dev
+```
+
+Abrir el navegador en <http://localhost:3000>
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`VUE_APP_API_URL`
+<http://localhost:3003/api>
+
+`VUE_APP_DEFAULT_PAGE_SIZE`
+10
