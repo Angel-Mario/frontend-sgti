@@ -16,5 +16,29 @@ export const useTableFooter = () => {
 		};
 	});
 
-	return { page, pageSize, paramFilterSortPagination, pagination };
+	function handlePageSizeChange(e: string) {
+		page.value = "1";
+		pageSize.value = e;
+		paramFilterSortPagination.value = paginationRouteManager({
+			page: "1",
+			pageSize: e,
+		});
+	}
+
+	function handleGoToPage(e: number) {
+		page.value = `${e}`;
+		paramFilterSortPagination.value = paginationRouteManager({
+			page: page.value,
+			pageSize: pageSize.value as string,
+		});
+	}
+
+	return {
+		page,
+		pageSize,
+		paramFilterSortPagination,
+		pagination,
+		handlePageSizeChange,
+		handleGoToPage,
+	};
 };

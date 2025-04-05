@@ -15,11 +15,9 @@ const props = defineProps({
 	<div
 		class="px-4 py-3.5 border-t border-(--ui-border-accented) text-sm text-(--ui-text-muted)"
 	>
-		{{ rowSelected }}
+		{{ props.rowSelected }}
 		de
-		{{ totalItems }}
+		{{ props.totalItems }}
 		fila(s) seleccionadas.
 	</div>
 </template>
-
-<style></style>

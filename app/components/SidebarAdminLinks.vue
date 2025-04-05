@@ -4,6 +4,12 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 const items = ref<NavigationMenuItem[][]>([
 	[
 		{
+			label: "Home",
+			icon: "i-lucide-house",
+			description: "Home",
+			to: "/home",
+		},
+		{
 			label: "Personal",
 			icon: "i-lucide-book-open",
 			defaultOpen: true,
@@ -42,40 +48,40 @@ const items = ref<NavigationMenuItem[][]>([
 		{
 			label: "Reportes",
 			icon: "i-lucide-scroll-text",
-			to: "/reportes",
+			// to: "/reportes",
 		},
 		{
 			label: "Ruta",
 			icon: "i-lucide-map",
-			to: "/components",
+			// to: "/components",
 			children: [
 				//GET UPDATE DELETE POST
 				{
 					label: "Puntos referencia",
 					icon: "i-lucide-signpost",
-					description: "Display a list of links.",
-					to: "/components/navigation-menu",
+					description: "Lista de puntos referencia",
+					// to: "/components/navigation-menu",
 				},
 				//GET UPDATE DELETE POST
 				{
 					label: "Rutas",
 					icon: "i-lucide-route",
-					description: "Display a modal within your application.",
-					to: "/components/modal",
+					description: "Lista de rutas",
+					// to: "/components/modal",
 				},
 				//GET UPDATE DELETE POST
 				{
 					label: "Terminales",
 					icon: "i-lucide-caravan",
-					description: "Use NuxtLink with superpowers.",
-					to: "/components/link",
+					description: "Lista de terminales",
+					// to: "/components/link",
 				},
 				//GET UPDATE DELETE POST
 				{
 					label: "Hojas de ruta",
 					icon: "i-lucide-file-text",
-					description: "Display a list of pages.",
-					to: "/components/pagination",
+					description: "Lista de hojas de ruta",
+					// to: "/components/pagination",
 				},
 			],
 		},
@@ -88,15 +94,15 @@ const items = ref<NavigationMenuItem[][]>([
 				{
 					label: "Horario",
 					icon: "i-lucide-calendar-cog",
-					description: "Display a list of links.",
+					description: "Labla de horarios",
 					to: "/components/navigation-menu",
 				},
 				//GET UPDATE DELETE POST
 				{
 					label: "Refuerzos",
 					icon: "i-lucide-route",
-					description: "Display a modal within your application.",
-					to: "/components/modal",
+					description: "Lista de refuerzos",
+					// to: "/components/modal",
 				},
 			],
 		},
@@ -108,20 +114,26 @@ const items = ref<NavigationMenuItem[][]>([
 					//GET UPDATE DELETE POST
 					label: "Combustibles asignados",
 					icon: "i-lucide-chart-candlestick",
-					description: "Display a toast within your application.",
-					to: "/composables/use-toast",
+					description: "Lista de combustibles asignados",
+					// to: "/composables/use-toast",
 				},
+				//GET UPDATE DELETE POST
 				{
-					//GET UPDATE DELETE POST
 					label: "Omnibus",
 					icon: "i-lucide-bus",
-					description: "Define shortcuts for your application.",
+					description: "Lista de omnibus",
 				},
 				//GET
 				{
 					label: "Puntos combustible",
 					icon: "i-lucide-fuel",
-					description: "Define shortcuts for your application.",
+					description: "Lista de puntos de combustible",
+				},
+				//GET UPDATE DELETE
+				{
+					label: "Solicitudes de Piezas",
+					icon: "i-lucide-cog",
+					description: "Lista de solicitudes de piezas",
 				},
 			],
 		},

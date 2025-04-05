@@ -10,19 +10,20 @@ const items = ref<NavigationMenuItem[][]>([
 			to: "/home",
 		},
 		{
-			label: "Reportar Avería",
-			icon: "i-lucide-badge-x",
-			// to: "/reporte-averia",
+			label: "Asginar combustible",
+			icon: "i-lucide-chart-candlestick",
 		},
+		//GET POST DELETE UPDATE
 		{
-			label: "Ruta Asignada",
-			icon: "i-lucide-route",
-			// to: "/ruta-asignada",
+			label: "Puntos combustible",
+			icon: "i-lucide-fuel",
+			description: "Lista de puntos de combustible",
 		},
+		//POST
 		{
-			label: "Solicar Piezas",
-			icon: "i-lucide-cog",
-			// to: "/solicitud-pieza",
+			label: "Solicitar Refuerzo",
+			icon: "i-lucide-mail-question",
+			description: "formulario de solicitud de refuerzo",
 		},
 	],
 ]);

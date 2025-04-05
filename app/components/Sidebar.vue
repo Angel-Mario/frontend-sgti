@@ -12,9 +12,17 @@
 			</h1>
 		</section>
 		<div
-			class="p-2 overflow-x-hidden row-span-8 rounded-2xl bg-navbardark-500 no-scrollbar"
+			class="max-h-full px-2 py-3 overflow-x-hidden row-span-8 rounded-2xl bg-navbardark-500 no-scrollbar h-fit"
 		>
-			<LazySidebarAdminLinks />
+			<template v-if="token === 'admin'">
+				<LazySidebarAdminLinks />
+			</template>
+			<template v-else-if="token === 'chofer'">
+				<LazySidebarChoferLinks />
+			</template>
+			<template v-else-if="token === 'suministrador'">
+				<LazySidebarSuminLinks />
+			</template>
 		</div>
 		<div class="row-span-2">
 			<CurrentUser />
@@ -22,4 +30,6 @@
 	</div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const token = useLocalStorage("token", "admin");
+</script>

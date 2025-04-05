@@ -5,6 +5,7 @@ export { sortingRouteManager } from "./functions/sorting";
 
 export { makeColumnHeader } from "./functions/makeColumnHeader";
 export { makeColumnSelect } from "./functions/makeColumnSelect";
+export { makeFetchOptions } from "./functions/makeFetchOptions";
 
 //types
 export type {

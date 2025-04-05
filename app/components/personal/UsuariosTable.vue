@@ -4,7 +4,10 @@ import type { TableColumn } from "@nuxt/ui";
 import type { Column, Row } from "@tanstack/vue-table";
 import { upperFirst } from "scule";
 import { getPaginationRowModel } from "@tanstack/vue-table";
-import { LazyPersonalUsuarioInsertModal } from "#components";
+import {
+	LazyPersonalUsuarioInsertModal,
+	LazyTablePagination,
+} from "#components";
 
 const filterOptions = [
 	"id",
@@ -27,39 +30,20 @@ const UCheckbox = resolveComponent("UCheckbox");
 const { table, rowSelection, sorting } = useTable("nombre");
 const { toast, overlay, globalFilter, debounced, filterOption } =
 	useTableHeader(filterOptions[1]);
-const { page, pageSize, paramFilterSortPagination, pagination } =
-	useTableFooter();
+const {
+	page,
+	pageSize,
+	paramFilterSortPagination,
+	pagination,
+	handlePageSizeChange,
+	handleGoToPage,
+} = useTableFooter();
 
-//Data Fetching
 const { data, status, error, refresh } = await useFetch<{
 	count: number;
 	totalPages: number;
 	data: Usuario[];
-}>("personal/usuarios", {
-	query: paramFilterSortPagination,
-	baseURL: "http://localhost:3000/api/",
-	// baseURL: useRuntimeConfig().public.apiUrl,
-	onRequest({ request, options }) {
-		// options.headers.set("Authorization", "...");
-	},
-	onRequestError({ error }) {
-		toast.add({
-			title: "Error al enviar al hacer la petición",
-			description: error.message,
-			color: "error",
-			icon: "i-lucide-alert-circle",
-		});
-	},
-	onResponseError({ response }) {
-		toast.add({
-			title: "Error al recibir la respuesta",
-			description: response.body?.getReader().read().toString(),
-			color: "error",
-			icon: "i-lucide-alert-circle",
-		});
-	},
-	lazy: true,
-});
+}>("personal/usuarios", makeFetchOptions(paramFilterSortPagination, toast));
 
 const columns: TableColumn<Usuario>[] = [
 	makeColumnSelect<Usuario>(UCheckbox),
@@ -146,7 +130,7 @@ const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
 });
 
 const openInsertModal = async () => {
-	modal.patch({ open: true, usuario: undefined });
+	await modal.patch({ open: true, usuario: undefined });
 	await modal.open();
 };
 
@@ -205,22 +189,6 @@ watch(debounced, () => {
 		});
 	}
 });
-
-function handlePageSizeChange(e: string) {
-	page.value = "1";
-	paramFilterSortPagination.value = paginationRouteManager({
-		page: "1",
-		pageSize: e,
-	});
-}
-
-function handleGoToPage(e: number) {
-	page.value = `${e}`;
-	paramFilterSortPagination.value = paginationRouteManager({
-		page: page.value,
-		pageSize: pageSize.value as string,
-	});
-}
 </script>
 
 <template>
@@ -257,7 +225,6 @@ function handleGoToPage(e: number) {
 				class="ml-auto"
 				@click="openInsertModal"
 			/>
-			<!-- TODO  Fix All rows selected-->
 			<UButton
 				label="Eliminar"
 				color="error"
@@ -320,20 +287,13 @@ function handleGoToPage(e: number) {
 				}
 			"
 		/>
-		<div class="flex justify-center border-t border-(--ui-border) pb-2 pt-2">
-			<UPagination
-				:page="Number(page)"
-				:total="totalItems"
-				:items-per-page="Number(pageSize)"
-				@update:page="handleGoToPage"
-			/>
-			<USelect
-				v-model="pageSize"
-				:items="['5', '10', '20', '50']"
-				class="w-20 ml-2"
-				@update:model-value="handlePageSizeChange"
-			/>
-		</div>
+		<LazyTablePagination
+			:page="page"
+			:page-size="pageSize"
+			:total-items="totalItems"
+			@handle-go-to-page="handleGoToPage"
+			@handle-page-size-change="handlePageSizeChange"
+		/>
 		<LazyTableFooter
 			:row-selected="table?.tableApi?.getFilteredSelectedRowModel().rows.length"
 			:total-items="totalItems"

@@ -9,7 +9,7 @@ const props = defineProps({
 	},
 });
 const password = z
-	.string()
+	.string({ message: "Requerido" })
 	.min(8, "Al menos 8 characters")
 	.regex(
 		/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
@@ -18,19 +18,21 @@ const password = z
 
 const schema = z.object({
 	nombre_u: z
-		.string()
+		.string({ message: "Requerido" })
 		.min(3, "Al menos 3 caracteres")
 		.regex(/([a-z])/),
-	nombre_apellidos: z.string().min(8, "Al menos 8 caracteres"),
-	correo: z.string().email("No es un correo valido"),
+	nombre_apellidos: z
+		.string({ message: "Requerido" })
+		.min(8, "Al menos 8 caracteres"),
+	correo: z.string({ message: "Requerido" }).email("No es un correo valido"),
 	password: props.usuario ? password.optional() : password,
 	telefono: z
-		.string()
+		.string({ message: "Requerido" })
 		.startsWith("53", { message: "Must start with country code 53" })
 		.length(11, { message: "Must be 11 digits including country code" })
 		.regex(/^53[0-9]+$/, { message: "Must contain only digits" })
 		.optional(),
-	rol: z.string(),
+	rol: z.string({ message: "Requerido" }),
 });
 
 type Schema = z.output<typeof schema>;

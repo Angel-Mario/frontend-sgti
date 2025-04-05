@@ -13,6 +13,6 @@ export default withNuxt({
 		// 'vue/v-on-event-hyphenation': 'off',
 		"vue/multi-word-component-names": "off",
 		"vue/first-attribute-linebreak": "off",
-		"vue/require-explicit-emits": "off",
+		// "vue/require-explicit-emits": "off",
 	},
 });
