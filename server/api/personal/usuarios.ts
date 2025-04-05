@@ -313,7 +313,7 @@ export default defineEventHandler(async (event) => {
 			rol: "Administrador",
 		},
 	];
-	console.log(data.slice(pageSize * (page - 1), pageSize * page));
+	// console.log(data.slice(pageSize * (page - 1), pageSize * page));
 
 	return {
 		count: 30,

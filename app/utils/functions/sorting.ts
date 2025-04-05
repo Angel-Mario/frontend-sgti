@@ -1,6 +1,6 @@
-export function sortingRouteManager(
+export const sortingRouteManager = (
 	sortingState: [{ id: string; desc: boolean | undefined }]
-) {
+) => {
 	const router = useRouter();
 	const query = Object.assign({}, router.currentRoute.value.query);
 
@@ -11,4 +11,4 @@ export function sortingRouteManager(
 		query: query,
 	});
 	return query;
-}
+};

@@ -23,4 +23,10 @@ export default defineNuxtConfig({
 			defaultPageSize: process.env.VUE_APP_DEFAULT_PAGE_SIZE,
 		},
 	},
+	// nitro: {
+	// 	prerender: {
+	// 		routes: ["/personal/usuarios"],
+	// 		// ignore: ["/dynamic"],
+	// 	},
+	// },
 });

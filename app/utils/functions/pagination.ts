@@ -1,7 +1,7 @@
-export function paginationRouteManager(paginationState: {
+export const paginationRouteManager = (paginationState: {
 	page: string;
 	pageSize: string;
-}) {
+}) => {
 	const router = useRouter();
 
 	const query = Object.assign({}, router.currentRoute.value.query);
@@ -24,4 +24,4 @@ export function paginationRouteManager(paginationState: {
 		query: query,
 	});
 	return query;
-}
+};

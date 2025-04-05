@@ -1,7 +1,7 @@
-export function filteringRouteManager(filteringState: {
+export const filteringRouteManager = (filteringState: {
 	column: string;
 	search: string;
-}) {
+}) => {
 	const router = useRouter();
 
 	const query = Object.assign({}, router.currentRoute.value.query);
@@ -21,4 +21,4 @@ export function filteringRouteManager(filteringState: {
 		});
 	}
 	return query;
-}
+};

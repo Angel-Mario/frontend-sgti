@@ -4,34 +4,33 @@ import type { TableColumn } from "@nuxt/ui";
 import type { Column, Row } from "@tanstack/vue-table";
 import { upperFirst } from "scule";
 import { getPaginationRowModel } from "@tanstack/vue-table";
-import type { Usuario } from "../../utils/types";
 import { LazyPersonalUsuarioInsertModal } from "#components";
-import { sortingRouteManager } from "~/utils/functions/personal/sorting";
-import { filteringRouteManager } from "../../utils/functions/personal/filtering";
-import { paginationRouteManager } from "../../utils/functions/personal/pagination";
 
+const filterOptions = [
+	"id",
+	"carnet",
+	"usuario",
+	"nombre",
+	"correo",
+	"estado",
+	"teléfono",
+	"rol",
+];
+
+//Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
 const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
-const overlay = useOverlay();
-const toast = useToast();
 
-const page = ref("1");
-const pageSize = ref(useRuntimeConfig().public.defaultPageSize);
+//CustomHooks For Managing the states
+const { table, rowSelection, sorting } = useTable("nombre");
+const { toast, overlay, globalFilter, debounced, filterOption } =
+	useTableHeader(filterOptions[1]);
+const { page, pageSize, paramFilterSortPagination, pagination } =
+	useTableFooter();
 
-const paramFilterSortPagination = ref<
-	| { page: number; pageSize: number }
-	| { column: string; search: string }
-	| { page?: string; pageSize?: string; column?: string; search?: string }
->({
-	page: page.value,
-	pageSize: useRuntimeConfig().public.defaultPageSize,
-});
-
-// https://nuxt.com/docs/api/composables/use-fetch
-// https://tanstack.com/table/latest/docs/framework/vue/examples/pagination?path=examples%2Fvue%2Fpagination%2Fsrc%2FApp.vue
-
+//Data Fetching
 const { data, status, error, refresh } = await useFetch<{
 	count: number;
 	totalPages: number;
@@ -41,80 +40,52 @@ const { data, status, error, refresh } = await useFetch<{
 	baseURL: "http://localhost:3000/api/",
 	// baseURL: useRuntimeConfig().public.apiUrl,
 	onRequest({ request, options }) {
-		// Set the request headers
-		// note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
 		// options.headers.set("Authorization", "...");
 	},
-	onRequestError({ request, options, error }) {},
-	onResponse({ request, response, options }) {
-		// localStorage.setItem("token", response._data.token);
+	onRequestError({ error }) {
+		toast.add({
+			title: "Error al enviar al hacer la petición",
+			description: error.message,
+			color: "error",
+			icon: "i-lucide-alert-circle",
+		});
 	},
-	onResponseError({ request, response, options }) {},
+	onResponseError({ response }) {
+		toast.add({
+			title: "Error al recibir la respuesta",
+			description: response.body?.getReader().read().toString(),
+			color: "error",
+			icon: "i-lucide-alert-circle",
+		});
+	},
 	lazy: true,
 });
 
-const colmnHeader = (column: Column<Usuario>, headerName: string) => {
-	const isSorted = column.getIsSorted();
-
-	return h(UButton, {
-		color: "neutral",
-		ui: { leadingIcon: "text-(--ui-primary)" },
-		variant: "ghost",
-		label: headerName,
-		icon: isSorted
-			? isSorted === "asc"
-				? "i-lucide-arrow-up-narrow-wide"
-				: "i-lucide-arrow-down-wide-narrow"
-			: "i-lucide-arrow-up-down",
-		class: "-mx-2.5",
-		onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
-	});
-};
-
 const columns: TableColumn<Usuario>[] = [
-	{
-		id: "select",
-		accessorKey: "select",
-		header: ({ table }) =>
-			h(UCheckbox, {
-				modelValue: table.getIsSomePageRowsSelected()
-					? "indeterminate"
-					: table.getIsAllPageRowsSelected(),
-				"onUpdate:modelValue": (value: boolean | "indeterminate") =>
-					table.toggleAllPageRowsSelected(!!value),
-				"aria-label": "Select all",
-			}),
-		cell: ({ row }) =>
-			h(UCheckbox, {
-				modelValue: row.getIsSelected(),
-				"onUpdate:modelValue": (value: boolean | "indeterminate") =>
-					row.toggleSelected(!!value),
-				"aria-label": "Select row",
-			}),
-	},
+	makeColumnSelect<Usuario>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "id",
 	},
 	{
 		accessorKey: "carnet",
-		header: ({ column }) => colmnHeader(column, "Carnet"),
+		header: ({ column }) => makeColumnHeader(column, "Carnet", UButton),
 	},
 	{
 		accessorKey: "usuario",
-		header: ({ column }) => colmnHeader(column, "Usuario"),
+		header: ({ column }) => makeColumnHeader(column, "Usuario", UButton),
 	},
 	{
 		accessorKey: "nombre",
-		header: ({ column }) => colmnHeader(column, "Nombre"),
+		header: ({ column }) => makeColumnHeader(column, "Nombre", UButton),
 	},
 	{
 		accessorKey: "correo",
-		header: ({ column }) => colmnHeader(column, "Correo"),
+		header: ({ column }) => makeColumnHeader(column, "Correo", UButton),
 	},
 	{
 		accessorKey: "estado",
-		header: ({ column }) => colmnHeader(column, "Estado"),
+		header: ({ column }) => makeColumnHeader(column, "Estado", UButton),
 		cell: ({ row }) => {
 			const color = {
 				activo: "success" as const,
@@ -128,7 +99,7 @@ const columns: TableColumn<Usuario>[] = [
 	},
 	{
 		accessorKey: "telefono",
-		header: ({ column }) => colmnHeader(column, "Teléfono"),
+		header: ({ column }) => makeColumnHeader(column, "Teléfono", UButton),
 		cell: ({ row }) =>
 			row.getValue("telefono")
 				? `+${row.getValue("telefono")}`
@@ -136,7 +107,7 @@ const columns: TableColumn<Usuario>[] = [
 	},
 	{
 		accessorKey: "rol",
-		header: ({ column }) => colmnHeader(column, "Rol"),
+		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
 	},
 	{
 		id: "actions",
@@ -178,12 +149,6 @@ const openInsertModal = async () => {
 	modal.patch({ open: true, usuario: undefined });
 	await modal.open();
 };
-const sorting = ref([
-	{
-		id: "nombre",
-		desc: false,
-	},
-]);
 
 function getRowItems(row: Row<Usuario>) {
 	return [
@@ -196,9 +161,6 @@ function getRowItems(row: Row<Usuario>) {
 					usuario: row.original,
 				});
 				await modal.open();
-				// modal.patch()
-				// overlay.patch()
-				console.log(row.original);
 			},
 		},
 		{
@@ -228,37 +190,12 @@ function getRowItems(row: Row<Usuario>) {
 	];
 }
 
-const table = useTemplateRef("table");
-const rowSelection = ref({});
 const columnVisibility = ref({
 	id: false,
 	correo: false,
 });
 
 const totalItems = ref(data.value?.count || 0);
-
-const pagination = computed(() => {
-	console.log(pageSize.value);
-	return {
-		pageIndex: 0,
-		pageSize: Number(pageSize.value),
-	};
-});
-
-const globalFilter = shallowRef("");
-const debounced = refDebounced(globalFilter, 1000);
-
-const filterOptions = [
-	"id",
-	"carnet",
-	"usuario",
-	"nombre",
-	"correo",
-	"estado",
-	"teléfono",
-	"rol",
-];
-const filterOption = ref(filterOptions[1]);
 
 watch(debounced, () => {
 	{
@@ -268,12 +205,8 @@ watch(debounced, () => {
 		});
 	}
 });
-watch(data, () => {
-	totalItems.value = data.value?.count || 0;
-});
 
 function handlePageSizeChange(e: string) {
-	console.log(page.value, "page");
 	page.value = "1";
 	paramFilterSortPagination.value = paginationRouteManager({
 		page: "1",
@@ -324,12 +257,16 @@ function handleGoToPage(e: number) {
 				class="ml-auto"
 				@click="openInsertModal"
 			/>
+			<!-- TODO  Fix All rows selected-->
 			<UButton
 				label="Eliminar"
 				color="error"
 				variant="outline"
 				icon="i-lucide-trash"
-				:disabled="!table?.tableApi?.getIsSomeRowsSelected()"
+				:disabled="
+					!table?.tableApi?.getIsSomeRowsSelected() &&
+					!table?.tableApi?.getIsAllRowsSelected()
+				"
 			/>
 
 			<!-- Selector de filas -->
@@ -397,15 +334,9 @@ function handleGoToPage(e: number) {
 				@update:model-value="handlePageSizeChange"
 			/>
 		</div>
-
-		<!-- Selected number -->
-		<div
-			class="px-4 py-3.5 border-t border-(--ui-border-accented) text-sm text-(--ui-text-muted)"
-		>
-			{{ table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0 }}
-			de
-			{{ totalItems || 0 }}
-			fila(s) seleccionadas.
-		</div>
+		<LazyTableFooter
+			:row-selected="table?.tableApi?.getFilteredSelectedRowModel().rows.length"
+			:total-items="totalItems"
+		/>
 	</div>
 </template>
