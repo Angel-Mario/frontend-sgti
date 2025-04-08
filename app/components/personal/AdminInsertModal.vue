@@ -4,8 +4,8 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	data: {
-		type: Object as () => Usuario,
+	usuario: {
+		type: Object as () => Administrador,
 		default: undefined,
 	},
 });
@@ -16,17 +16,21 @@ const localOpen = ref(props.open);
 <template>
 	<UModal
 		v-model:open="localOpen"
-		:title="props.data ? 'Mofificar usuario' : 'Añadir un nuevo usuario'"
+		:title="
+			props.usuario
+				? 'Mofificar administrador'
+				: 'Añadir un nuevo administrador'
+		"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
 		:description="
-			props.data
-				? 'Por favor, introduce los datos del usuario a modificar'
-				: 'Por favor, introduce los datos del nuevo usuario'
+			props.usuario
+				? 'Por favor, introduce los datos del administrador a modificar'
+				: 'Por favor, introduce los datos del nuevo administrador'
 		"
 	>
 		<template #body>
-			<PersonalUsuarioInsertForm
-				:usuario="props.data"
+			<PersonalAdminInsertForm
+				:data="props.usuario"
 				@close="localOpen = false"
 			/>
 		</template>

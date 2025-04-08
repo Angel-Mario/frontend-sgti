@@ -4,9 +4,12 @@ export const useTableHeader = (defaulFilterOption: string = "") => {
 	const toast = useToast();
 
 	//Filter Text Field and search param dropdown
-	const globalFilter = ref("");
+	const route = useRoute();
+	const globalFilter = ref(route.query["search"]?.toString() || "");
 	const debounced = refDebounced(globalFilter, 1000);
-	const filterOption = ref(defaulFilterOption);
+	const filterOption = ref(
+		route.query["column"]?.toString() || defaulFilterOption
+	);
 
 	return { overlay, toast, globalFilter, debounced, filterOption };
 };

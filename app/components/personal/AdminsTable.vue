@@ -8,8 +8,8 @@
 	/>
 </template>
 
-<script lang="ts" setup>
-import { LazyPersonalUsuarioInsertModal } from "#components";
+<script setup lang="ts">
+import { LazyPersonalAdminInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
@@ -21,10 +21,9 @@ const filterOptions = [
 	"correo",
 	"estado",
 	"teléfono",
-	"rol",
 ];
 const fetchRoute = "personal/usuarios";
-const defaultSortingValue = "usuario";
+const defaultSortingValue = "nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -37,7 +36,7 @@ const overlay = useOverlay();
 const toast = useToast();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
+const modal = overlay.create(LazyPersonalAdminInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -50,7 +49,7 @@ const openInsertModal = async () => {
 };
 
 //Column Dropdown definition
-function getRowItems(row: Row<Usuario>) {
+function getRowItems(row: Row<Administrador>) {
 	return [
 		{
 			label: "Editar",
@@ -91,8 +90,8 @@ function getRowItems(row: Row<Usuario>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Usuario>[] = [
-	makeColumnSelect<Usuario>(UCheckbox),
+const columns: TableColumn<Administrador>[] = [
+	makeColumnSelect<Administrador>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "id",
@@ -134,10 +133,6 @@ const columns: TableColumn<Usuario>[] = [
 			row.getValue("telefono")
 				? `+${row.getValue("telefono")}`
 				: "[Sin telefono]",
-	},
-	{
-		accessorKey: "rol",
-		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
 	},
 	{
 		id: "actions",

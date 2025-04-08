@@ -3,7 +3,7 @@ import type { ComputedOptions, ConcreteComponent, MethodOptions } from "vue";
 
 //prettier-ignore
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
-export const makeColumnHeader = (column: Column<Usuario>, headerName: string, uButton: string | ConcreteComponent<object, any, any, ComputedOptions, MethodOptions, {}, any>) => {
+export const makeColumnHeader = <T>(column: Column<T>, headerName: string, uButton: string | ConcreteComponent<object, any, any, ComputedOptions, MethodOptions, {}, any>) => {
 	const isSorted = column.getIsSorted();
 
 	return h(uButton, {

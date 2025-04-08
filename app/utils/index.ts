@@ -14,3 +14,4 @@ export type {
 	ParamsPagination,
 } from "./types/paramsRouter";
 export type { Usuario } from "./types/personal/usuario";
+export type { Administrador } from "./types/personal/administrador";

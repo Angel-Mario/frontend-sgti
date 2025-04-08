@@ -18,14 +18,16 @@ export const makeFetchOptions = (
 		// 	// options.headers.set("Authorization", "...");
 		// },
 		onRequestError({ error }: { error: Error }) {
-			toast.add({
-				title: "Error al enviar al hacer la petición",
-				description: error.message,
-				color: "error",
-				icon: "i-lucide-alert-circle",
-			});
+			if (!error.message.startsWith("Request aborted"))
+				toast.add({
+					title: "Error al enviar al hacer la petición",
+					description: error.message,
+					color: "error",
+					icon: "i-lucide-alert-circle",
+				});
 		},
 		onResponseError({ response }: { response: FetchResponse<unknown> }) {
+			console.log(response);
 			toast.add({
 				title: "Error al recibir la respuesta",
 				description: response.body?.getReader().read().toString(),

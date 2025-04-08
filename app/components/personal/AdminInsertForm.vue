@@ -4,14 +4,13 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 
 const props = defineProps({
 	usuario: {
-		type: Object as () => Usuario,
+		type: Object as () => Administrador,
 		default: undefined,
 	},
 });
 
 //Emiters definitions
 defineEmits(["close"]);
-
 const password = z
 	.string({ message: "Requerido" })
 	.min(8, "Al menos 8 characters")
@@ -49,19 +48,17 @@ const state = reactive<Partial<Schema>>({
 	correo: props.usuario ? props.usuario.correo : undefined,
 	password: undefined,
 	telefono: props.usuario ? props.usuario.telefono : undefined,
-	rol: props.usuario ? props.usuario.rol : undefined,
 });
 
 const toast = useToast();
 async function onSubmit(event: FormSubmitEvent<Schema>) {
 	toast.add({
 		title: "Success",
-		description: "El usuario ha sido creado",
+		description: "El administrador ha sido creado",
 		color: "success",
 	});
 	console.log(event.data);
 }
-const items = ref(["Administrador", "Chofer", "Suministrador"]);
 </script>
 
 <template>
@@ -111,14 +108,6 @@ const items = ref(["Administrador", "Chofer", "Suministrador"]);
 		</UFormField>
 		<UFormField label="Correo" name="correo" required class="col-span-5">
 			<UInput v-model="state.correo" placeholder="Ex: anibalpg@uci.cu" />
-		</UFormField>
-		<UFormField label="Rol" name="rol" required class="col-span-3 col-start-7">
-			<USelectMenu
-				v-model="state.rol"
-				:search-input="false"
-				:items="items"
-				class="w-full"
-			/>
 		</UFormField>
 
 		<div

@@ -1,7 +1,11 @@
 export const useTableFooter = () => {
 	// Pagination state
-	const page = ref("1");
-	const pageSize = ref(useRuntimeConfig().public.defaultPageSize);
+	const route = useRoute();
+	const page = ref(route.query["page"]?.toString() || "1");
+	const pageSize = ref(
+		route.query["pageSize"]?.toString() ||
+			useRuntimeConfig().public.defaultPageSize
+	);
 
 	const paramFilterSortPagination = ref<
 		ParamsPagination | ParamsFilter | Params
