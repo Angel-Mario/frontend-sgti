@@ -1,6 +1,7 @@
 <template>
-	<div class="flex h-screen">
+	<div class="flex w-screen h-screen">
 		<Sidebar />
+
 		<slot />
 	</div>
 </template>

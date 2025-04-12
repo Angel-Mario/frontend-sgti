@@ -1,10 +1,10 @@
 <template>
 	<div
-		class="grid grid-rows-14 justify-center max-w-64 min-w-56 h-screen shadow-[0px_0px_22px_0px_rgba(0,_0,_0,_0.1)] dark:shadow-[7px_0px_22px_4px_rgba(0,_0,_0,_0.1)]"
+		class="grid grid-rows-14 justify-center max-w-64 min-w-56 h-screen shadow-[0px_0px_22px_0px_rgba(0,_0,_0,_0.1)] dark:shadow-[7px_0px_22px_4px_rgba(0,_0,_0,_0.1)] z-10"
 	>
 		<section class="flex flex-col items-center justify-start w-full row-span-4">
 			<div class="mt-1 ml-auto mr-2">
-				<LazyDarkModeSwitch />
+				<DarkModeSwitch />
 			</div>
 			<UIcon name="i-custom-bus" class="text-primary-500 size-32" />
 			<h1 class="mt-1 text-2xl font-bold text-center text-primary-500">
