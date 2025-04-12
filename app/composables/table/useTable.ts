@@ -1,4 +1,4 @@
-import { ref, computed, type ShallowRef, type ShallowUnwrapRef } from "vue";
+import { ref, type ShallowRef, type ShallowUnwrapRef } from "vue";
 import type { Table } from "@tanstack/vue-table";
 
 export const useTable = <T>() => {

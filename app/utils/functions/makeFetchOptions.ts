@@ -1,5 +1,6 @@
 import type { Toast } from "@nuxt/ui/runtime/composables/useToast.js";
 import type { FetchResponse } from "ofetch";
+
 export const makeFetchOptions = (
 	paramFilterSortPagination: Ref<ParamsPagination | ParamsFilter | Params>,
 	toast: {
@@ -12,8 +13,8 @@ export const makeFetchOptions = (
 ) => {
 	return {
 		query: paramFilterSortPagination,
-		baseURL: "http://localhost:3000/api/",
-		// baseURL: useRuntimeConfig().public.apiUrl,
+		// baseURL: "http://localhost:3000/api/",
+		baseURL: useRuntimeConfig().public.apiUrl,
 		// onRequest({ request, options }) {
 		// 	// options.headers.set("Authorization", "...");
 		// },
@@ -27,7 +28,6 @@ export const makeFetchOptions = (
 				});
 		},
 		onResponseError({ response }: { response: FetchResponse<unknown> }) {
-			console.log(response);
 			toast.add({
 				title: "Error al recibir la respuesta",
 				description: response.body?.getReader().read().toString(),

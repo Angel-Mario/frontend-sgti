@@ -8,6 +8,10 @@ const props = defineProps({
 		type: Object as () => Usuario,
 		default: undefined,
 	},
+	refresh: {
+		type: Function,
+		required: true,
+	},
 });
 // Create local mutable copy
 const localOpen = ref(props.open);
@@ -27,6 +31,7 @@ const localOpen = ref(props.open);
 		<template #body>
 			<PersonalUsuarioInsertForm
 				:usuario="props.data"
+				:refresh="props.refresh"
 				@close="localOpen = false"
 			/>
 		</template>

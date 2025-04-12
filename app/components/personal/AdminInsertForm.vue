@@ -92,7 +92,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		</UFormField>
 
 		<UFormField
-			label=" Nombre y apellidos"
+			label="Nombre y apellidos"
 			name="nombre_apellidos"
 			required
 			class="col-span-5"
@@ -119,7 +119,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 				variant="outline"
 				@click="$emit('close')"
 			/>
-			<UButton label="Insertar" color="neutral" type="submit" />
+			<UButton
+				:label="usuario ? 'Actualizar' : 'Insertar'"
+				color="neutral"
+				type="submit"
+			/>
 		</div>
 	</UForm>
 </template>

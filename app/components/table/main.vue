@@ -1,16 +1,12 @@
 <script setup lang="ts" generic="T">
-import { h } from "vue";
 import type { TableColumn } from "@nuxt/ui";
 import { upperFirst } from "scule";
 import { getPaginationRowModel } from "@tanstack/vue-table";
-import {
-	LazyPersonalUsuarioInsertModal,
-	LazyTablePagination,
-} from "#components";
+import { LazyTablePagination } from "#components";
 
 const props = defineProps({
 	filterOptions: {
-		type: Array<string>,
+		type: Array<{ label: string; id: string }>,
 		required: true,
 	},
 	defaultSortingValue: {
@@ -26,7 +22,7 @@ const props = defineProps({
 		required: true,
 	},
 });
-defineEmits(["openInsertModal"]);
+const emit = defineEmits(["openInsertModal"]);
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -35,7 +31,7 @@ const UDropdownMenu = resolveComponent("UDropdownMenu");
 //CustomHooks For Managing the states
 const { table, rowSelection } = useTable();
 const { toast, globalFilter, debounced, filterOption } = useTableHeader(
-	props.filterOptions[1]
+	props.filterOptions[2]?.id
 );
 const {
 	paramFilterSortPagination,
@@ -44,35 +40,52 @@ const {
 	handleGoToPage,
 } = useTableFooter();
 
-//Data Fetching Function
-const { data, status, error, refresh } = await useFetch<{
-	count: number;
-	totalPages: number;
-	data: T[];
-}>("personal/usuarios", makeFetchOptions(paramFilterSortPagination, toast));
-
-const columnVisibility = ref({
-	id: false,
-	correo: false,
-});
 const route = useRoute();
 const sorting = ref([
 	{
-		id: (route.query["sorting"] as string) || props.defaultSortingValue,
-		desc: route.query["order"] === "asc" || false,
+		id:
+			props.filterOptions.find(
+				(o) => o.id == (route.query["sorting"] as string)
+			)?.label || (props.defaultSortingValue as string),
+		desc: route.query["order"] === "desc" || false,
 	},
 ]);
 
-const totalItems = ref(data.value?.count || 0);
-
-watch(debounced, () => {
-	{
-		paramFilterSortPagination.value = filteringRouteManager({
-			column: filterOption.value as string,
-			search: debounced.value as string,
-		});
-	}
+watch(
+	debounced,
+	() => {
+		{
+			paramFilterSortPagination.value = filteringRouteManager({
+				column: filterOption.value as string,
+				search: debounced.value as string,
+			});
+		}
+	},
+	{ immediate: true }
+);
+const refreshMet = ref(() => {
+	console.log("Cacaroto");
 });
+defineExpose({
+	refreshMet,
+});
+
+//Data Fetching Function
+const { data, status, error, refresh } = await useFetch<{
+	count: number;
+	pages: number;
+	data: T[];
+}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast));
+
+//redefinition RefreshMetodh
+refreshMet.value = refresh;
+
+const columnVisibility = ref({
+	Id: false,
+	Carnet: false,
+});
+
+const totalItems = computed(() => data.value?.count || 0);
 </script>
 
 <template>
@@ -97,20 +110,28 @@ watch(debounced, () => {
 				<USelectMenu
 					id="filterOption"
 					v-model="filterOption"
+					value-key="id"
 					:search-input="{ placeholder: 'Buscar' }"
 					:items="filterOptions"
 					class="w-32"
+					@change="
+						paramFilterSortPagination = filteringRouteManager({
+							column: filterOption as string,
+							search: debounced as string,
+						})
+					"
 				/>
 			</UButtonGroup>
 			<!-- Insert Button -->
 			<UButton
-				label=" Añadir"
+				label="Añadir"
 				color="secondary"
 				variant="outline"
 				icon="i-lucide-plus"
 				class="ml-auto"
 				@click="$emit('openInsertModal')"
 			/>
+			<!-- Delete Button -->
 			<UButton
 				label="Eliminar"
 				color="error"
@@ -120,6 +141,15 @@ watch(debounced, () => {
 					!table?.tableApi?.getIsSomeRowsSelected() &&
 					!table?.tableApi?.getIsAllRowsSelected()
 				"
+				@click="
+					handleDeleteRows(
+						props.fetchRoute,
+						refresh,
+						data?.data.filter((row, index) => {
+							if ((rowSelection as boolean[])[index]) return row;
+						}) as any[]
+					)
+				"
 			/>
 
 			<!-- Selector de filas -->
@@ -128,7 +158,7 @@ watch(debounced, () => {
 				?.getAllColumns()
 				.filter((column) => column.getCanHide() && column.id !== 'actions' && column.id !== 'select')
 				.map((column) => ({
-					label: upperFirst(column.id),
+					label: upperFirst( column.id),
 					type: 'checkbox' as const,
 					checked: column.getIsVisible(),
 					onUpdateChecked(checked: boolean) {
@@ -169,7 +199,8 @@ watch(debounced, () => {
 			@update:sorting="
 				(event) => {
 					const [id] = event;
-					paramFilterSortPagination = sortingRouteManager([{ id: id?.id as string, desc: id?.desc }]);
+					const property = props.filterOptions.find((o)=> o.label == id?.id as string);
+					paramFilterSortPagination = sortingRouteManager([{ id: property?.id as string, desc: id?.desc }]);
 				}
 			"
 		/>

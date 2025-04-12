@@ -13,12 +13,11 @@ const state = reactive<Partial<Schema>>({
 	password: undefined,
 });
 const router = useRouter();
+// const toast = useToast();
 
-const toast = useToast();
-
-function showToast(titutlo: string, description: string) {
-	toast.add({ title: titutlo, description: description });
-}
+// function showToast(titutlo: string, description: string) {
+// 	toast.add({ title: titutlo, description: description });
+// }
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
 	console.log(event.data);
@@ -47,6 +46,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
+	<!-- Formulario de inicio de sesión -->
 	<UForm :schema="schema" :state="state" class="space-y-2" @submit="onSubmit">
 		<UFormField name="user" class="h-20 mt-4">
 			<UInput
@@ -63,7 +63,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 				</label>
 			</UInput>
 		</UFormField>
-
+		<!-- Password Field -->
 		<UFormField name="password" class="h-20">
 			<UInput
 				v-model="state.password"
@@ -79,6 +79,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 			</UInput>
 		</UFormField>
 
+		<!-- Submit Button -->
 		<UButton
 			type="submit"
 			size="lg"

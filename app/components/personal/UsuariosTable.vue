@@ -1,5 +1,6 @@
 <template>
 	<TableMain
+		ref="child"
 		:filter-options="filterOptions"
 		:default-sorting-value="defaultSortingValue"
 		:fetch-route="fetchRoute"
@@ -13,18 +14,19 @@ import { LazyPersonalUsuarioInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
+const childRef = useTemplateRef("child");
+
 const filterOptions = [
-	"id",
-	"carnet",
-	"usuario",
-	"nombre",
-	"correo",
-	"estado",
-	"teléfono",
-	"rol",
+	{ id: "id", label: "Id" },
+	{ id: "nombre_u", label: "Usuario" },
+	{ id: "fullName", label: "Nombre" },
+	{ id: "correo", label: "Correo" },
+	{ id: "carnet", label: "Carnet" },
+	{ id: "isActive", label: "Estado" },
+	{ id: "telefono", label: "Teléfono" },
 ];
 const fetchRoute = "personal/usuarios";
-const defaultSortingValue = "usuario";
+const defaultSortingValue = "Usuario";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -32,7 +34,7 @@ const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
 
-//Custom Hooks
+//Overlay Hooks
 const overlay = useOverlay();
 const toast = useToast();
 
@@ -41,31 +43,70 @@ const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
+		refresh: childRef?.value?.refreshMet
+			? childRef?.value?.refreshMet
+			: () => {},
 	},
 });
 
 const openInsertModal = async () => {
-	modal.patch({ open: true, data: undefined });
+	modal.patch({
+		open: true,
+		refresh: childRef?.value?.refreshMet
+			? childRef?.value?.refreshMet
+			: () => {},
+		data: undefined,
+	});
 	await modal.open();
 };
 
-//Column Dropdown definition
+//Row Dropdown definition
 function getRowItems(row: Row<Usuario>) {
 	return [
 		{
 			label: "Editar",
 			icon: "i-lucide-pencil",
 			async onSelect() {
+				console.log(row.original, "aaaaaaaaa");
 				modal.patch({
 					open: true,
-					usuario: row.original,
+					refresh: childRef?.value?.refreshMet
+						? childRef?.value?.refreshMet
+						: () => {},
+					data: row.original,
 				});
 				await modal.open();
 			},
 		},
 		{
+			label: row.original.isActive ? "Desactivar" : "Activar",
+			icon: row.original.isActive ? "i-lucide-circle-off" : "i-lucide-circle",
+			async onSelect() {
+				$fetch(`personal/usuarios/${row.original.id}`, {
+					...makePostPatchOptions(
+						`Se ha ${
+							row.original.isActive ? "desactivado" : "activado"
+						} correctamente el usuario`,
+						{ isActive: !row.original.isActive },
+						() => {
+							childRef?.value?.refreshMet();
+						},
+						toast
+					),
+					method: "POST",
+				});
+			},
+		},
+		{
 			label: "Eliminar",
 			icon: "i-lucide-trash",
+			onSelect() {
+				handleDeleteRows(
+					fetchRoute,
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+					[{ id: row.original.id }]
+				);
+			},
 		},
 		{
 			type: "separator",
@@ -83,10 +124,6 @@ function getRowItems(row: Row<Usuario>) {
 				});
 			},
 		},
-		{
-			label: "Ver detalles",
-			icon: "i-lucide-eye",
-		},
 	];
 }
 
@@ -95,49 +132,63 @@ const columns: TableColumn<Usuario>[] = [
 	makeColumnSelect<Usuario>(UCheckbox),
 	{
 		accessorKey: "id",
-		header: "id",
+		header: "Id",
+		id: "Id",
 	},
 	{
-		accessorKey: "carnet",
-		header: ({ column }) => makeColumnHeader(column, "Carnet", UButton),
-	},
-	{
-		accessorKey: "usuario",
+		accessorKey: "nombre_u",
 		header: ({ column }) => makeColumnHeader(column, "Usuario", UButton),
+		id: "Usuario",
 	},
 	{
-		accessorKey: "nombre",
+		accessorKey: "fullName",
 		header: ({ column }) => makeColumnHeader(column, "Nombre", UButton),
+		id: "Nombre",
 	},
 	{
 		accessorKey: "correo",
 		header: ({ column }) => makeColumnHeader(column, "Correo", UButton),
+		id: "Correo",
 	},
 	{
-		accessorKey: "estado",
+		accessorKey: "carnet",
+		header: ({ column }) => makeColumnHeader(column, "Carnet", UButton),
+		id: "Carnet",
+	},
+	{
+		accessorKey: "isActive",
 		header: ({ column }) => makeColumnHeader(column, "Estado", UButton),
 		cell: ({ row }) => {
 			const color = {
-				activo: "success" as const,
-				desactivado: "neutral" as const,
-			}[row.getValue("estado") as string];
+				true: "success" as const,
+				false: "neutral" as const,
+			}[row.getValue("Estado") as string];
 
 			return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-				row.getValue("estado")
+				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo"
 			);
 		},
+		id: "Estado",
 	},
 	{
 		accessorKey: "telefono",
 		header: ({ column }) => makeColumnHeader(column, "Teléfono", UButton),
 		cell: ({ row }) =>
-			row.getValue("telefono")
-				? `+${row.getValue("telefono")}`
-				: "[Sin telefono]",
+			row.getValue("Teléfono")
+				? `+53${row.getValue("Teléfono")}`
+				: "[Sin teléfono]",
+		id: "Teléfono",
 	},
 	{
-		accessorKey: "rol",
+		accessorKey: "roles",
 		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
+		cell: ({ row }) =>
+			(row.getValue("Rol") as string[])[0] === "admin"
+				? "Administrador"
+				: (row.getValue("Rol") as string[])[0] === "chofer"
+				? "Chofer"
+				: "Suministrador",
+		id: "Rol",
 	},
 	{
 		id: "actions",
