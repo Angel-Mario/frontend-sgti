@@ -13,7 +13,7 @@ const props = defineProps({
 
 <template>
 	<div
-		class="px-4 py-3.5 border-t border-(--ui-border-accented) text-sm text-(--ui-text-muted)"
+		class="px-4 py-1 border-t border-(--ui-border-accented) text-sm text-(--ui-text-muted)"
 	>
 		{{ props.rowSelected }}
 		de

@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col w-full h-screen bg-(--ui-bg)">
 		<RouteBreadCrumb :items="items">
-			<section class="flex flex-col w-full row-span-1 px-6 py-3 rounded-2xl">
+			<section class="flex flex-col w-full row-span-1 px-6 rounded-2xl">
 				<h1 class="text-2xl font-bold">Listado de Administradores</h1>
 				<USeparator color="primary" type="solid" />
 			</section>
@@ -30,8 +30,27 @@ const items: BreadcrumbItem[] = [
 		to: "/home",
 	},
 	{
+		slot: "dropdown" as const,
+		icon: "i-lucide-ellipsis",
 		label: "Personal",
-		to: "/personal",
+		children: [
+			{
+				label: "Usuarios",
+				to: "/personal/usuarios",
+			},
+			{
+				label: "Administradores",
+				to: "/personal/administradores",
+			},
+			{
+				label: "Choferes",
+				to: "/personal/choferes",
+			},
+			{
+				label: "Suministradores",
+				to: "/personal/suministradores",
+			},
+		],
 	},
 	{
 		label: "Administradores",

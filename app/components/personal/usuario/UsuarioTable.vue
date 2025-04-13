@@ -1,7 +1,6 @@
 <template>
 	<TableMain
 		ref="child"
-		class="animate-fade-in-down"
 		:filter-options="filterOptions"
 		:default-sorting-value="defaultSortingValue"
 		:fetch-route="fetchRoute"

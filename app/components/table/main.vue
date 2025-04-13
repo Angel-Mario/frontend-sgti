@@ -91,7 +91,9 @@ const totalItems = computed(() => data.value?.count || 0);
 </script>
 
 <template>
-	<div class="flex-1 flex-col w-full border-2 border-(--ui-border) rounded-2xl">
+	<div
+		class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl"
+	>
 		<div
 			class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
 		>
@@ -205,7 +207,7 @@ const totalItems = computed(() => data.value?.count || 0);
 			sticky
 			:data="data?.data"
 			:columns="columns"
-			class="max-h-[63vh] cool-scrollbar-dark"
+			class="cool-scrollbar-dark"
 			@update:sorting="
 				(event) => {
 					const [id] = event;
