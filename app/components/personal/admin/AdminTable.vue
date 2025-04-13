@@ -9,8 +9,8 @@
 	/>
 </template>
 
-<script lang="ts" setup>
-import { LazyPersonalUsuarioInsertModal } from "#components";
+<script setup lang="ts">
+import { LazyPersonalAdminInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
@@ -25,8 +25,9 @@ const filterOptions = [
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
 ];
-const fetchRoute = "personal/usuarios";
-const defaultSortingValue = "Usuario";
+
+const fetchRoute = "personal/administradores";
+const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -34,12 +35,12 @@ const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
 
-//Overlay Hooks
+//Custom Hooks
 const overlay = useOverlay();
 const toast = useToast();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
+const modal = overlay.create(LazyPersonalAdminInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -60,14 +61,13 @@ const openInsertModal = async () => {
 	await modal.open();
 };
 
-//Row Dropdown definition
-function getRowItems(row: Row<Usuario>) {
+//Column Dropdown definition
+function getRowItems(row: Row<Administrador>) {
 	return [
 		{
 			label: "Editar",
 			icon: "i-lucide-pencil",
 			async onSelect() {
-				console.log(row.original, "aaaaaaaaa");
 				modal.patch({
 					open: true,
 					refresh: childRef?.value?.refreshMet
@@ -82,11 +82,11 @@ function getRowItems(row: Row<Usuario>) {
 			label: row.original.isActive ? "Desactivar" : "Activar",
 			icon: row.original.isActive ? "i-lucide-circle-off" : "i-lucide-circle",
 			async onSelect() {
-				$fetch(`personal/usuarios/${row.original.id}`, {
+				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
 						`Se ha ${
 							row.original.isActive ? "desactivado" : "activado"
-						} correctamente el usuario`,
+						} correctamente el administrador`,
 						{ isActive: !row.original.isActive },
 						() => {
 							childRef?.value?.refreshMet();
@@ -104,6 +104,9 @@ function getRowItems(row: Row<Usuario>) {
 				handleDeleteRows(
 					fetchRoute,
 					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+					childRef?.value?.deleteSelection
+						? childRef?.value?.deleteSelection
+						: () => {},
 					[{ id: row.original.id }]
 				);
 			},
@@ -128,8 +131,8 @@ function getRowItems(row: Row<Usuario>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Usuario>[] = [
-	makeColumnSelect<Usuario>(UCheckbox),
+const columns: TableColumn<Administrador>[] = [
+	makeColumnSelect<Administrador>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
@@ -178,17 +181,6 @@ const columns: TableColumn<Usuario>[] = [
 				? `+53${row.getValue("Teléfono")}`
 				: "[Sin teléfono]",
 		id: "Teléfono",
-	},
-	{
-		accessorKey: "roles",
-		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
-		cell: ({ row }) =>
-			(row.getValue("Rol") as string[])[0] === "admin"
-				? "Administrador"
-				: (row.getValue("Rol") as string[])[0] === "chofer"
-				? "Chofer"
-				: "Suministrador",
-		id: "Rol",
 	},
 	{
 		id: "actions",

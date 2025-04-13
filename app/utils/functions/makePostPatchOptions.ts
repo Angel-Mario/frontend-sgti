@@ -14,9 +14,6 @@ export const makePostPatchOptions = (
 	}
 ) => {
 	return {
-		headers: {
-			"Content-Type": "application/json",
-		},
 		baseURL: useRuntimeConfig().public.apiUrl, // Usa el valor de la variable pública
 		body: JSON.stringify(dataForm),
 		onResponse({ response }: { response: FetchResponse<unknown> }) {

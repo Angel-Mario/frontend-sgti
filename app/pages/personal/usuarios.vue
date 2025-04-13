@@ -6,7 +6,7 @@
 				<USeparator color="primary" type="solid" />
 			</section>
 			<main class="w-full px-3 overflow-hidden row-span-9 rounded-2xl">
-				<PersonalUsuariosTable />
+				<PersonalUsuarioTable />
 			</main>
 		</RouteBreadCrumb>
 	</div>

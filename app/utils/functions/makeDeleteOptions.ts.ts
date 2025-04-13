@@ -5,6 +5,7 @@ export const makeDeleteOptions = (
 	successMessage: string,
 	dataForm: unknown,
 	refresh: () => void,
+	deleteSelection: () => void,
 	toast: {
 		toasts: globalThis.Ref<Toast[], Toast[]>;
 		add: (toast: Partial<Toast>) => Toast;
@@ -27,6 +28,7 @@ export const makeDeleteOptions = (
 					color: "success",
 				});
 				refresh(); // Actualiza los datos de la tabla
+				deleteSelection(); // Elimina los registros seleccionados)
 			} else {
 				toast.add({
 					title: "Error al realizar la operación",

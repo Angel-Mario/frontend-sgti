@@ -1,9 +1,15 @@
+export interface AdministradorResponse {
+	data: Administrador[];
+	count: number;
+	pages: number;
+}
+
 export type Administrador = {
 	id: string;
-	carnet: number;
-	usuario: string;
-	nombre: string;
+	carnet: string;
 	correo: string;
-	estado: "activo" | "desactivado";
-	telefono?: string | undefined;
+	fullName: string;
+	nombre_u: string;
+	telefono: string;
+	isActive: boolean;
 };

@@ -63,11 +63,13 @@ watch(
 	},
 	{ immediate: true }
 );
-const refreshMet = ref(() => {
-	console.log("Cacaroto");
+const refreshMet = ref(() => {});
+const deleteSelection = ref(() => {
+	rowSelection.value = {};
 });
 defineExpose({
 	refreshMet,
+	deleteSelection,
 });
 
 //Data Fetching Function
@@ -113,7 +115,7 @@ const totalItems = computed(() => data.value?.count || 0);
 					value-key="id"
 					:search-input="{ placeholder: 'Buscar' }"
 					:items="filterOptions"
-					class="w-32"
+					class="w-28"
 					@change="
 						paramFilterSortPagination = filteringRouteManager({
 							column: filterOption as string,
@@ -122,6 +124,13 @@ const totalItems = computed(() => data.value?.count || 0);
 					"
 				/>
 			</UButtonGroup>
+			<!-- Refresh Button Image-->
+			<UButton
+				color="primary"
+				variant="ghost"
+				icon="i-custom-refresh"
+				@click="refresh"
+			/>
 			<!-- Insert Button -->
 			<UButton
 				label="Añadir"
@@ -145,6 +154,7 @@ const totalItems = computed(() => data.value?.count || 0);
 					handleDeleteRows(
 						props.fetchRoute,
 						refresh,
+						deleteSelection,
 						data?.data.filter((row, index) => {
 							if ((rowSelection as boolean[])[index]) return row;
 						}) as any[]

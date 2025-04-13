@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="grid grid-rows-14 justify-center max-w-64 min-w-56 h-screen shadow-[0px_0px_22px_0px_rgba(0,_0,_0,_0.1)] dark:shadow-[7px_0px_22px_4px_rgba(0,_0,_0,_0.1)] z-10"
+		class="grid grid-rows-14 justify-center max-w-64 min-w-56 h-screen shadow-[0px_0px_22px_0px_rgba(0,_0,_0,_0.1)] dark:shadow-[7px_0px_22px_4px_rgba(0,_0,_0,_0.1)] z-10 bg-(--ui-bg)"
 	>
 		<section class="flex flex-col items-center justify-start w-full row-span-4">
 			<div class="mt-1 ml-auto mr-2">

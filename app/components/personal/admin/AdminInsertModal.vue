@@ -4,9 +4,13 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	usuario: {
+	data: {
 		type: Object as () => Administrador,
 		default: undefined,
+	},
+	refresh: {
+		type: Function,
+		required: true,
 	},
 });
 // Create local mutable copy
@@ -17,20 +21,19 @@ const localOpen = ref(props.open);
 	<UModal
 		v-model:open="localOpen"
 		:title="
-			props.usuario
-				? 'Mofificar administrador'
-				: 'Añadir un nuevo administrador'
+			props.data ? 'Mofificar administrador' : 'Añadir un nuevo administrador'
 		"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
 		:description="
-			props.usuario
+			props.data
 				? 'Por favor, introduce los datos del administrador a modificar'
 				: 'Por favor, introduce los datos del nuevo administrador'
 		"
 	>
 		<template #body>
 			<PersonalAdminInsertForm
-				:data="props.usuario"
+				:data="props.data"
+				:refresh="props.refresh"
 				@close="localOpen = false"
 			/>
 		</template>

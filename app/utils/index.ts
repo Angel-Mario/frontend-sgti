@@ -19,4 +19,4 @@ export type {
 export type { Usuario } from "./types/personal/usuario";
 export type { Administrador } from "./types/personal/administrador";
 
-export { UsuarioSchema } from "./validations/index";
+export { UsuarioSchema, AdministradorSchema } from "./validations/index";
