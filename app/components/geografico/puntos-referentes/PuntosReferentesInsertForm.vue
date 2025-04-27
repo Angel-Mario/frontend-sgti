@@ -3,8 +3,8 @@ import type * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
 
 const props = defineProps({
-	data: {
-		type: Object as () => Administrador,
+	usuario: {
+		type: Object as () => Usuario,
 		default: undefined,
 	},
 	refresh: {
@@ -12,22 +12,30 @@ const props = defineProps({
 		required: true,
 	},
 });
-
 //Emiters definitions
 const emit = defineEmits(["close"]);
 
-const schema = AdministradorSchema(!!props.data);
+const schema = UsuarioSchema(!!props.usuario);
 
 type Schema = z.output<typeof schema>;
 
 const state = reactive<Partial<Schema>>({
-	nombre_u: props.data ? props.data.nombre_u : undefined,
-	fullName: props.data ? props.data.fullName : undefined,
-	carnet: props.data ? props.data.carnet : undefined,
-	correo: props.data ? props.data.correo : undefined,
+	nombre_u: props.usuario ? props.usuario.nombre_u : undefined,
+	fullName: props.usuario ? props.usuario.fullName : undefined,
+	carnet: props.usuario ? props.usuario.carnet : undefined,
+	correo: props.usuario ? props.usuario.correo : undefined,
 	password: undefined,
 	telefono:
-		props.data && props.data.telefono === "" ? props.data.telefono : undefined,
+		props.usuario && props.usuario.telefono === ""
+			? props.usuario.telefono
+			: undefined,
+	rol: props.usuario
+		? props.usuario.roles[0] === "admin"
+			? "Administrador"
+			: props.usuario.roles[0] === "chofer"
+				? "Chofer"
+				: "Suministrador"
+		: undefined,
 });
 
 const toast = useToast();
@@ -36,14 +44,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 	const dataForm = {
 		...event.data,
+		rol: undefined,
+		roles: [
+			event.data.rol === "Administrador"
+				? "admin"
+				: event.data.rol === "Chofer"
+					? "chofer"
+					: "suministrador",
+		],
 	};
 	console.log(dataForm, "DataForm");
 
-	await $fetch(`personal/administradores/${props.data ? props.data.id : ""}`, {
+	await $fetch(`personal/usuarios/${props.usuario ? props.usuario.id : ""}`, {
 		...makePostPatchOptions(
-			props.data
-				? "Actualizado correctamente el administrador"
-				: "Se ha registrado correctamente administrador",
+			props.usuario
+				? "Actualizado correctamente el usuario"
+				: "Se ha registrado correctamente usuario",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario
@@ -54,6 +70,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		method: "POST",
 	});
 }
+const items = ref(["Administrador", "Chofer", "Suministrador"]);
+
 // Flag to track if the form has been modified
 const isFormDirty = ref(false);
 
@@ -66,27 +84,21 @@ watch(
 	},
 	{ deep: true },
 );
-// this cheks for optional changes
-whenever(
-	() => state.telefono === "",
-	() => {
-		state.telefono = undefined;
-	},
-);
 </script>
 
 <template>
 	<UForm
+		class="grid grid-cols-9 space-y-4"
 		:schema="schema"
 		:state="state"
-		class="grid grid-cols-9 space-y-4"
+		:validate-on="[]"
 		@submit="onSubmit"
 	>
 		<UFormField
-			label="Nombre de administrador"
+			class="col-span-4"
+			label="Nombre de usuario"
 			name="nombre_u"
 			required
-			class="col-span-4"
 		>
 			<UInput
 				v-model="state.nombre_u"
@@ -97,19 +109,19 @@ whenever(
 		<UFormField
 			label="Contraseña"
 			name="password"
-			:required="!props.data"
+			:required="!props.usuario"
 			class="col-span-3 col-start-7"
 		>
 			<UInput
 				v-model="state.password"
 				type="password"
-				:placeholder="props.data ? '••••••••••' : 'Ex: Ejemplo!*8'"
+				:placeholder="props.usuario ? '••••••••••' : 'Ex: Ejemplo!*8'"
 			/>
 		</UFormField>
 
 		<UFormField
 			label="Nombre y apellidos"
-			name="nombre_apellidos"
+			name="fullName"
 			required
 			class="col-span-5"
 		>
@@ -126,7 +138,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.telefono"
-				placeholder="Ex: 5356463650"
+				placeholder="Ex: 56463650"
 			/>
 		</UFormField>
 		<UFormField
@@ -152,6 +164,20 @@ whenever(
 			/>
 		</UFormField>
 
+		<UFormField
+			label="Rol"
+			name="rol"
+			required
+			class="col-span-3 col-start-7"
+		>
+			<USelectMenu
+				v-model="state.rol"
+				:search-input="false"
+				:items="items"
+				class="w-full"
+			/>
+		</UFormField>
+
 		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
 			<UButton
 				label="Cancelar"
@@ -160,7 +186,7 @@ whenever(
 				@click="$emit('close')"
 			/>
 			<UButton
-				:label="data ? 'Actualizar' : 'Insertar'"
+				:label="usuario ? 'Actualizar' : 'Insertar'"
 				color="neutral"
 				type="submit"
 				:disabled="!isFormDirty"

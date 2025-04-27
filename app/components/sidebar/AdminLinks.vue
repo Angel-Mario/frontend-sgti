@@ -51,16 +51,16 @@ const items = ref<NavigationMenuItem[][]>([
 			// to: "/reportes",
 		},
 		{
-			label: "Ruta",
+			label: "Geográfico",
 			icon: "i-lucide-map",
 			// to: "/components",
 			children: [
 				//GET UPDATE DELETE POST
 				{
-					label: "Puntos referencia",
+					label: "Puntos referentes",
 					icon: "i-lucide-signpost",
 					description: "Lista de puntos referencia",
-					// to: "/components/navigation-menu",
+					to: "/geografico/puntos-referentes",
 				},
 				//GET UPDATE DELETE POST
 				{
@@ -119,9 +119,10 @@ const items = ref<NavigationMenuItem[][]>([
 				},
 				//GET UPDATE DELETE POST
 				{
-					label: "Omnibus",
+					label: "Ómnibus",
 					icon: "i-lucide-bus",
 					description: "Lista de omnibus",
+					to: "/vehicular/omnibus",
 				},
 				//GET
 				{

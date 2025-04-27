@@ -16,7 +16,8 @@ const props = defineProps({
 //Emiters definitions
 const emit = defineEmits(["close"]);
 
-const schema = AdministradorSchema(!!props.data);
+// biome-ignore lint/complexity/noUselessTernary: <explanation>
+const schema = AdministradorSchema(props.data ? true : false);
 
 type Schema = z.output<typeof schema>;
 

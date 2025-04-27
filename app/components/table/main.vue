@@ -22,7 +22,7 @@ const props = defineProps({
 		required: true,
 	},
 });
-const emit = defineEmits(["openInsertModal"]);
+defineEmits(["openInsertModal"]);
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -45,25 +45,23 @@ const sorting = ref([
 	{
 		id:
 			props.filterOptions.find(
-				(o) => o.id == (route.query["sorting"] as string)
+				(o) => o.id === (route.query.sorting as string)
 			)?.label || (props.defaultSortingValue as string),
-		desc: route.query["order"] === "desc" || false,
+		desc: route.query.order === "desc" || false,
 	},
 ]);
 
 watch(
 	debounced,
 	() => {
-		{
-			paramFilterSortPagination.value = filteringRouteManager({
-				column: filterOption.value as string,
-				search: debounced.value as string,
-			});
-		}
+		paramFilterSortPagination.value = filteringRouteManager({
+			column: filterOption.value as string,
+			search: debounced.value as string,
+		});
 	},
 	{ immediate: true }
 );
-const refreshMet = ref(() => {});
+const refreshMet = ref(() => { });
 const deleteSelection = ref(() => {
 	rowSelection.value = {};
 });
@@ -73,11 +71,11 @@ defineExpose({
 });
 
 //Data Fetching Function
-const { data, status, error, refresh } = await useFetch<{
+const { data, status, error: _error, refresh } = await useFetch<{
 	count: number;
 	pages: number;
 	data: T[];
-}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast));
+}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast, `Bearer ${useCookie<LoginToken>('auth').value?.token}`));
 
 //redefinition RefreshMetodh
 refreshMet.value = refresh;
@@ -86,17 +84,17 @@ const columnVisibility = ref({
 	Id: false,
 	Carnet: false,
 });
+const columnPinning = ref({
+	left: [],
+	right: ['actions']
+})
 
 const totalItems = computed(() => data.value?.count || 0);
 </script>
 
 <template>
-	<div
-		class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl"
-	>
-		<div
-			class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
-		>
+	<div class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl">
+		<div class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)">
 			<!-- Filter Text Field and search param dropdown -->
 			<UButtonGroup>
 				<UInput
@@ -109,7 +107,7 @@ const totalItems = computed(() => data.value?.count || 0);
 							column: filterOption as string,
 							search: debounced as string,
 						})
-					"
+						"
 				/>
 				<USelectMenu
 					id="filterOption"
@@ -123,7 +121,7 @@ const totalItems = computed(() => data.value?.count || 0);
 							column: filterOption as string,
 							search: debounced as string,
 						})
-					"
+						"
 				/>
 			</UButtonGroup>
 			<!-- Refresh Button Image-->
@@ -148,10 +146,9 @@ const totalItems = computed(() => data.value?.count || 0);
 				color="error"
 				variant="outline"
 				icon="i-lucide-trash"
-				:disabled="
-					!table?.tableApi?.getIsSomeRowsSelected() &&
+				:disabled="!table?.tableApi?.getIsSomeRowsSelected() &&
 					!table?.tableApi?.getIsAllRowsSelected()
-				"
+					"
 				@click="
 					handleDeleteRows(
 						props.fetchRoute,
@@ -161,26 +158,26 @@ const totalItems = computed(() => data.value?.count || 0);
 							if ((rowSelection as boolean[])[index]) return row;
 						}) as any[]
 					)
-				"
+					"
 			/>
 
 			<!-- Selector de filas -->
 			<UDropdownMenu
 				:items="table?.tableApi
-				?.getAllColumns()
-				.filter((column) => column.getCanHide() && column.id !== 'actions' && column.id !== 'select')
-				.map((column) => ({
-					label: upperFirst( column.id),
-					type: 'checkbox' as const,
-					checked: column.getIsVisible(),
-					onUpdateChecked(checked: boolean) {
-						table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-					},
-					onSelect(e?: Event) {
-						e?.preventDefault()
-					}
-        }))
-        "
+					?.getAllColumns()
+					.filter((column) => column.getCanHide() && column.id !== 'actions' && column.id !== 'select')
+					.map((column) => ({
+						label: upperFirst(column.id),
+						type: 'checkbox' as const,
+						checked: column.getIsVisible(),
+						onUpdateChecked(checked: boolean) {
+							table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+						},
+						onSelect(e?: Event) {
+							e?.preventDefault()
+						}
+					}))
+					"
 				:content="{ align: 'end' }"
 			>
 				<UButton
@@ -195,6 +192,7 @@ const totalItems = computed(() => data.value?.count || 0);
 			ref="table"
 			v-model:row-selection="rowSelection"
 			v-model:pagination="pagination"
+			v-model:column-pinning="columnPinning"
 			v-model:column-visibility="columnVisibility"
 			v-model:sorting="sorting"
 			:sorting-options="{
@@ -211,7 +209,7 @@ const totalItems = computed(() => data.value?.count || 0);
 			@update:sorting="
 				(event) => {
 					const [id] = event;
-					const property = props.filterOptions.find((o)=> o.label == id?.id as string);
+					const property = props.filterOptions.find((o) => o.label == id?.id as string);
 					paramFilterSortPagination = sortingRouteManager([{ id: property?.id as string, desc: id?.desc }]);
 				}
 			"

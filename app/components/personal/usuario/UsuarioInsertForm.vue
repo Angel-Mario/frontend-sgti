@@ -15,7 +15,7 @@ const props = defineProps({
 //Emiters definitions
 const emit = defineEmits(["close"]);
 
-const schema = UsuarioSchema(props.usuario ? true : false);
+const schema = UsuarioSchema(!!props.usuario);
 
 type Schema = z.output<typeof schema>;
 
@@ -33,8 +33,8 @@ const state = reactive<Partial<Schema>>({
 		? props.usuario.roles[0] === "admin"
 			? "Administrador"
 			: props.usuario.roles[0] === "chofer"
-			? "Chofer"
-			: "Suministrador"
+				? "Chofer"
+				: "Suministrador"
 		: undefined,
 });
 
@@ -44,13 +44,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 	const dataForm = {
 		...event.data,
-		["rol"]: undefined,
+		rol: undefined,
 		roles: [
 			event.data.rol === "Administrador"
 				? "admin"
 				: event.data.rol === "Chofer"
-				? "chofer"
-				: "suministrador",
+					? "chofer"
+					: "suministrador",
 		],
 	};
 	console.log(dataForm, "DataForm");
@@ -65,7 +65,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 				props.refresh(); // Actualiza los datos si es necesario
 				emit("close", true);
 			},
-			toast
+			toast,
 		),
 		method: "POST",
 	});
@@ -82,25 +82,34 @@ watch(
 		// Check if any of the form fields have changed
 		isFormDirty.value = newVal === oldVal;
 	},
-	{ deep: true }
+	{ deep: true },
+);
+// this cheks for optional changes
+whenever(
+	() => state.telefono === "",
+	() => {
+		state.telefono = undefined;
+	},
 );
 </script>
 
 <template>
 	<UForm
+		class="grid grid-cols-9 space-y-4"
 		:schema="schema"
 		:state="state"
-		class="grid grid-cols-9 space-y-4"
-		:validate-on="[]"
 		@submit="onSubmit"
 	>
 		<UFormField
+			class="col-span-4"
 			label="Nombre de usuario"
 			name="nombre_u"
 			required
-			class="col-span-4"
 		>
-			<UInput v-model="state.nombre_u" placeholder="Ex: anibalpg" />
+			<UInput
+				v-model="state.nombre_u"
+				placeholder="Ex: anibalpg"
+			/>
 		</UFormField>
 
 		<UFormField
@@ -122,14 +131,32 @@ watch(
 			required
 			class="col-span-5"
 		>
-			<UInput v-model="state.fullName" placeholder="Ex: Anibal Perez Garcia" />
+			<UInput
+				v-model="state.fullName"
+				placeholder="Ex: Anibal Perez Garcia"
+			/>
 		</UFormField>
 
-		<UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
-			<UInput v-model="state.telefono" placeholder="Ex: 56463650" />
+		<UFormField
+			label="Teléfono"
+			name="telefono"
+			class="col-span-3 col-start-7"
+		>
+			<UInput
+				v-model="state.telefono"
+				placeholder="Ex: 56463650"
+			/>
 		</UFormField>
-		<UFormField label="Correo" name="correo" required class="col-span-5">
-			<UInput v-model="state.correo" placeholder="Ex: anibalpg@uci.cu" />
+		<UFormField
+			label="Correo"
+			name="correo"
+			required
+			class="col-span-5"
+		>
+			<UInput
+				v-model="state.correo"
+				placeholder="Ex: anibalpg@uci.cu"
+			/>
 		</UFormField>
 		<UFormField
 			label="Carnet"
@@ -137,10 +164,30 @@ watch(
 			required
 			class="col-span-3 col-start-7"
 		>
-			<UInput v-model="state.carnet" placeholder="96124215561" />
+			<UInput
+				v-model="state.carnet"
+				:maxlength="11"
+				placeholder="96124215561"
+			>
+				<template #trailing>
+					<div
+						id="character-count"
+						class="text-xs text-muted tabular-nums"
+						aria-live="polite"
+						role="status"
+					>
+						{{ state.carnet?.length }}/11
+					</div>
+				</template>
+			</UInput>
 		</UFormField>
 
-		<UFormField label="Rol" name="rol" required class="col-span-3 col-start-7">
+		<UFormField
+			label="Rol"
+			name="rol"
+			required
+			class="col-span-3 col-start-7"
+		>
 			<USelectMenu
 				v-model="state.rol"
 				:search-input="false"
@@ -149,9 +196,7 @@ watch(
 			/>
 		</UFormField>
 
-		<div
-			class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"
-		>
+		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
 			<UButton
 				label="Cancelar"
 				color="neutral"

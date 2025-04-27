@@ -12,6 +12,7 @@ definePageMeta({
 	pageIcon: "i-lucide-log-in",
 	pageKeywords: "login, sign in",
 });
+
 useHead({
 	title: "Iniciar Sesión",
 });

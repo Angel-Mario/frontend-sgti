@@ -1,5 +1,5 @@
 import type { Toast } from "@nuxt/ui/runtime/composables/useToast.js";
-import type { FetchResponse } from "ofetch";
+import type { FetchResponse, ResolvedFetchOptions } from "ofetch";
 
 export const makeFetchOptions = (
 	paramFilterSortPagination: Ref<ParamsPagination | ParamsFilter | Params>,
@@ -9,15 +9,17 @@ export const makeFetchOptions = (
 		update: (id: string | number, toast: Omit<Partial<Toast>, "id">) => void;
 		remove: (id: string | number) => void;
 		clear: () => void;
-	}
+	},
+	token: string,
 ) => {
 	return {
 		query: paramFilterSortPagination,
 		// baseURL: "http://localhost:3000/api/",
 		baseURL: useRuntimeConfig().public.apiUrl,
-		// onRequest({ request, options }) {
-		// 	// options.headers.set("Authorization", "...");
-		// },
+
+		onRequest({ options }: { options: ResolvedFetchOptions }) {
+			options.headers.set("Authorization", token);
+		},
 		onRequestError({ error }: { error: Error }) {
 			if (!error.message.startsWith("Request aborted"))
 				toast.add({
@@ -34,6 +36,20 @@ export const makeFetchOptions = (
 				color: "error",
 				icon: "i-lucide-alert-circle",
 			});
+		},
+		onResponse({ response }: { response: FetchResponse<unknown> }) {
+			if (response.status === 403) {
+				toast.add({
+					title: "Error de permiso",
+					description: "Acción no permitida",
+					ui: {
+						root: "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple",
+						icon: "text-purple-500",
+						progress: "bg-purple-500",
+					},
+					icon: "i-lucide-lock-keyhole",
+				});
+			}
 		},
 		lazy: true,
 	};

@@ -1,13 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	compatibilityDate: "2024-11-01",
-	devtools: { enabled: false },
+	devtools: { enabled: true },
 
 	future: {
 		compatibilityVersion: 4,
 	},
 	modules: ["@nuxt/ui", "@nuxt/eslint", "@vueuse/nuxt"],
 	css: ["./app/assets/css/main.css"],
+	app: {
+		pageTransition: { name: "page", mode: "out-in" },
+	},
 
 	icon: {
 		customCollections: [
@@ -23,10 +26,11 @@ export default defineNuxtConfig({
 			defaultPageSize: process.env.VUE_APP_DEFAULT_PAGE_SIZE,
 		},
 	},
-	// nitro: {
-	// prerender: {
-	// routes: ["/personal", "/personal/usuarios"],
-	// ignore: ["/dynamic"],
-	// },
-	// },
+	nitro: {
+		prerender: {
+			routes: ["/login"],
+			// routes: ["/personal", "/personal/usuarios"],
+			// ignore: ["/dynamic"],
+		},
+	},
 });

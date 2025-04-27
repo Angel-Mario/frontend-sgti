@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { LazyPersonalUsuarioInsertModal } from "#components";
+import { LazyVehicularOmnibusInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
@@ -25,12 +25,12 @@ const filterOptions = [
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
 ];
-const fetchRoute = "personal/usuarios";
+const fetchRoute = "vehicular/omnibus";
 const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
-const UBadge = resolveComponent("UBadge");
+// const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
 
@@ -39,7 +39,7 @@ const overlay = useOverlay();
 const toast = useToast();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
+const modal = overlay.create(LazyVehicularOmnibusInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -61,7 +61,7 @@ const openInsertModal = async () => {
 };
 
 //Row Dropdown definition
-function getRowItems(row: Row<Usuario>) {
+function getRowItems(row: Row<Omnibus>) {
 	return [
 		{
 			label: "Editar",
@@ -75,24 +75,6 @@ function getRowItems(row: Row<Usuario>) {
 					data: row.original,
 				});
 				await modal.open();
-			},
-		},
-		{
-			label: row.original.isActive ? "Desactivar" : "Activar",
-			icon: row.original.isActive ? "i-lucide-circle-off" : "i-lucide-circle",
-			async onSelect() {
-				$fetch(`${fetchRoute}/${row.original.id}`, {
-					...makePostPatchOptions(
-						`Se ha ${row.original.isActive ? "desactivado" : "activado"
-						} correctamente el usuario`,
-						{ isActive: !row.original.isActive },
-						() => {
-							childRef?.value?.refreshMet();
-						},
-						toast,
-					),
-					method: "POST",
-				});
 			},
 		},
 		{
@@ -113,13 +95,13 @@ function getRowItems(row: Row<Usuario>) {
 			type: "separator",
 		},
 		{
-			label: "Copiar correo",
+			label: "Copiar chapa",
 			icon: "i-lucide-copy",
 			onSelect() {
-				navigator.clipboard.writeText(row.original.correo);
+				navigator.clipboard.writeText(row.original.chapa);
 
 				toast.add({
-					title: "El correo ha sido copiado al portapapeles",
+					title: "La chapa ha sido copiada al portapapeles",
 					color: "success",
 					icon: "i-lucide-circle-check",
 				});
@@ -133,68 +115,82 @@ function getRowItems(row: Row<Usuario>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Usuario>[] = [
-	makeColumnSelect<Usuario>(UCheckbox),
+const columns: TableColumn<Omnibus>[] = [
+	makeColumnSelect<Omnibus>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
 		id: "Id",
 	},
 	{
-		accessorKey: "nombre_u",
-		header: ({ column }) => makeColumnHeader(column, "Usuario", UButton),
-		id: "Usuario",
+		accessorKey: "chapa",
+		header: ({ column }) => makeColumnHeader(column, "Chapa", UButton),
+		id: "Chapa",
 	},
 	{
-		accessorKey: "fullName",
-		header: ({ column }) => makeColumnHeader(column, "Nombre", UButton),
-		id: "Nombre",
+		accessorKey: "consumo",
+		header: ({ column }) => makeColumnHeader(column, "Consumo", UButton),
+		cell: ({ row }) =>
+			row.getValue("Consumo")
+				? `${row.getValue("Consumo")}L`
+				: "[Sin datos]",
+		id: "Consumo",
 	},
 	{
-		accessorKey: "correo",
-		header: ({ column }) => makeColumnHeader(column, "Correo", UButton),
-		id: "Correo",
+		accessorKey: "capacidad",
+		header: ({ column }) => makeColumnHeader(column, "Capacidad", UButton),
+		cell: ({ row }) =>
+			row.getValue("Capacidad")
+				? `${row.getValue("Capacidad")} pasajeros`
+				: "[Sin datos]",
+		id: "Capacidad",
 	},
 	{
-		accessorKey: "carnet",
-		header: ({ column }) => makeColumnHeader(column, "Carnet", UButton),
-		id: "Carnet",
+		accessorKey: "marca",
+		header: ({ column }) => makeColumnHeader(column, "Marca", UButton),
+		cell: ({ row }) =>
+			row.getValue("Marca")
+				? row.getValue("Marca")
+				: "[Sin datos]",
+		id: "Marca",
 	},
 	{
-		accessorKey: "isActive",
-		header: ({ column }) => makeColumnHeader(column, "Estado", UButton),
-		cell: ({ row }) => {
-			const color = {
-				true: "success" as const,
-				false: "neutral" as const,
-			}[row.getValue("Estado") as string];
+		accessorKey: "modelo",
+		header: ({ column }) => makeColumnHeader(column, "Modelo", UButton),
+		cell: ({ row }) =>
+			row.getValue("Modelo")
+				? row.getValue("Modelo")
+				: "[Sin datos]",
+		id: "Modelo",
+	},
+	{
+		accessorKey: "año",
+		header: ({ column }) => makeColumnHeader(column, "Año", UButton),
+		cell: ({ row }) =>
+			row.getValue("Año")
+				? row.getValue("Año")
+				: "[Sin datos]",
+		id: "Año",
+	},
 
-			return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo",
-			);
-		},
-		id: "Estado",
-	},
 	{
-		accessorKey: "telefono",
-		header: ({ column }) => makeColumnHeader(column, "Teléfono", UButton),
+		accessorKey: "chofer",
+		header: ({ column }) => makeColumnHeader(column, "Chofer", UButton),
 		cell: ({ row }) =>
-			row.getValue("Teléfono")
-				? `+53${row.getValue("Teléfono")}`
-				: "[Sin teléfono]",
-		id: "Teléfono",
+			row.getValue("Chofer")
+				? `${(row.getValue("Chofer") as OmnibusChofer).id}`
+				: "No asignado",
+		id: "Chofer",
 	},
-	{
-		accessorKey: "roles",
-		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
-		cell: ({ row }) =>
-			(row.getValue("Rol") as string[])[0] === "admin"
-				? "Administrador"
-				: (row.getValue("Rol") as string[])[0] === "chofer"
-					? "Chofer"
-					: "Suministrador",
-		id: "Rol",
-	},
+	// {
+	// 	accessorKey: "telefono",
+	// 	header: ({ column }) => makeColumnHeader(column, "Teléfono", UButton),
+	// 	cell: ({ row }) =>
+	// 		row.getValue("Teléfono")
+	// 			? `+53${row.getValue("Teléfono")}`
+	// 			: "[Sin teléfono]",
+	// 	id: "Teléfono",
+	// },
 	{
 		id: "actions",
 		cell: ({ row }) => {
