@@ -17,16 +17,13 @@ const state = ref<Partial<Schema>>({
 });
 const router = useRouter();
 const toast = useToast();
-const cookie = useCookie('auth', {
-	default: undefined,
-	maxAge: 60 * 60 * 24,
-})
+const authStore = useAuthStore();
 
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
 	try {
-		const data = await $fetch<LoginToken | ErrorResponse>("/auth/login", {
+		const data = await $fetch<{ user: User } & AuthTokens | ErrorResponse>("/auth/login", {
 			method: "POST",
 			body: event.data,
 			baseURL: useRuntimeConfig().public.apiUrl,
@@ -43,12 +40,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 		}
 
 		if ('token' in data) {
-			cookie.value = (JSON.stringify({
-				token: data.token,
-				id: data.id,
-				nombre_u: data.nombre_u,
-				roles: data.roles || null
-			}));
+			authStore.login(data);
 			router.push("/home");
 		}
 	} catch (error) {

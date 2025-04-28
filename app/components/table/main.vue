@@ -21,6 +21,10 @@ const props = defineProps({
 		type: Array<TableColumn<T>>,
 		required: true,
 	},
+	columnVisibility: {
+		type: Object,
+		default: () => ({}),
+	},
 });
 defineEmits(["openInsertModal"]);
 
@@ -69,20 +73,20 @@ defineExpose({
 	refreshMet,
 	deleteSelection,
 });
-
+const authStore = useAuthStore()
 //Data Fetching Function
 const { data, status, error: _error, refresh } = await useFetch<{
 	count: number;
 	pages: number;
 	data: T[];
-}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast, `Bearer ${useCookie<LoginToken>('auth').value?.token}`));
+}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast, `Bearer ${authStore.token}`));
 
 //redefinition RefreshMetodh
 refreshMet.value = refresh;
 
 const columnVisibility = ref({
 	Id: false,
-	Carnet: false,
+	...props.columnVisibility,
 });
 const columnPinning = ref({
 	left: [],

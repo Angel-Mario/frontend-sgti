@@ -10,27 +10,29 @@
 </template>
 
 <script lang="ts" setup>
-import { LazyVehicularOmnibusInsertModal } from "#components";
+import { LazyVehicularVehiculosInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
 const childRef = useTemplateRef("child");
+const router = useRouter();
 
 const filterOptions = [
 	{ id: "id", label: "Id" },
-	{ id: "nombre_u", label: "Usuario" },
-	{ id: "fullName", label: "Nombre" },
-	{ id: "correo", label: "Correo" },
-	{ id: "carnet", label: "Carnet" },
-	{ id: "isActive", label: "Estado" },
-	{ id: "telefono", label: "Teléfono" },
+	{ id: "matricula", label: "Matrícula" },
+	{ id: "consumo", label: "Consumo" },
+	{ id: "capacidad", label: "Capacidad" },
+	{ id: "marca", label: "Marca" },
+	{ id: "modelo", label: "Modelo" },
+	{ id: "año", label: "Año" },
+	{ id: "chofer", label: "Chofer" },
 ];
-const fetchRoute = "vehicular/omnibus";
+const fetchRoute = "vehicular/vehiculos";
 const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
-// const UBadge = resolveComponent("UBadge");
+const UIcon = resolveComponent("UIcon");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
 
@@ -39,7 +41,7 @@ const overlay = useOverlay();
 const toast = useToast();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyVehicularOmnibusInsertModal, {
+const modal = overlay.create(LazyVehicularVehiculosInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -61,7 +63,7 @@ const openInsertModal = async () => {
 };
 
 //Row Dropdown definition
-function getRowItems(row: Row<Omnibus>) {
+function getRowItems(row: Row<Vehiculo>) {
 	return [
 		{
 			label: "Editar",
@@ -95,13 +97,13 @@ function getRowItems(row: Row<Omnibus>) {
 			type: "separator",
 		},
 		{
-			label: "Copiar chapa",
+			label: "Copiar matrícula",
 			icon: "i-lucide-copy",
 			onSelect() {
-				navigator.clipboard.writeText(row.original.chapa);
+				navigator.clipboard.writeText(row.original.matricula);
 
 				toast.add({
-					title: "La chapa ha sido copiada al portapapeles",
+					title: "La matrícula ha sido copiada al portapapeles",
 					color: "success",
 					icon: "i-lucide-circle-check",
 				});
@@ -115,26 +117,38 @@ function getRowItems(row: Row<Omnibus>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Omnibus>[] = [
-	makeColumnSelect<Omnibus>(UCheckbox),
+const columns: TableColumn<Vehiculo>[] = [
+	makeColumnSelect<Vehiculo>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
 		id: "Id",
 	},
 	{
-		accessorKey: "chapa",
-		header: ({ column }) => makeColumnHeader(column, "Chapa", UButton),
-		id: "Chapa",
+		accessorKey: "matricula",
+		header: ({ column }) => makeColumnHeader(column, "Matrícula", UButton),
+		id: "Matrícula",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		accessorKey: "consumo",
 		header: ({ column }) => makeColumnHeader(column, "Consumo", UButton),
 		cell: ({ row }) =>
 			row.getValue("Consumo")
-				? `${row.getValue("Consumo")}L`
+				? `${row.getValue("Consumo")}L/100km`
 				: "[Sin datos]",
 		id: "Consumo",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		accessorKey: "capacidad",
@@ -144,6 +158,12 @@ const columns: TableColumn<Omnibus>[] = [
 				? `${row.getValue("Capacidad")} pasajeros`
 				: "[Sin datos]",
 		id: "Capacidad",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		accessorKey: "marca",
@@ -153,6 +173,12 @@ const columns: TableColumn<Omnibus>[] = [
 				? row.getValue("Marca")
 				: "[Sin datos]",
 		id: "Marca",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		accessorKey: "modelo",
@@ -162,6 +188,12 @@ const columns: TableColumn<Omnibus>[] = [
 				? row.getValue("Modelo")
 				: "[Sin datos]",
 		id: "Modelo",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		accessorKey: "año",
@@ -171,6 +203,12 @@ const columns: TableColumn<Omnibus>[] = [
 				? row.getValue("Año")
 				: "[Sin datos]",
 		id: "Año",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 
 	{
@@ -178,19 +216,28 @@ const columns: TableColumn<Omnibus>[] = [
 		header: ({ column }) => makeColumnHeader(column, "Chofer", UButton),
 		cell: ({ row }) =>
 			row.getValue("Chofer")
-				? `${(row.getValue("Chofer") as OmnibusChofer).id}`
+				? h(
+					UButton,
+					{
+						color: "primary",
+						variant: "solid",
+						size: "md",
+						class: "text-xs cursor-pointer",
+						onClick: () => {
+							router.push(`/personal/choferes?column=id&search=${(row.getValue("Chofer") as VehiculoChofer).id}`);
+						},
+					},
+					() => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }),
+				)
 				: "No asignado",
 		id: "Chofer",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
-	// {
-	// 	accessorKey: "telefono",
-	// 	header: ({ column }) => makeColumnHeader(column, "Teléfono", UButton),
-	// 	cell: ({ row }) =>
-	// 		row.getValue("Teléfono")
-	// 			? `+53${row.getValue("Teléfono")}`
-	// 			: "[Sin teléfono]",
-	// 	id: "Teléfono",
-	// },
 	{
 		id: "actions",
 		cell: ({ row }) => {

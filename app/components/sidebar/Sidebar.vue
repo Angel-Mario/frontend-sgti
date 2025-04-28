@@ -21,16 +21,16 @@
 					</h1>
 				</section>
 				<div
-					v-if="rol"
+					v-if="authStore.isAuthenticated"
 					class="max-h-full px-2 py-3 overflow-x-hidden bg-gray-100 row-span-8 rounded-2xl dark:bg-navbardark-500 no-scrollbar h-fit"
 				>
-					<template v-if="rol === 'admin'">
+					<template v-if="authStore.user?.roles.includes('admin')">
 						<SidebarAdminLinks />
 					</template>
-					<template v-else-if="rol === 'chofer'">
+					<template v-else-if="authStore.user?.roles.includes('chofer')">
 						<SidebarChoferLinks />
 					</template>
-					<template v-else-if="rol === 'suministrador'">
+					<template v-else-if="authStore.user?.roles.includes('suministrador')">
 						<SidebarSuminLinks />
 					</template>
 				</div>
@@ -56,19 +56,12 @@
 <script lang="ts" setup>
 import { useTemplateRef } from "vue";
 
-const authCookie = useCookie<undefined | LoginToken>('auth', {
-	default: undefined
-})
-const rol = authCookie.value?.roles[0]
+const authStore = useAuthStore();
 
 const fps = useFps();
 
 
 const open = ref(false);
-
-
-
-// const rol = token || false;
 
 function toggleSidebar() {
 	open.value = !open.value;

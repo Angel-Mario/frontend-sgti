@@ -5,6 +5,7 @@
 		:default-sorting-value="defaultSortingValue"
 		:fetch-route="fetchRoute"
 		:columns="columns"
+		:column-visibility="columnVisibility"
 		@open-insert-modal="openInsertModal"
 	/>
 </template>
@@ -25,8 +26,15 @@ const filterOptions = [
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
 ];
+//columns Visibility Options
+const columnVisibility = {
+	Id: false,
+	Carnet: false,
+	Correo: false,
+	Estado: false,
+};
 
-const fetchRoute = "personal/administradores";
+const fetchRoute = "personal/choferes";
 const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
@@ -46,7 +54,7 @@ const modal = overlay.create(LazyPersonalAdminInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 	},
 });
 
@@ -55,14 +63,14 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 		data: undefined,
 	});
 	await modal.open();
 };
 
 //Column Dropdown definition
-function getRowItems(row: Row<Administrador>) {
+function getRowItems(row: Row<Chofer>) {
 	return [
 		{
 			label: "Editar",
@@ -72,7 +80,7 @@ function getRowItems(row: Row<Administrador>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => {},
+						: () => { },
 					data: row.original,
 				});
 				await modal.open();
@@ -84,9 +92,8 @@ function getRowItems(row: Row<Administrador>) {
 			async onSelect() {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
-						`Se ha ${
-							row.original.isActive ? "desactivado" : "activado"
-						} correctamente el administrador`,
+						`Se ha ${row.original.isActive ? "desactivado" : "activado"
+						} correctamente el chofer`,
 						{ isActive: !row.original.isActive },
 						() => {
 							childRef?.value?.refreshMet();
@@ -103,10 +110,10 @@ function getRowItems(row: Row<Administrador>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => {},
+						: () => { },
 					[{ id: row.original.id }]
 				);
 			},
@@ -131,8 +138,8 @@ function getRowItems(row: Row<Administrador>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Administrador>[] = [
-	makeColumnSelect<Administrador>(UCheckbox),
+const columns: TableColumn<Chofer>[] = [
+	makeColumnSelect<Chofer>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
@@ -181,6 +188,45 @@ const columns: TableColumn<Administrador>[] = [
 				? `+53${row.getValue("Teléfono")}`
 				: "[Sin teléfono]",
 		id: "Teléfono",
+	},
+	{
+		accessorKey: "residencia",
+		header: ({ column }) => makeColumnHeader(column, "Residencia", UButton),
+		cell: ({ row }) =>
+			row.getValue("Residencia")
+				? row.getValue("Residencia")
+				: "[Sin datos]",
+		id: "Residencia",
+	},
+	{
+		accessorKey: "ruta",
+		header: ({ column }) => makeColumnHeader(column, "Ruta", UButton),
+		cell: ({ row }) =>
+			row.getValue("Ruta")
+				? row.getValue("Ruta")
+				: "[Sin ruta]",
+		id: "Ruta",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
+	},
+	{
+		accessorKey: "vehiculo",
+		header: ({ column }) => makeColumnHeader(column, "Vehículo", UButton),
+		cell: ({ row }) =>
+			row.getValue("Vehículo")
+				? row.getValue("Vehículo")
+				: "[Sin vehículo]",
+		id: "Vehículo",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
 		id: "actions",

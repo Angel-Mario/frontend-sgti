@@ -1,25 +1,20 @@
-import { jwtDecode } from "jwt-decode";
+export default defineNuxtRouteMiddleware(async (to) => {
+	const authStore = useAuthStore();
+	const isAuthenticated = authStore.isAuthenticated;
 
-export default defineNuxtRouteMiddleware((to) => {
-	const auth = useCookie<undefined | LoginToken>("auth", {
-		default: undefined,
-	});
+	if (!isAuthenticated) {
+		const accessToken = useCookie("access_token").value;
 
-	if (auth.value) {
-		try {
-			const decodedToken = jwtDecode(auth.value.token);
-			const currentTime = Date.now() / 1000;
-
-			if (decodedToken.exp && decodedToken.exp < currentTime) {
-				auth.value = undefined;
-				return navigateTo("/login");
+		if (accessToken) {
+			try {
+				await authStore.fetchUser();
+				return;
+			} catch {
+				console.log("catch logout MiddlewareKey");
+				authStore.logout();
 			}
-		} catch {
-			// Handle token decoding error
-			auth.value = undefined;
-			return navigateTo("/login");
 		}
-	} else if (to.name !== "login") {
-		return navigateTo("/login");
+
+		return navigateTo(`/login?redirect=${to.path}`);
 	}
 });

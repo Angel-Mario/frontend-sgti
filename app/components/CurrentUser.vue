@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col items-center justify-center w-full h-full">
 		<h2 class="mb-1 font-bold text-center text-md text-neutral-500">
-			usuario: {{ nombre_u }}
+			usuario: {{ authStore.user?.nombre_u }}
 		</h2>
 		<UButton
 			icon="i-lucide-log-out"
@@ -17,13 +17,11 @@
 
 <script lang="ts" setup>
 const router = useRouter();
-const authCookie = useCookie<undefined | LoginToken>('auth', {
-	default: undefined
-})
-const nombre_u = authCookie.value?.nombre_u
+
+const authStore = useAuthStore();
 
 const handleLogout = () => {
-	authCookie.value = undefined;
+	authStore.logout()
 	router.push("/login");
 };
 </script>

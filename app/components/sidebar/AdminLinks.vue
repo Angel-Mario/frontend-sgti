@@ -119,10 +119,10 @@ const items = ref<NavigationMenuItem[][]>([
 				},
 				//GET UPDATE DELETE POST
 				{
-					label: "Ómnibus",
+					label: "Vehículos",
 					icon: "i-lucide-bus",
-					description: "Lista de omnibus",
-					to: "/vehicular/omnibus",
+					description: "Lista de vehículos",
+					to: "/vehicular/vehiculos",
 				},
 				//GET
 				{

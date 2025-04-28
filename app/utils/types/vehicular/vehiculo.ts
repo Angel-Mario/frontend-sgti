@@ -1,14 +1,14 @@
-export interface Omnibus {
+export interface Vehiculo {
 	id: string;
-	chapa: string;
+	matricula: string;
 	consumo: string;
 	capacidad: string;
 	marca: string;
 	modelo: null | string;
 	año: null | string;
-	chofer: OmnibusChofer | null;
+	chofer: VehiculoChofer | null;
 }
 
-export interface OmnibusChofer {
+export interface VehiculoChofer {
 	id: string;
 }

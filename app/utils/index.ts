@@ -18,8 +18,20 @@ export type {
 } from "./types/paramsRouter";
 export type { Usuario } from "./types/personal/usuario";
 export type { Administrador } from "./types/personal/administrador";
-export type { Omnibus, OmnibusChofer } from "./types/vehicular/omnibus";
-export type { LoginToken } from "./types/login/loginToken";
+export type { Vehiculo, VehiculoChofer } from "./types/vehicular/vehiculo";
+export type {
+	ChoferResponse,
+	Chofer,
+	ChoferVehiculo,
+	ChoferRuta,
+} from "./types/personal/chofer";
+
+export type {
+	User,
+	AuthTokens,
+	LoginCredentials,
+	AuthState,
+} from "./types/auth";
 export type { ErrorResponse } from "./types/errorResponse";
 
 export { UsuarioSchema, AdministradorSchema } from "./validations/index";

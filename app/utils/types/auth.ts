@@ -1,23 +1,25 @@
 export interface User {
+	carnet: string;
+	correo: string;
+	fullName: string;
 	id: string;
-	email: string;
-	name: string;
+	isActive: boolean;
+	nombre_u: string;
+	roles: string[];
+	telefono: string;
 	// Add other user properties as needed
 }
 
 export interface AuthTokens {
-	accessToken: string;
-	refreshToken: string;
+	token: string;
 }
 
 export interface LoginCredentials {
-	email: string;
+	nombre_u: string;
 	password: string;
 }
 
 export interface AuthState {
 	user: User | null;
-	accessToken: string | null;
-	refreshToken: string | null;
-	isLoading: boolean;
+	token: string | null;
 }
