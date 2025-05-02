@@ -76,13 +76,6 @@ const items = ref<NavigationMenuItem[][]>([
 					description: "Lista de terminales",
 					// to: "/components/link",
 				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Hojas de ruta",
-					icon: "i-lucide-file-text",
-					description: "Lista de hojas de ruta",
-					// to: "/components/pagination",
-				},
 			],
 		},
 		{
@@ -94,13 +87,13 @@ const items = ref<NavigationMenuItem[][]>([
 				{
 					label: "Horario",
 					icon: "i-lucide-calendar-cog",
-					description: "Labla de horarios",
+					description: "Tabla de horarios",
 					to: "/components/navigation-menu",
 				},
 				//GET UPDATE DELETE POST
 				{
 					label: "Refuerzos",
-					icon: "i-lucide-route",
+					icon: "i-lucide-trending-up",
 					description: "Lista de refuerzos",
 					// to: "/components/modal",
 				},
@@ -116,6 +109,13 @@ const items = ref<NavigationMenuItem[][]>([
 					icon: "i-lucide-chart-candlestick",
 					description: "Lista de combustibles asignados",
 					// to: "/composables/use-toast",
+				},
+				//GET UPDATE DELETE POST
+				{
+					label: "Hojas de ruta",
+					icon: "i-lucide-file-text",
+					description: "Lista de hojas de ruta",
+					// to: "/components/pagination",
 				},
 				//GET UPDATE DELETE POST
 				{

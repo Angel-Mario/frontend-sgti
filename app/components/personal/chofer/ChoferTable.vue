@@ -203,7 +203,7 @@ const columns: TableColumn<Chofer>[] = [
 		header: ({ column }) => makeColumnHeader(column, "Ruta", UButton),
 		cell: ({ row }) =>
 			row.getValue("Ruta")
-				? row.getValue("Ruta")
+				? (row.getValue("Ruta") as ChoferRuta).nombre
 				: "[Sin ruta]",
 		id: "Ruta",
 		meta: {
@@ -218,7 +218,7 @@ const columns: TableColumn<Chofer>[] = [
 		header: ({ column }) => makeColumnHeader(column, "Vehículo", UButton),
 		cell: ({ row }) =>
 			row.getValue("Vehículo")
-				? row.getValue("Vehículo")
+				? (row.getValue("Vehículo") as ChoferVehiculo).matricula
 				: "[Sin vehículo]",
 		id: "Vehículo",
 		meta: {

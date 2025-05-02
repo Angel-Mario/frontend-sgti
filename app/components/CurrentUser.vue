@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col items-center justify-center w-full h-full">
+	<div :class="`flex ${align} items-center justify-center w-full h-full`">
 		<h2 class="mb-1 font-bold text-center text-md text-neutral-500">
 			usuario: {{ authStore.user?.nombre_u }}
 		</h2>
@@ -16,6 +16,14 @@
 </template>
 
 <script lang="ts" setup>
+defineProps({
+	align: {
+		type: String,
+		required: false,
+		default: "flex-col",
+	},
+});
+
 const router = useRouter();
 
 const authStore = useAuthStore();

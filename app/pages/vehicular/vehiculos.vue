@@ -19,7 +19,7 @@
 import type { BreadcrumbItem } from "@nuxt/ui";
 
 definePageMeta({
-	layout: "admin",
+	layout: "authenticated",
 	pageTitle: "Vehículos",
 	pageDescription: "Listado de vehículos",
 	pageIcon: "i-lucide-car",

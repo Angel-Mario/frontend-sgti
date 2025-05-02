@@ -19,7 +19,7 @@
 import type { BreadcrumbItem } from "@nuxt/ui";
 
 definePageMeta({
-	layout: "admin",
+	layout: "authenticated",
 	pageTitle: "Usuarios",
 	pageDescription: "Lista de usuarios",
 	pageIcon: "i-lucide-user",
@@ -28,6 +28,9 @@ definePageMeta({
 	middleware: ["auth"]
 });
 
+useHead({
+	title: "Lista de Usuarios",
+});
 const items: BreadcrumbItem[] = [
 	{
 		label: "Home",

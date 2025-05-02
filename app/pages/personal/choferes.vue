@@ -19,13 +19,17 @@
 import type { BreadcrumbItem } from "@nuxt/ui";
 
 definePageMeta({
-	layout: 'admin',
+	layout: 'authenticated',
 	pageTitle: 'Choferes',
 	pageDescription: 'Lista de choferes',
 	pageIcon: 'i-lucide-users',
 	pageKeywords: 'choferes, lista, chofere, admin',
 	name: 'choferes',
 })
+
+useHead({
+	title: "Lista de Choferes",
+});
 
 const items: BreadcrumbItem[] = [
 	{

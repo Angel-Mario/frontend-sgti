@@ -1,3 +1,4 @@
+import swc from "@vitejs/plugin-react-swc";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	compatibilityDate: "2024-11-01",
@@ -7,7 +8,7 @@ export default defineNuxtConfig({
 		compatibilityVersion: 4,
 	},
 	modules: ["@nuxt/ui", "@nuxt/eslint", "@vueuse/nuxt", "@pinia/nuxt"],
-	css: ["./app/assets/css/main.css"],
+	css: ["./app/assets/css/main.css", "./app/assets/css/quickLinkCard.css"],
 	app: {
 		pageTransition: { name: "page", mode: "out-in" },
 	},
@@ -15,7 +16,11 @@ export default defineNuxtConfig({
 		buildCache: true,
 	},
 	vite: {
-		plugins: [],
+		plugins: [
+			// For SWC to work with Vite
+			swc(),
+		],
+		esbuild: false, // Disable esbuild to use SWC
 	},
 	plugins: ["./app/plugins/auth.init.ts"],
 	icon: {
@@ -34,7 +39,7 @@ export default defineNuxtConfig({
 	},
 	nitro: {
 		prerender: {
-			routes: ["/login"],
+			// routes: ["/login"],
 			// routes: ["/personal", "/personal/usuarios"],
 			// ignore: ["/dynamic"],
 		},

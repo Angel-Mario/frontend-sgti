@@ -1,18 +1,18 @@
 <template>
-	<div class="flex h-screen">
-		<Sidebar />
-		<slot />
+	<div class="flex justify-center w-full h-screen">
+		<Home />
 	</div>
 </template>
 
 <script lang="ts" setup>
 definePageMeta({
-	layout: "admin",
+	layout: "authenticated",
 	pageTitle: "Home",
 	pageDescription: "Pagina de inicio",
 	pageIcon: "i-lucide-house",
+	middleware: ["auth"]
 });
 useHead({
-	title: "Iniciar Sesión",
+	title: "Home",
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
-	<div class="flex h-screen">
-		<Sidebar />
+	<div class="flex w-screen h-screen">
+		<LazySidebar />
 		<slot />
 	</div>
 </template>

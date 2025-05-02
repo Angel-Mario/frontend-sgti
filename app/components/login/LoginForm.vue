@@ -74,7 +74,7 @@ whenever(
 				v-model="state.nombre_u"
 				trailing-icon="lucide-user"
 				placeholder=""
-				:autocomplete="'on'"
+				:autocomplete="'username'"
 				size="xl"
 				:ui="{ base: 'peer bg-navbardark-500' }"
 			>
@@ -94,7 +94,7 @@ whenever(
 				type="password"
 				placeholder=""
 				size="xl"
-				:autocomplete="'on'"
+				:autocomplete="'current-password'"
 				:ui="{ base: 'peer bg-navbardark-500' }"
 			>
 				<label class="label-floating">

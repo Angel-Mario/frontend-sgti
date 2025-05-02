@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
+import type * as z from "zod";
 
 const props = defineProps({
 	usuario: {
@@ -69,6 +69,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		),
 		method: "POST",
 	});
+	// Si el usuario es el actual, actualiza el usuario
+	if (props.usuario?.nombre_u === useAuthStore().user?.nombre_u) {
+		useAuthStore().fetchUser();
+	}
 }
 const items = ref(["Administrador", "Chofer", "Suministrador"]);
 
@@ -108,6 +112,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.nombre_u"
+				autocomplete="off"
 				placeholder="Ex: anibalpg"
 			/>
 		</UFormField>
@@ -120,6 +125,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.password"
+				autocomplete="off"
 				type="password"
 				:placeholder="props.usuario ? '••••••••••' : 'Ex: Ejemplo!*8'"
 			/>

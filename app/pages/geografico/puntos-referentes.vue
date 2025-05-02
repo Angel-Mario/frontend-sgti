@@ -19,7 +19,7 @@
 import type { BreadcrumbItem } from "@nuxt/ui";
 //Página para mostrar la lista de Puntos Referentes
 definePageMeta({
-	layout: "admin",
+	layout: "authenticated",
 	pageTitle: "Puntos Referentes",
 	pageDescription: "Lista de Puntos Referentes",
 	pageIcon: "i-lucide-user",

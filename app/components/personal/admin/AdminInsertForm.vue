@@ -53,6 +53,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		),
 		method: "POST",
 	});
+	// Si el usuario es el actual, actualiza el usuario
+	if (props.data?.nombre_u === useAuthStore().user?.nombre_u) {
+		useAuthStore().fetchUser();
+	}
 }
 // Flag to track if the form has been modified
 const isFormDirty = ref(false);

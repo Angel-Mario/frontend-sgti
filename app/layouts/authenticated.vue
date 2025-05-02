@@ -1,5 +1,5 @@
 <template>
-	<div class="flex w-screen h-screen">
+	<div class="flex w-full h-screen">
 		<LazySidebar />
 		<slot />
 	</div>
