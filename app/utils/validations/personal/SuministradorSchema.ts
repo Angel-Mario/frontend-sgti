@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const UsuarioSchema = (update = false) => {
+export const SuministradorSchema = (update = false) => {
 	const password = z
 		.string({ message: "Requerido" })
 		.min(8, "Al menos 8 characters")
@@ -22,6 +22,7 @@ export const UsuarioSchema = (update = false) => {
 			.min(11, "Mínimo 11 dígitos")
 			.max(11, "Máximo 11 dígitos")
 			.regex(/^[1-9]\d*/, { message: "Solo dígitos" }),
+		cargo: z.string().optional(),
 		correo: z.string({ message: "Requerido" }).email("No es un correo válido"),
 		password: update ? password.optional() : password,
 		telefono: z
@@ -31,6 +32,5 @@ export const UsuarioSchema = (update = false) => {
 			})
 			.regex(/^[0-9]+$/, { message: "Solo dígitos" })
 			.optional(),
-		rol: z.string({ message: "Requerido" }),
 	});
 };

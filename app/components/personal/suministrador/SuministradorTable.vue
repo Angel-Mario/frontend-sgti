@@ -1,16 +1,16 @@
 <template>
 	<TableMain
 		ref="child"
-		:columns="columns"
+		:filter-options="filterOptions"
 		:default-sorting-value="defaultSortingValue"
 		:fetch-route="fetchRoute"
-		:filter-options="filterOptions"
+		:columns="columns"
 		@open-insert-modal="openInsertModal"
 	/>
 </template>
 
-<script lang="ts" setup>
-import { LazyPersonalUsuarioInsertModal } from "#components";
+<script setup lang="ts">
+import { LazyPersonalSuministradorInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
@@ -24,10 +24,12 @@ const filterOptions = [
 	{ id: "fullName", label: "Nombre" },
 	{ id: "correo", label: "Correo" },
 	{ id: "carnet", label: "Carnet" },
+	{ id: "cargo", label: "Cargo" },
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
 ];
-const fetchRoute = "personal/usuarios";
+
+const fetchRoute = "personal/suministradores";
 const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
@@ -36,12 +38,12 @@ const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
 
-//Overlay Hooks
+//Custom Hooks
 const overlay = useOverlay();
 const toast = useToast();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
+const modal = overlay.create(LazyPersonalSuministradorInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -50,7 +52,7 @@ const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
 			: () => { },
 	},
 });
-//Modal estate controller
+
 const openInsertModal = async () => {
 	modal.patch({
 		open: true,
@@ -62,8 +64,8 @@ const openInsertModal = async () => {
 	await modal.open();
 };
 
-//Row Dropdown definition
-function getRowItems(row: Row<Usuario>) {
+//Column Dropdown definition
+function getRowItems(row: Row<Administrador>) {
 	return [
 		{
 			label: "Editar",
@@ -86,12 +88,12 @@ function getRowItems(row: Row<Usuario>) {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
 						`Se ha ${row.original.isActive ? "desactivado" : "activado"
-						} correctamente el usuario`,
+						} correctamente el administrador`,
 						{ isActive: !row.original.isActive },
 						() => {
 							childRef?.value?.refreshMet();
 						},
-						toast,
+						toast
 					),
 					method: "POST",
 				});
@@ -107,7 +109,7 @@ function getRowItems(row: Row<Usuario>) {
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
 						: () => { },
-					[{ id: row.original.id }],
+					[{ id: row.original.id }]
 				);
 			},
 		},
@@ -127,16 +129,12 @@ function getRowItems(row: Row<Usuario>) {
 				});
 			},
 		},
-		// {
-		// 	label: "Ver detalles",
-		// 	icon: "i-lucide-eye",
-		// },
 	];
 }
 
 //Const Columns  Table
-const columns: TableColumn<Usuario>[] = [
-	makeColumnSelect<Usuario>(UCheckbox),
+const columns: TableColumn<Administrador>[] = [
+	makeColumnSelect<Administrador>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
@@ -163,6 +161,11 @@ const columns: TableColumn<Usuario>[] = [
 		id: "Carnet",
 	},
 	{
+		accessorKey: "cargo",
+		header: ({ column }) => makeColumnHeader(column, "Cargo", UButton),
+		id: "Cargo",
+	},
+	{
 		accessorKey: "isActive",
 		header: ({ column }) => makeColumnHeader(column, "Estado", UButton),
 		cell: ({ row }) => {
@@ -172,7 +175,7 @@ const columns: TableColumn<Usuario>[] = [
 			}[row.getValue("Estado") as string];
 
 			return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo",
+				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo"
 			);
 		},
 		id: "Estado",
@@ -185,17 +188,6 @@ const columns: TableColumn<Usuario>[] = [
 				? `+53${row.getValue("Teléfono")}`
 				: "[Sin teléfono]",
 		id: "Teléfono",
-	},
-	{
-		accessorKey: "roles",
-		header: ({ column }) => makeColumnHeader(column, "Rol", UButton),
-		cell: ({ row }) =>
-			(row.getValue("Rol") as string[])[0] === "admin"
-				? "Administrador"
-				: (row.getValue("Rol") as string[])[0] === "chofer"
-					? "Chofer"
-					: "Suministrador",
-		id: "Rol",
 	},
 	{
 		id: "actions",
@@ -219,8 +211,8 @@ const columns: TableColumn<Usuario>[] = [
 							variant: "ghost",
 							class: "ml-auto",
 							"aria-label": "Actions dropdown",
-						}),
-				),
+						})
+				)
 			);
 		},
 	},

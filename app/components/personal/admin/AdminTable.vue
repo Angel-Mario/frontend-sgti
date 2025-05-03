@@ -14,8 +14,10 @@ import { LazyPersonalAdminInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
+//Table Ref
 const childRef = useTemplateRef("child");
 
+//Filter Options for search parameters
 const filterOptions = [
 	{ id: "id", label: "Id" },
 	{ id: "nombre_u", label: "Usuario" },
@@ -46,7 +48,7 @@ const modal = overlay.create(LazyPersonalAdminInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 	},
 });
 
@@ -55,7 +57,7 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 		data: undefined,
 	});
 	await modal.open();
@@ -72,7 +74,7 @@ function getRowItems(row: Row<Administrador>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => {},
+						: () => { },
 					data: row.original,
 				});
 				await modal.open();
@@ -84,8 +86,7 @@ function getRowItems(row: Row<Administrador>) {
 			async onSelect() {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
-						`Se ha ${
-							row.original.isActive ? "desactivado" : "activado"
+						`Se ha ${row.original.isActive ? "desactivado" : "activado"
 						} correctamente el administrador`,
 						{ isActive: !row.original.isActive },
 						() => {
@@ -103,10 +104,10 @@ function getRowItems(row: Row<Administrador>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => {},
+						: () => { },
 					[{ id: row.original.id }]
 				);
 			},

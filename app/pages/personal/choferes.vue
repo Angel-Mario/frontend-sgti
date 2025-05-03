@@ -23,8 +23,9 @@ definePageMeta({
 	pageTitle: 'Choferes',
 	pageDescription: 'Lista de choferes',
 	pageIcon: 'i-lucide-users',
-	pageKeywords: 'choferes, lista, chofere, admin',
+	pageKeywords: 'choferes, lista, choferes, admin',
 	name: 'choferes',
+	middleware: ["auth"]
 })
 
 useHead({

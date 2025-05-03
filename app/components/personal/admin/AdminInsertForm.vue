@@ -94,7 +94,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.nombre_u"
-				placeholder="Ex: anibalpg"
+				placeholder="Ej: anibalpg"
 			/>
 		</UFormField>
 
@@ -119,7 +119,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.fullName"
-				placeholder="Ex: Anibal Perez Garcia"
+				placeholder="Ej: Anibal Perez Garcia"
 			/>
 		</UFormField>
 
@@ -130,7 +130,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.telefono"
-				placeholder="Ex: 5356463650"
+				placeholder="Ej: 5356463650"
 			/>
 		</UFormField>
 		<UFormField
@@ -141,7 +141,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.correo"
-				placeholder="Ex: anibalpg@uci.cu"
+				placeholder="Ej: anibalpg@uci.cu"
 			/>
 		</UFormField>
 		<UFormField
@@ -152,8 +152,20 @@ whenever(
 		>
 			<UInput
 				v-model="state.carnet"
+				:maxlength="11"
 				placeholder="96124215561"
-			/>
+			>
+				<template #trailing>
+					<div
+						id="character-count"
+						class="text-xs text-muted tabular-nums"
+						aria-live="polite"
+						role="status"
+					>
+						{{ state.carnet?.length }}/11
+					</div>
+				</template>
+			</UInput>
 		</UFormField>
 
 		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">

@@ -2,7 +2,10 @@ import type { Toast } from "@nuxt/ui/runtime/composables/useToast.js";
 import type { FetchResponse, ResolvedFetchOptions } from "ofetch";
 
 export const makeFetchOptions = (
-	paramFilterSortPagination: Ref<ParamsPagination | ParamsFilter | Params>,
+	paramFilterSortPagination: Ref<
+		ParamsPagination | ParamsFilter | Params | string
+	>,
+
 	toast: {
 		toasts: globalThis.Ref<Toast[], Toast[]>;
 		add: (toast: Partial<Toast>) => Toast;

@@ -3,7 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import type * as z from "zod";
 
 const props = defineProps({
-	usuario: {
+	data: {
 		type: Object as () => Usuario,
 		default: undefined,
 	},
@@ -15,24 +15,24 @@ const props = defineProps({
 //Emiters definitions
 const emit = defineEmits(["close"]);
 
-const schema = UsuarioSchema(!!props.usuario);
+const schema = UsuarioSchema(!!props.data);
 
 type Schema = z.output<typeof schema>;
 
 const state = reactive<Partial<Schema>>({
-	nombre_u: props.usuario ? props.usuario.nombre_u : undefined,
-	fullName: props.usuario ? props.usuario.fullName : undefined,
-	carnet: props.usuario ? props.usuario.carnet : undefined,
-	correo: props.usuario ? props.usuario.correo : undefined,
+	nombre_u: props.data ? props.data.nombre_u : undefined,
+	fullName: props.data ? props.data.fullName : undefined,
+	carnet: props.data ? props.data.carnet : undefined,
+	correo: props.data ? props.data.correo : undefined,
 	password: undefined,
 	telefono:
-		props.usuario && props.usuario.telefono === ""
-			? props.usuario.telefono
+		props.data && props.data.telefono === ""
+			? props.data.telefono
 			: undefined,
-	rol: props.usuario
-		? props.usuario.roles[0] === "admin"
+	rol: props.data
+		? props.data.roles[0] === "admin"
 			? "Administrador"
-			: props.usuario.roles[0] === "chofer"
+			: props.data.roles[0] === "chofer"
 				? "Chofer"
 				: "Suministrador"
 		: undefined,
@@ -55,9 +55,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 	};
 	console.log(dataForm, "DataForm");
 
-	await $fetch(`personal/usuarios/${props.usuario ? props.usuario.id : ""}`, {
+	await $fetch(`personal/usuarios/${props.data ? props.data.id : ""}`, {
 		...makePostPatchOptions(
-			props.usuario
+			props.data
 				? "Actualizado correctamente el usuario"
 				: "Se ha registrado correctamente usuario",
 			dataForm,
@@ -70,7 +70,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		method: "POST",
 	});
 	// Si el usuario es el actual, actualiza el usuario
-	if (props.usuario?.nombre_u === useAuthStore().user?.nombre_u) {
+	if (props.data?.nombre_u === useAuthStore().user?.nombre_u) {
 		useAuthStore().fetchUser();
 	}
 }
@@ -113,21 +113,21 @@ whenever(
 			<UInput
 				v-model="state.nombre_u"
 				autocomplete="off"
-				placeholder="Ex: anibalpg"
+				placeholder="Ej: anibalpg"
 			/>
 		</UFormField>
 
 		<UFormField
 			label="Contraseña"
 			name="password"
-			:required="!props.usuario"
+			:required="!props.data"
 			class="col-span-3 col-start-7"
 		>
 			<UInput
 				v-model="state.password"
 				autocomplete="off"
 				type="password"
-				:placeholder="props.usuario ? '••••••••••' : 'Ex: Ejemplo!*8'"
+				:placeholder="props.data ? '••••••••••' : 'Ej: Ejemplo!*8'"
 			/>
 		</UFormField>
 
@@ -139,7 +139,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.fullName"
-				placeholder="Ex: Anibal Perez Garcia"
+				placeholder="Ej: Anibal Perez Garcia"
 			/>
 		</UFormField>
 
@@ -150,7 +150,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.telefono"
-				placeholder="Ex: 56463650"
+				placeholder="Ej: 56463650"
 			/>
 		</UFormField>
 		<UFormField
@@ -161,7 +161,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.correo"
-				placeholder="Ex: anibalpg@uci.cu"
+				placeholder="Ej: anibalpg@uci.cu"
 			/>
 		</UFormField>
 		<UFormField
@@ -210,7 +210,7 @@ whenever(
 				@click="$emit('close')"
 			/>
 			<UButton
-				:label="usuario ? 'Actualizar' : 'Insertar'"
+				:label="data ? 'Actualizar' : 'Insertar'"
 				color="neutral"
 				type="submit"
 				:disabled="!isFormDirty"

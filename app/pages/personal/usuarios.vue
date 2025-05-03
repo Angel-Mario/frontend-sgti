@@ -31,6 +31,7 @@ definePageMeta({
 useHead({
 	title: "Lista de Usuarios",
 });
+
 const items: BreadcrumbItem[] = [
 	{
 		label: "Home",

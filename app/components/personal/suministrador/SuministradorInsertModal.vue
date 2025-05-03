@@ -5,7 +5,7 @@ const props = defineProps({
 		default: false,
 	},
 	data: {
-		type: Object as () => Chofer,
+		type: Object as () => Suministrador,
 		default: undefined,
 	},
 	refresh: {
@@ -20,16 +20,16 @@ const localOpen = ref(props.open);
 <template>
 	<UModal
 		v-model:open="localOpen"
-		:title="props.data ? 'Mofificar chofer' : 'Añadir un nuevo chofer'
+		:title="props.data ? 'Mofificar suministrador' : 'Añadir un nuevo suministrador'
 			"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
 		:description="props.data
-			? 'Por favor, introduce los datos del chofer a modificar'
-			: 'Por favor, introduce los datos del nuevo chofer'
+				? 'Por favor, introduce los datos del suministrador a modificar'
+				: 'Por favor, introduce los datos del nuevo suministrador'
 			"
 	>
 		<template #body>
-			<PersonalChoferInsertForm
+			<PersonalSuministradorInsertForm
 				:data="props.data"
 				:refresh="props.refresh"
 				@close="localOpen = false"

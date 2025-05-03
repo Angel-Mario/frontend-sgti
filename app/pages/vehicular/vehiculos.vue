@@ -25,6 +25,7 @@ definePageMeta({
 	pageIcon: "i-lucide-car",
 	pageKeywords: "vehiculo, admin",
 	name: "vehículos",
+	middleware: ["auth"]
 });
 
 const items: BreadcrumbItem[] = [

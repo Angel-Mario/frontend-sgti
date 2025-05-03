@@ -42,7 +42,7 @@
 	</UDrawer>
 
 	<div
-		class="absolute w-20 h-20 shadow-xl overflow-hidden rotate-[40deg] -top-10 -left-12 bg-primary-500 z-60 hover:bg-primary-600"
+		class="absolute w-20 h-20 shadow-xl overflow-hidden rotate-[40deg] -top-10 -left-12 bg-primary-500 z-60 hover:bg-primary-600 cursor-pointer"
 		@click="toggleSidebar"
 	/>
 	<div

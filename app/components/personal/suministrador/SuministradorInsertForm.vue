@@ -4,7 +4,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 
 const props = defineProps({
 	data: {
-		type: Object as () => Chofer,
+		type: Object as () => Suministrador,
 		default: undefined,
 	},
 	refresh: {
@@ -12,10 +12,11 @@ const props = defineProps({
 		required: true,
 	},
 });
+
 //Emiters definitions
 const emit = defineEmits(["close"]);
 
-const schema = ChoferSchema(!!props.data);
+const schema = SuministradorSchema(!!props.data);
 
 type Schema = z.output<typeof schema>;
 
@@ -23,13 +24,11 @@ const state = reactive<Partial<Schema>>({
 	nombre_u: props.data ? props.data.nombre_u : undefined,
 	fullName: props.data ? props.data.fullName : undefined,
 	carnet: props.data ? props.data.carnet : undefined,
+	cargo: props.data ? props.data.cargo : undefined,
 	correo: props.data ? props.data.correo : undefined,
 	password: undefined,
 	telefono:
 		props.data && props.data.telefono === "" ? props.data.telefono : undefined,
-	residencia: props.data?.residencia ? props.data.residencia.toString() : undefined,
-	rutaNombre: props.data ? props.data.ruta?.nombre : undefined,
-	vehiculoMatricula: props.data ? props.data.vehiculo?.matricula : undefined
 });
 
 const toast = useToast();
@@ -41,11 +40,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 	};
 	console.log(dataForm, "DataForm");
 
-	await $fetch(`personal/choferes/${props.data ? props.data.id : ""}`, {
+	await $fetch(`personal/suministradores/${props.data ? props.data.id : ""}`, {
 		...makePostPatchOptions(
 			props.data
-				? "Actualizado correctamente el chofer"
-				: "Se ha registrado correctamente chofer",
+				? "Actualizado correctamente el suministrador"
+				: "Se ha registrado correctamente suministrador",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario
@@ -55,17 +54,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		),
 		method: "POST",
 	});
+	// Si el usuario es el actual, actualiza el usuario
+	if (props.data?.nombre_u === useAuthStore().user?.nombre_u) {
+		useAuthStore().fetchUser();
+	}
 }
-const authStore = useAuthStore()
-const query = shallowRef('')
-const { data: itemsRutaData, status: statusRuta } = useFetch<string[]>('/geografico/rutas/simplex', makeFetchOptions(query, toast, `Bearer ${authStore.token}`))
-const { data: itemsMatriculasData, status: statusMatricula } = useFetch<string[]>('/vehicular/vehiculos/simplex', makeFetchOptions(query, toast, `Bearer ${authStore.token}`))
-
-
-
-const itemsRutaNombre = ref(itemsRutaData.value);
-const itemsMatricula = ref(itemsMatriculasData.value);
-
 // Flag to track if the form has been modified
 const isFormDirty = ref(false);
 
@@ -85,6 +78,12 @@ whenever(
 		state.telefono = undefined;
 	},
 );
+whenever(
+	() => state.cargo === "",
+	() => {
+		state.cargo = undefined;
+	},
+);
 </script>
 
 <template>
@@ -97,12 +96,11 @@ whenever(
 		<UFormField
 			label="Nombre de usuario"
 			name="nombre_u"
-			:required="!props.data"
+			required
 			class="col-span-4"
 		>
 			<UInput
 				v-model="state.nombre_u"
-				autocomplete="off"
 				placeholder="Ej: anibalpg"
 			/>
 		</UFormField>
@@ -116,7 +114,6 @@ whenever(
 			<UInput
 				v-model="state.password"
 				type="password"
-				autocomplete="off"
 				:placeholder="props.data ? '••••••••••' : 'Ej: Ejemplo!*8'"
 			/>
 		</UFormField>
@@ -140,7 +137,7 @@ whenever(
 		>
 			<UInput
 				v-model="state.telefono"
-				placeholder="Ej: 56463650"
+				placeholder="Ej: 5356463650"
 			/>
 		</UFormField>
 		<UFormField
@@ -178,62 +175,14 @@ whenever(
 			</UInput>
 		</UFormField>
 		<UFormField
-			label="Residencia"
-			name="residencia"
-			class="col-span-4"
+			label="Cargo"
+			name="cargo"
+			required
+			class="col-span-5"
 		>
 			<UInput
-				v-model="state.residencia"
-				placeholder="Ej: Cotorro e/ 39 y 41 #2680"
-			/>
-		</UFormField>
-		<div class="flex items-end justify-end col-span-1 col-start-6 pe-1">
-			<UButton
-				class="cursor-pointer h-fit w-fit"
-				icon="i-custom-broom"
-				size="md"
-				color="primary"
-				variant="soft"
-				@click="state.vehiculoMatricula = ''"
-			/>
-		</div>
-
-		<UFormField
-			label="Vehículo asignado"
-			name="vehiculoMatricula"
-			class="col-span-3 col-start-7"
-		>
-			<USelectMenu
-				v-model="state.vehiculoMatricula"
-				:items="itemsMatricula"
-				:loading="statusMatricula === 'pending'"
-				class="w-full"
-				placeholder="[Asignar Vehículo]"
-			/>
-		</UFormField>
-
-		<div class="flex items-end justify-end col-span-1 col-start-6 pe-1">
-			<UButton
-				class="cursor-pointer h-fit w-fit"
-				icon="i-custom-broom"
-				size="md"
-				color="primary"
-				variant="soft"
-				@click="state.rutaNombre = ''"
-			/>
-		</div>
-
-		<UFormField
-			label="Ruta asignada"
-			name="rutaNombre"
-			class="col-span-3 col-start-7"
-		>
-			<USelectMenu
-				v-model="state.rutaNombre"
-				:items="itemsRutaNombre"
-				:loading="statusRuta === 'pending'"
-				class="w-full"
-				placeholder="[Asignar Ruta]"
+				v-model="state.cargo"
+				placeholder="Ej: Director Transporte Habana"
 			/>
 		</UFormField>
 

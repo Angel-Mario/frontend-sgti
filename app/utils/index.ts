@@ -18,6 +18,7 @@ export type {
 } from "./types/paramsRouter";
 export type { Usuario } from "./types/personal/usuario";
 export type { Administrador } from "./types/personal/administrador";
+export type { Suministrador } from "./types/personal/suministrador";
 export type { Vehiculo, VehiculoChofer } from "./types/vehicular/vehiculo";
 export type {
 	ChoferResponse,
@@ -34,4 +35,9 @@ export type {
 } from "./types/auth";
 export type { ErrorResponse } from "./types/errorResponse";
 
-export { UsuarioSchema, AdministradorSchema } from "./validations/index";
+export {
+	UsuarioSchema,
+	AdministradorSchema,
+	ChoferSchema,
+	SuministradorSchema,
+} from "./validations/index";

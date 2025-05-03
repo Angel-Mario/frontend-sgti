@@ -40,7 +40,7 @@ export default defineNuxtConfig({
 	nitro: {
 		prerender: {
 			// routes: ["/login"],
-			// routes: ["/personal", "/personal/usuarios"],
+			routes: ["/personal/usuarios"],
 			// ignore: ["/dynamic"],
 		},
 	},

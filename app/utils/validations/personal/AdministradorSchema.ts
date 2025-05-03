@@ -1,12 +1,12 @@
 import * as z from "zod";
 
-export const AdministradorSchema = (update: boolean = false) => {
+export const AdministradorSchema = (update = false) => {
 	const password = z
 		.string({ message: "Requerido" })
 		.min(8, "Al menos 8 characters")
 		.regex(
 			/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-			"Al menos un número, una letra mayúscula y una letra minúscula"
+			"Al menos un número, una letra mayúscula y una letra minúscula",
 		);
 
 	return z.object({

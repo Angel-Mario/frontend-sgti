@@ -11,12 +11,14 @@
 </template>
 
 <script setup lang="ts">
-import { LazyPersonalAdminInsertModal } from "#components";
+import { LazyPersonalChoferInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
+//Table Ref
 const childRef = useTemplateRef("child");
 
+//Filter Options for search parameters
 const filterOptions = [
 	{ id: "id", label: "Id" },
 	{ id: "nombre_u", label: "Usuario" },
@@ -26,11 +28,11 @@ const filterOptions = [
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
 ];
+
 //columns Visibility Options
 const columnVisibility = {
 	Id: false,
 	Carnet: false,
-	Correo: false,
 	Estado: false,
 };
 
@@ -39,6 +41,7 @@ const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
+const UIcon = resolveComponent("UIcon")
 const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
@@ -46,9 +49,10 @@ const UCheckbox = resolveComponent("UCheckbox");
 //Custom Hooks
 const overlay = useOverlay();
 const toast = useToast();
+const router = useRouter();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyPersonalAdminInsertModal, {
+const modal = overlay.create(LazyPersonalChoferInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -218,7 +222,17 @@ const columns: TableColumn<Chofer>[] = [
 		header: ({ column }) => makeColumnHeader(column, "Vehículo", UButton),
 		cell: ({ row }) =>
 			row.getValue("Vehículo")
-				? (row.getValue("Vehículo") as ChoferVehiculo).matricula
+				? h('div', { class: "flex flex-row justify-center" }, [h('div', undefined, [
+					h('p', undefined, (row.getValue("Vehículo") as ChoferVehiculo).matricula),
+					h('p', undefined, `Capacidad: ${(row.getValue("Vehículo") as ChoferVehiculo).capacidad}`)]), h(UButton, {
+						color: "primary",
+						variant: "solid",
+						size: "md",
+						class: "text-xs cursor-pointer h-fit my-auto ms-2 me-2",
+						onClick: () => {
+							router.push(`/vehicular/vehiculos?column=id&search=${(row.getValue("Vehículo") as ChoferVehiculo).id}`);
+						},
+					}, () => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }))],)
 				: "[Sin vehículo]",
 		id: "Vehículo",
 		meta: {
