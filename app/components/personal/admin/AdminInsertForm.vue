@@ -43,7 +43,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		...makePostPatchOptions(
 			props.data
 				? "Actualizado correctamente el administrador"
-				: "Se ha registrado correctamente administrador",
+				: "Se ha registrado correctamente el administrador",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario

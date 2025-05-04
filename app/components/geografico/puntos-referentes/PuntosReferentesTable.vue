@@ -40,7 +40,7 @@ const modal = overlay.create(LazyGeograficoPuntosReferentesInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 	},
 });
 
@@ -49,14 +49,14 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => {},
+			: () => { },
 		data: undefined,
 	});
 	await modal.open();
 };
 
 //Row Dropdown definition
-function getRowItems(row: Row<Usuario>) {
+function getRowItems(row: Row<PuntoRef>) {
 	return [
 		{
 			label: "Editar",
@@ -66,7 +66,7 @@ function getRowItems(row: Row<Usuario>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => {},
+						: () => { },
 					data: row.original,
 				});
 				await modal.open();
@@ -78,11 +78,11 @@ function getRowItems(row: Row<Usuario>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => {},
-					[{ id: row.original.id }],
+						: () => { },
+					[{ id: row.original.id.toString() }],
 				);
 			},
 		},
@@ -93,7 +93,6 @@ function getRowItems(row: Row<Usuario>) {
 			label: "Ver en mapa",
 			icon: "i-lucide-map",
 			onSelect() {
-				navigator.clipboard.writeText(row.original.correo);
 
 				toast.add({
 					title: "Se abrirá un mapa papu",
@@ -110,8 +109,8 @@ function getRowItems(row: Row<Usuario>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<Usuario>[] = [
-	makeColumnSelect<Usuario>(UCheckbox),
+const columns: TableColumn<PuntoRef>[] = [
+	makeColumnSelect<PuntoRef>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: "Id",
@@ -127,35 +126,49 @@ const columns: TableColumn<Usuario>[] = [
 		header: ({ column }) =>
 			makeColumnHeader(column, "Latitud y Longitud", UButton),
 		id: "Latitud y Longitud",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			}
+		},
 	},
 	{
-		accessorKey: "Usado en",
+		accessorKey: "usage",
+		header: "Uso",
 		cell: ({ row }) => {
+			const usage = row.getValue("usage") as Usage
+			if (usage.terminales.length === 0 && usage.puntos_combustible.length === 0 && usage.rutas.length === 0)
+				return h('p', undefined, '[No está siendo utilizado]')
+			//Si está siendo utilizado
 			return h(
 				"div",
 				{ class: "flex items-center gap-3 sm:max-w-48 md:max-w-96" },
 				[
 					h("div", undefined, [
-						h(
-							"p",
-							{ class: "font-medium text-(--ui-text-highlighted)" },
-							"Puntos de combustible: [Ninguno]",
-						),
-						h(
-							"p",
-							{ class: "font-medium text-(--ui-text-highlighted)" },
-							"Rutas: [Ninguna]",
-						),
-						h(
-							"p",
-							{ class: "font-medium text-(--ui-text-highlighted)" },
-							"Terminales: [Ninguna]",
-						),
+						//Mostrar Puntos de Combustible
+						usage.puntos_combustible.length > 0 ?
+							h(
+								"p",
+								`Puntos de combustible: ${usage.puntos_combustible}`,
+							) : '',
+						//Mostrar Rutas
+						usage.rutas.length > 0 ?
+							h(
+								"p",
+								`Rutas: ${usage.rutas}`,
+							) : '',
+						//Mostrar Terminales
+						usage.terminales.length > 0 ?
+							h(
+								"p",
+								`Terminales: ${usage.terminales}`,
+							) : '',
 					]),
 				],
 			);
 		},
-		id: "usadoEn",
+		id: "usage",
 	},
 	{
 		id: "actions",

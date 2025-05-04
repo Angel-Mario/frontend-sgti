@@ -7,8 +7,18 @@ export default defineNuxtConfig({
 	future: {
 		compatibilityVersion: 4,
 	},
-	modules: ["@nuxt/ui", "@nuxt/eslint", "@vueuse/nuxt", "@pinia/nuxt"],
-	css: ["./app/assets/css/main.css", "./app/assets/css/quickLinkCard.css"],
+	modules: [
+		"@nuxt/ui",
+		"@nuxtjs/leaflet",
+		"@nuxt/eslint",
+		"@vueuse/nuxt",
+		"@pinia/nuxt",
+	],
+	css: [
+		"./app/assets/css/main.css",
+		"./app/assets/css/quickLinkCard.css",
+		// "leaflet/dist/leaflet.css",
+	],
 	app: {
 		pageTransition: { name: "page", mode: "out-in" },
 	},
@@ -44,4 +54,7 @@ export default defineNuxtConfig({
 			// ignore: ["/dynamic"],
 		},
 	},
+	// build: {
+	// 	transpile: ["@vue-leaflet/vue-leaflet"],
+	// },
 });

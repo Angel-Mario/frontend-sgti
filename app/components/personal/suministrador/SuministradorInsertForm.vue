@@ -44,7 +44,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		...makePostPatchOptions(
 			props.data
 				? "Actualizado correctamente el suministrador"
-				: "Se ha registrado correctamente suministrador",
+				: "Se ha registrado correctamente el suministrador",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario

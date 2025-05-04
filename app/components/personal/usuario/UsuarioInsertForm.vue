@@ -59,7 +59,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		...makePostPatchOptions(
 			props.data
 				? "Actualizado correctamente el usuario"
-				: "Se ha registrado correctamente usuario",
+				: "Se ha registrado correctamente el usuario",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario

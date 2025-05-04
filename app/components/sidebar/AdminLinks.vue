@@ -67,7 +67,13 @@ const items = ref<NavigationMenuItem[][]>([
 					label: "Rutas",
 					icon: "i-lucide-route",
 					description: "Lista de rutas",
-					// to: "/components/modal",
+					to: "/geografico/rutas",
+				},
+				//GET
+				{
+					label: "Puntos combustible",
+					icon: "i-lucide-fuel",
+					description: "Lista de puntos de combustible",
 				},
 				//GET UPDATE DELETE POST
 				{
@@ -123,12 +129,6 @@ const items = ref<NavigationMenuItem[][]>([
 					icon: "i-lucide-bus",
 					description: "Lista de vehículos",
 					to: "/vehicular/vehiculos",
-				},
-				//GET
-				{
-					label: "Puntos combustible",
-					icon: "i-lucide-fuel",
-					description: "Lista de puntos de combustible",
 				},
 				//GET UPDATE DELETE
 				{

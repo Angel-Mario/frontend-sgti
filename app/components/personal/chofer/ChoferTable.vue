@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { LazyPersonalChoferInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
+import { LazyPersonalChoferInsertModal } from "#components";
 
 //Table Ref
 const childRef = useTemplateRef("child");
@@ -27,6 +27,7 @@ const filterOptions = [
 	{ id: "carnet", label: "Carnet" },
 	{ id: "isActive", label: "Estado" },
 	{ id: "telefono", label: "Teléfono" },
+	{ id: "residencia", label: "Residencia" },
 ];
 
 //columns Visibility Options
@@ -41,7 +42,7 @@ const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
-const UIcon = resolveComponent("UIcon")
+const UIcon = resolveComponent("UIcon");
 const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UCheckbox = resolveComponent("UCheckbox");
@@ -58,7 +59,7 @@ const modal = overlay.create(LazyPersonalChoferInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 	},
 });
 
@@ -67,7 +68,7 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 		data: undefined,
 	});
 	await modal.open();
@@ -84,7 +85,7 @@ function getRowItems(row: Row<Chofer>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => { },
+						: () => {},
 					data: row.original,
 				});
 				await modal.open();
@@ -96,13 +97,14 @@ function getRowItems(row: Row<Chofer>) {
 			async onSelect() {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
-						`Se ha ${row.original.isActive ? "desactivado" : "activado"
+						`Se ha ${
+							row.original.isActive ? "desactivado" : "activado"
 						} correctamente el chofer`,
 						{ isActive: !row.original.isActive },
 						() => {
 							childRef?.value?.refreshMet();
 						},
-						toast
+						toast,
 					),
 					method: "POST",
 				});
@@ -114,11 +116,11 @@ function getRowItems(row: Row<Chofer>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => { },
-					[{ id: row.original.id }]
+						: () => {},
+					[{ id: row.original.id }],
 				);
 			},
 		},
@@ -179,7 +181,7 @@ const columns: TableColumn<Chofer>[] = [
 			}[row.getValue("Estado") as string];
 
 			return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo"
+				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo",
 			);
 		},
 		id: "Estado",
@@ -197,9 +199,7 @@ const columns: TableColumn<Chofer>[] = [
 		accessorKey: "residencia",
 		header: ({ column }) => makeColumnHeader(column, "Residencia", UButton),
 		cell: ({ row }) =>
-			row.getValue("Residencia")
-				? row.getValue("Residencia")
-				: "[Sin datos]",
+			row.getValue("Residencia") ? row.getValue("Residencia") : "[Sin datos]",
 		id: "Residencia",
 	},
 	{
@@ -214,7 +214,7 @@ const columns: TableColumn<Chofer>[] = [
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
@@ -222,24 +222,42 @@ const columns: TableColumn<Chofer>[] = [
 		header: ({ column }) => makeColumnHeader(column, "Vehículo", UButton),
 		cell: ({ row }) =>
 			row.getValue("Vehículo")
-				? h('div', { class: "flex flex-row justify-center" }, [h('div', undefined, [
-					h('p', undefined, (row.getValue("Vehículo") as ChoferVehiculo).matricula),
-					h('p', undefined, `Capacidad: ${(row.getValue("Vehículo") as ChoferVehiculo).capacidad}`)]), h(UButton, {
-						color: "primary",
-						variant: "solid",
-						size: "md",
-						class: "text-xs cursor-pointer h-fit my-auto ms-2 me-2",
-						onClick: () => {
-							router.push(`/vehicular/vehiculos?column=id&search=${(row.getValue("Vehículo") as ChoferVehiculo).id}`);
-						},
-					}, () => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }))],)
+				? h("div", { class: "flex flex-row justify-center" }, [
+						h("div", undefined, [
+							h(
+								"p",
+								undefined,
+								(row.getValue("Vehículo") as ChoferVehiculo).matricula,
+							),
+							h(
+								"p",
+								undefined,
+								`Capacidad: ${(row.getValue("Vehículo") as ChoferVehiculo).capacidad}`,
+							),
+						]),
+						h(
+							UButton,
+							{
+								color: "primary",
+								variant: "solid",
+								size: "md",
+								class: "text-xs cursor-pointer h-fit my-auto ms-2 me-2",
+								onClick: () => {
+									router.push(
+										`/vehicular/vehiculos?column=id&search=${(row.getValue("Vehículo") as ChoferVehiculo).id}`,
+									);
+								},
+							},
+							() => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }),
+						),
+					])
 				: "[Sin vehículo]",
 		id: "Vehículo",
 		meta: {
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
@@ -264,8 +282,8 @@ const columns: TableColumn<Chofer>[] = [
 							variant: "ghost",
 							class: "ml-auto",
 							"aria-label": "Actions dropdown",
-						})
-				)
+						}),
+				),
 			);
 		},
 	},

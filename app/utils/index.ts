@@ -26,6 +26,11 @@ export type {
 	ChoferVehiculo,
 	ChoferRuta,
 } from "./types/personal/chofer";
+export type {
+	PuntoRef,
+	PuntosRefRespone,
+	Usage,
+} from "./types/geografico/puntos-Ref";
 
 export type {
 	User,

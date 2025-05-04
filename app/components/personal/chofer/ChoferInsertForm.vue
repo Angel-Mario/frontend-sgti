@@ -45,7 +45,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		...makePostPatchOptions(
 			props.data
 				? "Actualizado correctamente el chofer"
-				: "Se ha registrado correctamente chofer",
+				: "Se ha registrado correctamente el chofer",
 			dataForm,
 			() => {
 				props.refresh(); // Actualiza los datos si es necesario
@@ -62,9 +62,15 @@ const { data: itemsRutaData, status: statusRuta } = useFetch<string[]>('/geograf
 const { data: itemsMatriculasData, status: statusMatricula } = useFetch<string[]>('/vehicular/vehiculos/simplex', makeFetchOptions(query, toast, `Bearer ${authStore.token}`))
 
 
-
 const itemsRutaNombre = ref(itemsRutaData.value);
 const itemsMatricula = ref(itemsMatriculasData.value);
+
+watch(itemsRutaData, () => {
+	itemsRutaNombre.value = itemsRutaData.value
+})
+watch(itemsMatriculasData, () => {
+	itemsMatricula.value = itemsMatriculasData.value
+})
 
 // Flag to track if the form has been modified
 const isFormDirty = ref(false);
