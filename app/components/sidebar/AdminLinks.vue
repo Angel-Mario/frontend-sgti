@@ -1,153 +1,153 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from "@nuxt/ui";
+import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items = ref<NavigationMenuItem[][]>([
-	[
-		{
-			label: "Home",
-			icon: "i-lucide-house",
-			description: "Home",
-			to: "/home",
-		},
-		{
-			label: "Personal",
-			icon: "i-lucide-book-open",
-			defaultOpen: true,
-			children: [
-				//GET UPDATE DELETE POST
-				{
-					label: "Usuarios",
-					description: "Lista de usuarios",
-					icon: "i-lucide-user",
-					to: "/personal/usuarios",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Adminstradores",
-					description: "Lista de admins",
-					icon: "i-lucide-user-cog",
-					to: "/personal/administradores",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Choferes",
-					icon: "i-lucide-users",
-					description: "Lista de choferes",
-					to: "/personal/choferes",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Suministradores",
-					icon: "i-lucide-user-pen",
-					description: "Lista de suministradores",
-					to: "/personal/suministradores",
-				},
-			],
-		},
-		//GET POST
-		{
-			label: "Reportes",
-			icon: "i-lucide-scroll-text",
-			// to: "/reportes",
-		},
-		{
-			label: "Geográfico",
-			icon: "i-lucide-map",
-			// to: "/components",
-			children: [
-				//GET UPDATE DELETE POST
-				{
-					label: "Puntos referentes",
-					icon: "i-lucide-signpost",
-					description: "Lista de puntos referencia",
-					to: "/geografico/puntos-referentes",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Rutas",
-					icon: "i-lucide-route",
-					description: "Lista de rutas",
-					to: "/geografico/rutas",
-				},
-				//GET
-				{
-					label: "Puntos combustible",
-					icon: "i-lucide-fuel",
-					description: "Lista de puntos de combustible",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Terminales",
-					icon: "i-lucide-caravan",
-					description: "Lista de terminales",
-					// to: "/components/link",
-				},
-			],
-		},
-		{
-			label: "Servicios",
-			icon: "i-lucide-file-volume-2",
-			to: "/components",
-			children: [
-				//GET UPDATE DELETE POST
-				{
-					label: "Horario",
-					icon: "i-lucide-calendar-cog",
-					description: "Tabla de horarios",
-					to: "/components/navigation-menu",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Refuerzos",
-					icon: "i-lucide-trending-up",
-					description: "Lista de refuerzos",
-					// to: "/components/modal",
-				},
-			],
-		},
-		{
-			label: "Vehícular",
-			icon: "i-lucide-bus-front",
-			children: [
-				{
-					//GET UPDATE DELETE POST
-					label: "Combustibles asignados",
-					icon: "i-lucide-chart-candlestick",
-					description: "Lista de combustibles asignados",
-					// to: "/composables/use-toast",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Hojas de ruta",
-					icon: "i-lucide-file-text",
-					description: "Lista de hojas de ruta",
-					// to: "/components/pagination",
-				},
-				//GET UPDATE DELETE POST
-				{
-					label: "Vehículos",
-					icon: "i-lucide-bus",
-					description: "Lista de vehículos",
-					to: "/vehicular/vehiculos",
-				},
-				//GET UPDATE DELETE
-				{
-					label: "Solicitudes de Piezas",
-					icon: "i-lucide-cog",
-					description: "Lista de solicitudes de piezas",
-				},
-			],
-		},
-	],
-]);
+  [
+    {
+      label: 'Home',
+      icon: 'i-lucide-house',
+      description: 'Home',
+      to: '/home',
+    },
+    {
+      label: 'Personal',
+      icon: 'i-lucide-book-open',
+      defaultOpen: true,
+      children: [
+        // GET UPDATE DELETE POST
+        {
+          label: 'Usuarios',
+          description: 'Lista de usuarios',
+          icon: 'i-lucide-user',
+          to: '/personal/usuarios',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Adminstradores',
+          description: 'Lista de admins',
+          icon: 'i-lucide-user-cog',
+          to: '/personal/administradores',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Choferes',
+          icon: 'i-lucide-users',
+          description: 'Lista de choferes',
+          to: '/personal/choferes',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Suministradores',
+          icon: 'i-lucide-user-pen',
+          description: 'Lista de suministradores',
+          to: '/personal/suministradores',
+        },
+      ],
+    },
+    // GET POST
+    {
+      label: 'Reportes',
+      icon: 'i-lucide-scroll-text',
+      // to: "/reportes",
+    },
+    {
+      label: 'Geográfico',
+      icon: 'i-lucide-map',
+      // to: "/components",
+      children: [
+        // GET UPDATE DELETE POST
+        {
+          label: 'Puntos referentes',
+          icon: 'i-lucide-signpost',
+          description: 'Lista de puntos referencia',
+          to: '/geografico/puntos-referentes',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Rutas',
+          icon: 'i-lucide-route',
+          description: 'Lista de rutas',
+          to: '/geografico/rutas',
+        },
+        // GET
+        {
+          label: 'Puntos combustible',
+          icon: 'i-lucide-fuel',
+          description: 'Lista de puntos de combustible',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Terminales',
+          icon: 'i-lucide-caravan',
+          description: 'Lista de terminales',
+          // to: "/components/link",
+        },
+      ],
+    },
+    {
+      label: 'Servicios',
+      icon: 'i-lucide-file-volume-2',
+      to: '/components',
+      children: [
+        // GET UPDATE DELETE POST
+        {
+          label: 'Horario',
+          icon: 'i-lucide-calendar-cog',
+          description: 'Tabla de horarios',
+          to: '/components/navigation-menu',
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Refuerzos',
+          icon: 'i-lucide-trending-up',
+          description: 'Lista de refuerzos',
+          // to: "/components/modal",
+        },
+      ],
+    },
+    {
+      label: 'Vehícular',
+      icon: 'i-lucide-bus-front',
+      children: [
+        {
+          // GET UPDATE DELETE POST
+          label: 'Combustibles asignados',
+          icon: 'i-lucide-chart-candlestick',
+          description: 'Lista de combustibles asignados',
+          // to: "/composables/use-toast",
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Hojas de ruta',
+          icon: 'i-lucide-file-text',
+          description: 'Lista de hojas de ruta',
+          // to: "/components/pagination",
+        },
+        // GET UPDATE DELETE POST
+        {
+          label: 'Vehículos',
+          icon: 'i-lucide-bus',
+          description: 'Lista de vehículos',
+          to: '/vehicular/vehiculos',
+        },
+        // GET UPDATE DELETE
+        {
+          label: 'Solicitudes de Piezas',
+          icon: 'i-lucide-cog',
+          description: 'Lista de solicitudes de piezas',
+        },
+      ],
+    },
+  ],
+])
 </script>
 
 <template>
-	<UNavigationMenu
-		highlight
-		highlight-color="primary"
-		orientation="vertical"
-		:items="items"
-		class="data-[orientation=horizontal]:border-b border-(--ui-border) data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48"
-	/>
+  <UNavigationMenu
+    highlight
+    highlight-color="primary"
+    orientation="vertical"
+    :items="items"
+    class="data-[orientation=horizontal]:border-b border-(--ui-border) data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48"
+  />
 </template>

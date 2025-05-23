@@ -21,7 +21,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // builder: 'rspack',
   routeRules: {
     '/login': { prerender: true },
     '/personal': { redirect: '/personal/usuarios' },
@@ -49,6 +48,7 @@ export default defineNuxtConfig({
       },
     ],
   },
+
   leaflet: {
     markerCluster: true,
   },

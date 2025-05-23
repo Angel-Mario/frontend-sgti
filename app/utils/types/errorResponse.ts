@@ -1,5 +1,5 @@
 export interface ErrorResponse {
-	error: boolean;
-	statuscode: number;
-	message: string;
+  error: boolean
+  statuscode: number
+  message: string
 }

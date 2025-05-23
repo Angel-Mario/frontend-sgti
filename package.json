@@ -1,46 +1,47 @@
 {
-	"name": "nuxt-app",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"build": "nuxt build",
-		"dev": "nuxt dev",
-		"lint": "eslint",
-		"lint:fix": "eslint --fix",
-		"generate": "nuxt generate",
-		"preview": "nuxt preview",
-		"postinstall": "nuxt prepare"
-	},
-	"dependencies": {
-		"@nuxt/eslint": "1.4.1",
-		"@nuxt/rspack-builder": "^3.17.4",
-		"@nuxt/ui": "^3.0.2",
-		"@nuxtjs/leaflet": "^1.2.6",
-		"@pinia/nuxt": "^0.11.0",
-		"@vueuse/nuxt": "13.0.0",
-		"eslint": "^9.27.0",
-		"jwt-decode": "^4.0.0",
-		"leaflet.markercluster": "^1.5.3",
-		"nuxt": "^3.17.4",
-		"pinia": "^3.0.2",
-		"vue": "^3.5.13",
-		"vue-router": "^4.5.0",
-		"zod": "^3.24.2"
-	},
-	"devDependencies": {
-		"@antfu/eslint-config": "^4.13.2",
-		"@iconify-json/lucide": "^1.2.44",
-		"@types/leaflet.markercluster": "^1.5.5",
-		"oxlint": "^0.16.11",
-		"typescript": "^5.8.3"
-	},
-	"lint-staged": {
-		"**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
-	},
-	"trustedDependencies": [
-		"@parcel/watcher",
-		"esbuild",
-		"unrs-resolver",
-		"vue-demi"
-	]
+  "name": "nuxt-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "lint": "npx oxlint && npx eslint",
+    "lint:fix": "eslint --fix",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "1.4.1",
+    "@nuxt/ui": "^3.0.2",
+    "@nuxtjs/leaflet": "^1.2.6",
+    "@pinia/nuxt": "^0.11.0",
+    "@vueuse/nuxt": "13.0.0",
+    "eslint": "^9.27.0",
+    "jwt-decode": "^4.0.0",
+    "leaflet.markercluster": "^1.5.3",
+    "nuxt": "^3.17.4",
+    "pinia": "^3.0.2",
+    "postcss-loader": "^8.1.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.13.2",
+    "@iconify-json/lucide": "^1.2.44",
+    "@types/leaflet.markercluster": "^1.5.5",
+    "eslint-plugin-oxlint": "^0.16.11",
+    "oxlint": "^0.16.11",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "esbuild",
+    "unrs-resolver",
+    "vue-demi"
+  ]
 }

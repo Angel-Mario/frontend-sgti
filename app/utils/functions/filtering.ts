@@ -1,24 +1,25 @@
-export const filteringRouteManager = (filteringState: {
-	column: string;
-	search: string;
-}) => {
-	const router = useRouter();
+export function filteringRouteManager(filteringState: {
+  column: string
+  search: string
+}) {
+  const router = useRouter()
 
-	const query = Object.assign({}, router.currentRoute.value.query);
+  const query = Object.assign({}, router.currentRoute.value.query)
 
-	if (filteringState.search !== "") {
-		query.column = filteringState.column;
-		query.search = filteringState.search;
+  if (filteringState.search !== '') {
+    query.column = filteringState.column
+    query.search = filteringState.search
 
-		router.push({
-			query: query,
-		});
-	} else {
-		delete query.search;
-		delete query.column;
-		router.push({
-			query: query,
-		});
-	}
-	return query;
-};
+    router.push({
+      query,
+    })
+  }
+  else {
+    delete query.search
+    delete query.column
+    router.push({
+      query,
+    })
+  }
+  return query
+}

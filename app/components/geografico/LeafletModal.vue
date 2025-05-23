@@ -5,6 +5,7 @@ const props = defineProps({
   zoom: {
     type: Number,
     default: 14,
+    required: false,
   },
   center: {
     type: Array<number>,
@@ -16,6 +17,7 @@ const props = defineProps({
       [22.9522, -82.5594],
       [23.1976, -82.2371],
     ],
+    required: false,
   },
   locations: {
     type: Array<{ name: string, lat: number, lng: number }>,
@@ -24,10 +26,12 @@ const props = defineProps({
   open: {
     type: Boolean,
     default: false,
+    required: false,
   },
   title: {
     type: String,
     default: 'Punto',
+    required: false,
   },
 })
 const localOpen = ref(props.open)
