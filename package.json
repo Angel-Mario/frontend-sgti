@@ -5,18 +5,20 @@
 	"scripts": {
 		"build": "nuxt build",
 		"dev": "nuxt dev",
-		"generate": "nuxt generate",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
+		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare"
 	},
 	"dependencies": {
+		"@nuxt/eslint": "1.4.1",
 		"@nuxt/rspack-builder": "^3.17.4",
 		"@nuxt/ui": "^3.0.2",
 		"@nuxtjs/leaflet": "^1.2.6",
 		"@pinia/nuxt": "^0.11.0",
 		"@vueuse/nuxt": "13.0.0",
+		"eslint": "^9.27.0",
 		"jwt-decode": "^4.0.0",
 		"leaflet.markercluster": "^1.5.3",
 		"nuxt": "^3.17.4",
@@ -28,13 +30,8 @@
 	"devDependencies": {
 		"@antfu/eslint-config": "^4.13.2",
 		"@iconify-json/lucide": "^1.2.44",
-		"@nuxt/eslint": "^1.4.1",
-		"eslint": "^9.27.0",
-		"eslint-config-prettier": "^10.1.5",
-		"eslint-plugin-oxlint": "^0.16.11",
-		"eslint-plugin-prettier": "^5.4.0",
+		"@types/leaflet.markercluster": "^1.5.5",
 		"oxlint": "^0.16.11",
-		"prettier": "^3.5.3",
 		"typescript": "^5.8.3"
 	},
 	"lint-staged": {
