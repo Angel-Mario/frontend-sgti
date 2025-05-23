@@ -1,32 +1,60 @@
 <template>
-	<div>
-		<h1>Nuxt Leaflet Map</h1>
-		<ClientOnly>
-			<LMap
-				style="height:800px"
-				:zoom="14"
-				:center="[22.991900, -82.466039]"
-				:use-global-leaflet="false"
-				:bounds="[[22.9522, -82.5594], [23.1976, -82.2371]]"
-			>
-				<LTileLayer
-					url="http://localhost:3003/api/tiles/{z}/{x}/{y}"
-					attribution="&amp;copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
-					layer-type="base"
-					name="OpenStreetMap"
-					:min-zoom="12"
-					:max-zoom="18"
-				/>
-			</LMap>
-		</ClientOnly>
+	<div class="flex flex-col w-full h-screen bg-(--ui-bg)">
+		<RouteBreadCrumb :items="items">
+			<section class="flex flex-col w-full row-span-1 px-6 rounded-2xl">
+				<h1 class="text-2xl font-bold">Listado de Rutas</h1>
+				<USeparator color="primary" type="solid" />
+			</section>
+			<main class="w-full px-3 pb-2 overflow-hidden row-span-10 rounded-2xl">
+				<GeograficoRutasTable />
+			</main>
+		</RouteBreadCrumb>
 	</div>
 </template>
 
 <script setup lang="ts">
-import L from 'leaflet'
-import { onMounted } from 'vue'
+import type { BreadcrumbItem } from "@nuxt/ui";
 
-onMounted(() => {
-	console.log(L)
-})
+definePageMeta({
+	layout: "authenticated",
+	pageTitle: "Rutas",
+	pageDescription: "Lista de Rutas",
+	pageIcon: "i-lucide-route",
+	pageKeywords: "rutas, lista, ruta, admin",
+	name: "rutas",
+});
+
+const items: BreadcrumbItem[] = [
+	{
+		label: "Home",
+		to: "/home",
+	},
+	{
+		slot: "dropdown" as const,
+		icon: "i-lucide-ellipsis",
+		label: "Geográfico",
+		children: [
+			{
+				label: "Puntos Referentes",
+				to: "/geografico/puntos-referentes",
+			},
+			{
+				label: "Rutas",
+				to: "/geografico/rutas",
+			},
+			{
+				label: "Terminales",
+				to: "/geografico/terminales",
+			},
+			{
+				label: "Hojas de ruta",
+				to: "/geografico/hojas-ruta",
+			},
+		],
+	},
+	{
+		label: "Rutas",
+		to: "/geografico/rutas",
+	},
+];
 </script>

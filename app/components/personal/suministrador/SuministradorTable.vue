@@ -49,7 +49,7 @@ const modal = overlay.create(LazyPersonalSuministradorInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 	},
 });
 
@@ -58,7 +58,7 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 		data: undefined,
 	});
 	await modal.open();
@@ -75,7 +75,7 @@ function getRowItems(row: Row<Administrador>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => { },
+						: () => {},
 					data: row.original,
 				});
 				await modal.open();
@@ -87,13 +87,14 @@ function getRowItems(row: Row<Administrador>) {
 			async onSelect() {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
-						`Se ha ${row.original.isActive ? "desactivado" : "activado"
+						`Se ha ${
+							row.original.isActive ? "desactivado" : "activado"
 						} correctamente el administrador`,
 						{ isActive: !row.original.isActive },
 						() => {
 							childRef?.value?.refreshMet();
 						},
-						toast
+						toast,
 					),
 					method: "POST",
 				});
@@ -105,11 +106,11 @@ function getRowItems(row: Row<Administrador>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => { },
-					[{ id: row.original.id }]
+						: () => {},
+					[{ id: row.original.id }],
 				);
 			},
 		},
@@ -175,7 +176,7 @@ const columns: TableColumn<Administrador>[] = [
 			}[row.getValue("Estado") as string];
 
 			return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo"
+				(row.getValue("Estado") as boolean) ? "Activo" : "Inactivo",
 			);
 		},
 		id: "Estado",
@@ -211,8 +212,8 @@ const columns: TableColumn<Administrador>[] = [
 							variant: "ghost",
 							class: "ml-auto",
 							"aria-label": "Actions dropdown",
-						})
-				)
+						}),
+				),
 			);
 		},
 	},

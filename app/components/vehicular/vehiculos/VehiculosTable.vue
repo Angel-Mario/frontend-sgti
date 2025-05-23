@@ -13,7 +13,7 @@
 import { LazyVehicularVehiculosInsertModal } from "#components";
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
-
+//TODO: order by Matricula asc verificar que funciona en la tabla
 const childRef = useTemplateRef("child");
 const router = useRouter();
 
@@ -28,7 +28,7 @@ const filterOptions = [
 	{ id: "chofer", label: "Chofer" },
 ];
 const fetchRoute = "vehicular/vehiculos";
-const defaultSortingValue = "Nombre";
+const defaultSortingValue = "Matrícula";
 
 //Table UI Component Resolvers
 const UButton = resolveComponent("UButton");
@@ -47,7 +47,7 @@ const modal = overlay.create(LazyVehicularVehiculosInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 	},
 });
 
@@ -56,7 +56,7 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 		data: undefined,
 	});
 	await modal.open();
@@ -73,7 +73,7 @@ function getRowItems(row: Row<Vehiculo>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => { },
+						: () => {},
 					data: row.original,
 				});
 				await modal.open();
@@ -85,10 +85,10 @@ function getRowItems(row: Row<Vehiculo>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => { },
+						: () => {},
 					[{ id: row.original.id }],
 				);
 			},
@@ -132,7 +132,7 @@ const columns: TableColumn<Vehiculo>[] = [
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
@@ -147,7 +147,7 @@ const columns: TableColumn<Vehiculo>[] = [
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
@@ -162,52 +162,46 @@ const columns: TableColumn<Vehiculo>[] = [
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
 		accessorKey: "marca",
 		header: ({ column }) => makeColumnHeader(column, "Marca", UButton),
 		cell: ({ row }) =>
-			row.getValue("Marca")
-				? row.getValue("Marca")
-				: "[Sin datos]",
+			row.getValue("Marca") ? row.getValue("Marca") : "[Sin datos]",
 		id: "Marca",
 		meta: {
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
 		accessorKey: "modelo",
 		header: ({ column }) => makeColumnHeader(column, "Modelo", UButton),
 		cell: ({ row }) =>
-			row.getValue("Modelo")
-				? row.getValue("Modelo")
-				: "[Sin datos]",
+			row.getValue("Modelo") ? row.getValue("Modelo") : "[Sin datos]",
 		id: "Modelo",
 		meta: {
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{
 		accessorKey: "año",
 		header: ({ column }) => makeColumnHeader(column, "Año", UButton),
 		cell: ({ row }) =>
-			row.getValue("Año")
-				? row.getValue("Año")
-				: "[Sin datos]",
+			row.getValue("Año") ? row.getValue("Año") : "[Sin datos]",
 		id: "Año",
 		meta: {
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 
@@ -217,25 +211,27 @@ const columns: TableColumn<Vehiculo>[] = [
 		cell: ({ row }) =>
 			row.getValue("Chofer")
 				? h(
-					UButton,
-					{
-						color: "primary",
-						variant: "solid",
-						size: "md",
-						class: "text-xs cursor-pointer",
-						onClick: () => {
-							router.push(`/personal/choferes?column=id&search=${(row.getValue("Chofer") as VehiculoChofer).id}`);
+						UButton,
+						{
+							color: "primary",
+							variant: "solid",
+							size: "md",
+							class: "text-xs cursor-pointer",
+							onClick: () => {
+								router.push(
+									`/personal/choferes?column=id&search=${(row.getValue("Chofer") as VehiculoChofer).id}`,
+								);
+							},
 						},
-					},
-					() => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }),
-				)
+						() => h(UIcon, { name: "i-lucide-square-arrow-out-up-right" }),
+					)
 				: "No asignado",
 		id: "Chofer",
 		meta: {
 			class: {
 				td: "text-center",
 				th: "text-center",
-			}
+			},
 		},
 	},
 	{

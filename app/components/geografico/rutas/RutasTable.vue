@@ -10,12 +10,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { TableColumn } from "@nuxt/ui";
-import type { Row } from "@tanstack/vue-table";
 import {
 	LazyGeograficoLeafletModal,
-	LazyGeograficoPuntosReferentesInsertModal,
+	LazyGeograficoRutasInsertModal,
 } from "#components";
+import type { TableColumn } from "@nuxt/ui";
+import type { Row } from "@tanstack/vue-table";
+import type { RutaPunto } from "~/utils/types/geografico/rutas";
 
 const childRef = useTemplateRef("child");
 
@@ -23,8 +24,13 @@ const filterOptions = [
 	{ id: "id", label: "Id" },
 	{ id: "nombre", label: "Nombre" },
 	{ id: "latLong", label: "latLong" },
+	{ id: "distancia", label: "Distancia" },
+	{ id: "hora_salida", label: "Hora de salida" },
+	{ id: "hora_regreso", label: "Hora de regreso" },
+	{ id: "puntoSalida", label: "Salida" },
+	{ id: "puntoRegreso", label: "Regreso" },
 ];
-const fetchRoute = "geografico/puntos-ref";
+const fetchRoute = "geografico/rutas";
 const defaultSortingValue = "Nombre";
 
 //Table UI Component Resolvers
@@ -36,7 +42,7 @@ const UCheckbox = resolveComponent("UCheckbox");
 const overlay = useOverlay();
 
 //Modal for Insert Item
-const modal = overlay.create(LazyGeograficoPuntosReferentesInsertModal, {
+const modal = overlay.create(LazyGeograficoRutasInsertModal, {
 	props: {
 		open: false,
 		data: undefined,
@@ -64,7 +70,7 @@ const modalMap = overlay.create(LazyGeograficoLeafletModal, {
 });
 
 //Row Dropdown definition
-function getRowItems(row: Row<PuntoRef>) {
+function getRowItems(row: Row<Ruta>) {
 	return [
 		{
 			label: "Editar",
@@ -101,15 +107,21 @@ function getRowItems(row: Row<PuntoRef>) {
 			label: "Ver en mapa",
 			icon: "i-lucide-map",
 			async onSelect() {
-				const latLong = row.original.latLong.split(",");
+				const latLong = row.original.puntoSalida.latLong.split(",");
 				const lat = Number(latLong[0]);
 				const lng = Number(latLong[1]);
+				const latLong2 = row.original.puntoRegreso.latLong.split(",");
+				const lat2 = Number(latLong2[0]);
+				const lng2 = Number(latLong2[1]);
 				console.log(row.original.nombre);
 				modalMap.patch({
 					open: true,
 					center: [lat, lng],
-					locations: [{ name: row.original.nombre, lat: lat, lng: lng }],
-					title: `Punto de referencia ${row.original.nombre}: [${row.original.latLong}]`,
+					locations: [
+						{ name: row.original.puntoSalida.nombre, lat: lat, lng: lng },
+						{ name: row.original.puntoRegreso.nombre, lat: lat2, lng: lng2 },
+					],
+					title: `Ruta ${row.original.nombre}:`,
 				});
 				await modalMap.open();
 			},
@@ -118,8 +130,8 @@ function getRowItems(row: Row<PuntoRef>) {
 }
 
 //Const Columns  Table
-const columns: TableColumn<PuntoRef>[] = [
-	makeColumnSelect<PuntoRef>(UCheckbox),
+const columns: TableColumn<Ruta>[] = [
+	makeColumnSelect<Ruta>(UCheckbox),
 	{
 		accessorKey: "id",
 		header: ({ column }) => makeColumnHeader(column, "Id", UButton),
@@ -131,10 +143,16 @@ const columns: TableColumn<PuntoRef>[] = [
 		id: "Nombre",
 	},
 	{
-		accessorKey: "latLong",
-		header: ({ column }) =>
-			makeColumnHeader(column, "Latitud y Longitud", UButton),
-		id: "latLong",
+		accessorKey: "distancia",
+		header: ({ column }) => makeColumnHeader(column, "Distancia", UButton),
+		cell: ({ row }) => {
+			const distancia = row.getValue("Distancia") as string;
+			if (distancia) {
+				return h("p", undefined, `${distancia}km`);
+			}
+			return h("p", undefined, "[No está el valor de distancia]");
+		},
+		id: "Distancia",
 		meta: {
 			class: {
 				td: "text-center",
@@ -143,37 +161,53 @@ const columns: TableColumn<PuntoRef>[] = [
 		},
 	},
 	{
-		accessorKey: "usage",
-		header: "Uso",
-		cell: ({ row }) => {
-			const usage = row.getValue("usage") as Usage;
-			if (
-				usage.terminales.length === 0 &&
-				usage.puntos_combustible.length === 0 &&
-				usage.rutas.length === 0
-			)
-				return h("p", undefined, "[No está siendo utilizado]");
-			//Si está siendo utilizado
-			return h(
-				"div",
-				{ class: "flex items-center gap-3 sm:max-w-48 md:max-w-96" },
-				[
-					h("div", undefined, [
-						//Mostrar Puntos de Combustible
-						usage.puntos_combustible.length > 0
-							? h("p", `Puntos de combustible: ${usage.puntos_combustible}`)
-							: "",
-						//Mostrar Rutas
-						usage.rutas.length > 0 ? h("p", `Rutas: ${usage.rutas}`) : "",
-						//Mostrar Terminales
-						usage.terminales.length > 0
-							? h("p", `Terminales: ${usage.terminales}`)
-							: "",
-					]),
-				],
-			);
+		accessorKey: "hora_salida",
+		header: ({ column }) => makeColumnHeader(column, "Hora de salida", UButton),
+		id: "Hora de salida",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			},
 		},
-		id: "usage",
+	},
+	{
+		accessorKey: "hora_regreso",
+		header: ({ column }) =>
+			makeColumnHeader(column, "Hora de regreso", UButton),
+		id: "Hora de regreso",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			},
+		},
+	},
+	{
+		accessorKey: "puntoSalida",
+		header: ({ column }) => makeColumnHeader(column, "Salida", UButton),
+		id: "Salida",
+		cell: ({ row }) =>
+			h("p", undefined, (row.getValue("Salida") as RutaPunto).nombre),
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			},
+		},
+	},
+	{
+		accessorKey: "puntoRegreso",
+		header: ({ column }) => makeColumnHeader(column, "Regreso", UButton),
+		cell: ({ row }) =>
+			h("p", undefined, (row.getValue("Regreso") as RutaPunto).nombre),
+		id: "Regreso",
+		meta: {
+			class: {
+				td: "text-center",
+				th: "text-center",
+			},
+		},
 	},
 	{
 		id: "actions",

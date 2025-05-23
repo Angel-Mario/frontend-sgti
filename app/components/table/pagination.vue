@@ -3,7 +3,7 @@ defineEmits(["handleGoToPage", "handlePageSizeChange"]);
 
 const route = useRoute();
 
-const props = defineProps({
+defineProps({
 	totalItems: {
 		type: Number,
 		default: 0,
@@ -12,7 +12,7 @@ const props = defineProps({
 // Create local mutable copy
 const localPageSize = ref(
 	(route.query["pageSize"] as string) ||
-		useRuntimeConfig().public.defaultPageSize
+		useRuntimeConfig().public.defaultPageSize,
 );
 const localPage = ref(Number((route.query["page"] as string) || "1"));
 </script>

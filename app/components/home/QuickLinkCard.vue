@@ -1,42 +1,34 @@
 <template>
-	<router-link
-		:to="to"
-		class="quick-link-card"
-		:class="{ 'compact': compact }"
-	>
+	<router-link :to="to" class="quick-link-card" :class="{ compact: compact }">
 		<div class="icon-container">
 			<slot />
 		</div>
 		<div class="content">
 			<h3 class="title">{{ title }}</h3>
-			<p
-				v-if="description"
-				class="description"
-			>{{ description }}</p>
+			<p v-if="description" class="description">{{ description }}</p>
 		</div>
 	</router-link>
 </template>
 
 <script>
-
 export default {
-	name: 'QuickLinkCard',
+	name: "QuickLinkCard",
 	props: {
 		to: {
 			type: [String, Object],
-			required: true
+			required: true,
 		},
 		title: {
 			type: String,
-			required: true
+			required: true,
 		},
 		description: {
 			type: String,
-			default: ''
+			default: "",
 		},
 		compact: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 	},
 };

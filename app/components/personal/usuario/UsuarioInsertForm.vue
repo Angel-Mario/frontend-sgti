@@ -26,9 +26,7 @@ const state = reactive<Partial<Schema>>({
 	correo: props.data ? props.data.correo : undefined,
 	password: undefined,
 	telefono:
-		props.data && props.data.telefono === ""
-			? props.data.telefono
-			: undefined,
+		props.data && props.data.telefono === "" ? props.data.telefono : undefined,
 	rol: props.data
 		? props.data.roles[0] === "admin"
 			? "Administrador"
@@ -137,32 +135,14 @@ whenever(
 			required
 			class="col-span-5"
 		>
-			<UInput
-				v-model="state.fullName"
-				placeholder="Ej: Anibal Perez Garcia"
-			/>
+			<UInput v-model="state.fullName" placeholder="Ej: Anibal Perez Garcia" />
 		</UFormField>
 
-		<UFormField
-			label="Teléfono"
-			name="telefono"
-			class="col-span-3 col-start-7"
-		>
-			<UInput
-				v-model="state.telefono"
-				placeholder="Ej: 56463650"
-			/>
+		<UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
+			<UInput v-model="state.telefono" placeholder="Ej: 56463650" />
 		</UFormField>
-		<UFormField
-			label="Correo"
-			name="correo"
-			required
-			class="col-span-5"
-		>
-			<UInput
-				v-model="state.correo"
-				placeholder="Ej: anibalpg@uci.cu"
-			/>
+		<UFormField label="Correo" name="correo" required class="col-span-5">
+			<UInput v-model="state.correo" placeholder="Ej: anibalpg@uci.cu" />
 		</UFormField>
 		<UFormField
 			label="Carnet"
@@ -170,11 +150,7 @@ whenever(
 			required
 			class="col-span-3 col-start-7"
 		>
-			<UInput
-				v-model="state.carnet"
-				:maxlength="11"
-				placeholder="96124215561"
-			>
+			<UInput v-model="state.carnet" :maxlength="11" placeholder="96124215561">
 				<template #trailing>
 					<div
 						id="character-count"
@@ -188,12 +164,7 @@ whenever(
 			</UInput>
 		</UFormField>
 
-		<UFormField
-			label="Rol"
-			name="rol"
-			required
-			class="col-span-3 col-start-7"
-		>
+		<UFormField label="Rol" name="rol" required class="col-span-3 col-start-7">
 			<USelectMenu
 				v-model="state.rol"
 				:search-input="false"
@@ -202,7 +173,9 @@ whenever(
 			/>
 		</UFormField>
 
-		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
+		<div
+			class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"
+		>
 			<UButton
 				label="Cancelar"
 				color="neutral"

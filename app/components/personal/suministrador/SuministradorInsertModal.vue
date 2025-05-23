@@ -20,13 +20,15 @@ const localOpen = ref(props.open);
 <template>
 	<UModal
 		v-model:open="localOpen"
-		:title="props.data ? 'Mofificar suministrador' : 'Añadir un nuevo suministrador'
-			"
+		:title="
+			props.data ? 'Mofificar suministrador' : 'Añadir un nuevo suministrador'
+		"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
-		:description="props.data
+		:description="
+			props.data
 				? 'Por favor, introduce los datos del suministrador a modificar'
 				: 'Por favor, introduce los datos del nuevo suministrador'
-			"
+		"
 	>
 		<template #body>
 			<PersonalSuministradorInsertForm

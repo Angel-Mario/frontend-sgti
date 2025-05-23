@@ -47,7 +47,7 @@ const modal = overlay.create(LazyPersonalUsuarioInsertModal, {
 		data: undefined,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 	},
 });
 //Modal estate controller
@@ -56,7 +56,7 @@ const openInsertModal = async () => {
 		open: true,
 		refresh: childRef?.value?.refreshMet
 			? childRef?.value?.refreshMet
-			: () => { },
+			: () => {},
 		data: undefined,
 	});
 	await modal.open();
@@ -73,7 +73,7 @@ function getRowItems(row: Row<Usuario>) {
 					open: true,
 					refresh: childRef?.value?.refreshMet
 						? childRef?.value?.refreshMet
-						: () => { },
+						: () => {},
 					data: row.original,
 				});
 				await modal.open();
@@ -85,7 +85,8 @@ function getRowItems(row: Row<Usuario>) {
 			async onSelect() {
 				$fetch(`${fetchRoute}/${row.original.id}`, {
 					...makePostPatchOptions(
-						`Se ha ${row.original.isActive ? "desactivado" : "activado"
+						`Se ha ${
+							row.original.isActive ? "desactivado" : "activado"
 						} correctamente el usuario`,
 						{ isActive: !row.original.isActive },
 						() => {
@@ -103,10 +104,10 @@ function getRowItems(row: Row<Usuario>) {
 			onSelect() {
 				handleDeleteRows(
 					fetchRoute,
-					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => { },
+					childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
 					childRef?.value?.deleteSelection
 						? childRef?.value?.deleteSelection
-						: () => { },
+						: () => {},
 					[{ id: row.original.id }],
 				);
 			},

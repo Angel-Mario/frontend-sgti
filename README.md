@@ -1,4 +1,3 @@
-
 # 🚍 STGI-UCI - Sistema de Gestión del Transporte Interno UCI
 
 STGIUC es una plataforma digital diseñada para optimizar y gestionar el transporte interno dentro de la Universidad de Ciencias Informáticas (UCI). Este sistema centraliza la administración de rutas, vehículos, conductores y solicitudes de transporte, mejorando la eficiencia y la experiencia de la comunidad universitaria.

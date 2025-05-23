@@ -11,7 +11,7 @@ export const makePostPatchOptions = (
 		update: (id: string | number, toast: Omit<Partial<Toast>, "id">) => void;
 		remove: (id: string | number) => void;
 		clear: () => void;
-	}
+	},
 ) => {
 	return {
 		baseURL: useRuntimeConfig().public.apiUrl, // Usa el valor de la variable pública

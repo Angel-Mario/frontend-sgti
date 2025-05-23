@@ -10,7 +10,7 @@ definePageMeta({
 	pageTitle: "Home",
 	pageDescription: "Pagina de inicio",
 	pageIcon: "i-lucide-house",
-	middleware: ["auth"]
+	middleware: ["auth"],
 });
 useHead({
 	title: "Home",

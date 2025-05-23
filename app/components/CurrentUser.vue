@@ -11,7 +11,8 @@
 			variant="ghost"
 			@click="handleLogout"
 		>
-			Cerrar sesión</UButton>
+			Cerrar sesión</UButton
+		>
 	</div>
 </template>
 
@@ -29,7 +30,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const handleLogout = () => {
-	authStore.logout()
+	authStore.logout();
 	router.push("/login");
 };
 </script>

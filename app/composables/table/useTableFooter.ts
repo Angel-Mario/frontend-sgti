@@ -4,7 +4,7 @@ export const useTableFooter = () => {
 	const page = ref(route.query["page"]?.toString() || "1");
 	const pageSize = ref(
 		route.query["pageSize"]?.toString() ||
-			useRuntimeConfig().public.defaultPageSize
+			useRuntimeConfig().public.defaultPageSize,
 	);
 	const paramFilterSortPagination = ref<
 		ParamsPagination | ParamsFilter | Params

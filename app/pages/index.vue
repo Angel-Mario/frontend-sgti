@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'default',
-})
-
+	layout: "default",
+});
 </script>
 
 <template>
-  <div>a</div>
+	<div>a</div>
 </template>

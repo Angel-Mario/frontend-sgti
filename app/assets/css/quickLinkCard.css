@@ -7,7 +7,6 @@
 	--font-sans: "Public Sans", sans-serif;
 }
 
-
 .quick-link-card {
 	@apply bg-white dark:bg-navbardark-500 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300;
 	@apply flex flex-col items-center text-center;

@@ -107,10 +107,7 @@ whenever(
 			name="nombre_u"
 			required
 		>
-			<UInput
-				v-model="state.nombre_u"
-				placeholder="Ex: anibalpg"
-			/>
+			<UInput v-model="state.nombre_u" placeholder="Ex: anibalpg" />
 		</UFormField>
 
 		<UFormField
@@ -132,32 +129,14 @@ whenever(
 			required
 			class="col-span-5"
 		>
-			<UInput
-				v-model="state.fullName"
-				placeholder="Ex: Anibal Perez Garcia"
-			/>
+			<UInput v-model="state.fullName" placeholder="Ex: Anibal Perez Garcia" />
 		</UFormField>
 
-		<UFormField
-			label="Teléfono"
-			name="telefono"
-			class="col-span-3 col-start-7"
-		>
-			<UInput
-				v-model="state.telefono"
-				placeholder="Ex: 56463650"
-			/>
+		<UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
+			<UInput v-model="state.telefono" placeholder="Ex: 56463650" />
 		</UFormField>
-		<UFormField
-			label="Correo"
-			name="correo"
-			required
-			class="col-span-5"
-		>
-			<UInput
-				v-model="state.correo"
-				placeholder="Ex: anibalpg@uci.cu"
-			/>
+		<UFormField label="Correo" name="correo" required class="col-span-5">
+			<UInput v-model="state.correo" placeholder="Ex: anibalpg@uci.cu" />
 		</UFormField>
 		<UFormField
 			label="Carnet"
@@ -165,18 +144,10 @@ whenever(
 			required
 			class="col-span-3 col-start-7"
 		>
-			<UInput
-				v-model="state.carnet"
-				placeholder="96124215561"
-			/>
+			<UInput v-model="state.carnet" placeholder="96124215561" />
 		</UFormField>
 
-		<UFormField
-			label="Rol"
-			name="rol"
-			required
-			class="col-span-3 col-start-7"
-		>
+		<UFormField label="Rol" name="rol" required class="col-span-3 col-start-7">
 			<USelectMenu
 				v-model="state.rol"
 				:search-input="false"
@@ -185,7 +156,9 @@ whenever(
 			/>
 		</UFormField>
 
-		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
+		<div
+			class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"
+		>
 			<UButton
 				label="Cancelar"
 				color="neutral"

@@ -20,13 +20,13 @@ const localOpen = ref(props.open);
 <template>
 	<UModal
 		v-model:open="localOpen"
-		:title="props.data ? 'Mofificar chofer' : 'Añadir un nuevo chofer'
-			"
+		:title="props.data ? 'Mofificar chofer' : 'Añadir un nuevo chofer'"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
-		:description="props.data
-			? 'Por favor, introduce los datos del chofer a modificar'
-			: 'Por favor, introduce los datos del nuevo chofer'
-			"
+		:description="
+			props.data
+				? 'Por favor, introduce los datos del chofer a modificar'
+				: 'Por favor, introduce los datos del nuevo chofer'
+		"
 	>
 		<template #body>
 			<PersonalChoferInsertForm

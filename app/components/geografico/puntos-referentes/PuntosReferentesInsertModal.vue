@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GeograficoPuntosReferentesInsertForm } from '#components';
+import { GeograficoPuntosReferentesInsertForm } from "#components";
 
 const props = defineProps({
 	open: {
@@ -22,12 +22,17 @@ const localOpen = ref(props.open);
 <template>
 	<UModal
 		v-model:open="localOpen"
-		:title="props.data ? 'Mofificar punto de referencia' : 'Añadir un nuevo punto de referencia'"
+		:title="
+			props.data
+				? 'Mofificar punto de referencia'
+				: 'Añadir un nuevo punto de referencia'
+		"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
-		:description="props.data
-			? 'Por favor, introduce los datos del punto de referencia a modificar'
-			: 'Por favor, introduce los datos del nuevo punto de referencia'
-			"
+		:description="
+			props.data
+				? 'Por favor, introduce los datos del punto de referencia a modificar'
+				: 'Por favor, introduce los datos del nuevo punto de referencia'
+		"
 	>
 		<template #body>
 			<GeograficoPuntosReferentesInsertForm

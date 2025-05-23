@@ -4,7 +4,7 @@ export const handleDeleteRows = async <T extends { id: string }>(
 	route: string,
 	refresh: () => void,
 	deleteSelection: () => void,
-	selected: T[] | undefined
+	selected: T[] | undefined,
 ) => {
 	if (!selected) return;
 
@@ -19,7 +19,7 @@ export const handleDeleteRows = async <T extends { id: string }>(
 			{ ids: selected.map((item) => item.id) },
 			refresh,
 			deleteSelection,
-			toast
+			toast,
 		),
 	});
 };

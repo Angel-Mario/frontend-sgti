@@ -28,14 +28,10 @@ const props = defineProps({
 });
 defineEmits(["openInsertModal"]);
 
-//Table UI Component Resolvers
-const UButton = resolveComponent("UButton");
-const UDropdownMenu = resolveComponent("UDropdownMenu");
-
 //CustomHooks For Managing the states
 const { table, rowSelection } = useTable();
 const { toast, globalFilter, debounced, filterOption } = useTableHeader(
-	props.filterOptions[2]?.id
+	props.filterOptions[2]?.id,
 );
 const {
 	paramFilterSortPagination,
@@ -48,9 +44,8 @@ const route = useRoute();
 const sorting = ref([
 	{
 		id:
-			props.filterOptions.find(
-				(o) => o.id === (route.query.sorting as string)
-			)?.label || (props.defaultSortingValue as string),
+			props.filterOptions.find((o) => o.id === (route.query.sorting as string))
+				?.label || (props.defaultSortingValue as string),
 		desc: route.query.order === "desc" || false,
 	},
 ]);
@@ -63,9 +58,9 @@ watch(
 			search: debounced.value as string,
 		});
 	},
-	{ immediate: true }
+	{ immediate: true },
 );
-const refreshMet = ref(() => { });
+const refreshMet = ref(() => {});
 const deleteSelection = ref(() => {
 	rowSelection.value = {};
 });
@@ -73,13 +68,26 @@ defineExpose({
 	refreshMet,
 	deleteSelection,
 });
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 //Data Fetching Function
-const { data, status, error: _error, refresh } = await useFetch<{
+const {
+	data,
+	status,
+	error: _error,
+	refresh,
+	pending,
+} = await useFetch<{
 	count: number;
 	pages: number;
 	data: T[];
-}>(props.fetchRoute, makeFetchOptions(paramFilterSortPagination, toast, `Bearer ${authStore.token}`));
+}>(
+	props.fetchRoute,
+	makeFetchOptions(
+		paramFilterSortPagination,
+		toast,
+		`Bearer ${authStore.token}`,
+	),
+);
 
 //redefinition RefreshMetodh
 refreshMet.value = refresh;
@@ -90,15 +98,27 @@ const columnVisibility = ref({
 });
 const columnPinning = ref({
 	left: [],
-	right: ['actions']
-})
+	right: ["actions"],
+});
 
 const totalItems = computed(() => data.value?.count || 0);
+
+const oldDataBeforeChange = shallowRef(data.value);
+//Show old state while loading new data on new request
+watch(data, (data, oldData) => {
+	if (!data) {
+		oldDataBeforeChange.value = oldData;
+	}
+});
 </script>
 
 <template>
-	<div class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl">
-		<div class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)">
+	<div
+		class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl"
+	>
+		<div
+			class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
+		>
 			<!-- Filter Text Field and search param dropdown -->
 			<UButtonGroup>
 				<UInput
@@ -111,7 +131,7 @@ const totalItems = computed(() => data.value?.count || 0);
 							column: filterOption as string,
 							search: debounced as string,
 						})
-						"
+					"
 				/>
 				<USelectMenu
 					id="filterOption"
@@ -125,7 +145,7 @@ const totalItems = computed(() => data.value?.count || 0);
 							column: filterOption as string,
 							search: debounced as string,
 						})
-						"
+					"
 				/>
 			</UButtonGroup>
 			<!-- Refresh Button Image-->
@@ -133,7 +153,7 @@ const totalItems = computed(() => data.value?.count || 0);
 				color="primary"
 				variant="ghost"
 				icon="i-custom-refresh"
-				@click="refresh"
+				@click="refresh()"
 			/>
 			<!-- Insert Button -->
 			<UButton
@@ -150,9 +170,10 @@ const totalItems = computed(() => data.value?.count || 0);
 				color="error"
 				variant="outline"
 				icon="i-lucide-trash"
-				:disabled="!table?.tableApi?.getIsSomeRowsSelected() &&
+				:disabled="
+					!table?.tableApi?.getIsSomeRowsSelected() &&
 					!table?.tableApi?.getIsAllRowsSelected()
-					"
+				"
 				@click="
 					handleDeleteRows(
 						props.fetchRoute,
@@ -160,28 +181,36 @@ const totalItems = computed(() => data.value?.count || 0);
 						deleteSelection,
 						data?.data.filter((row, index) => {
 							if ((rowSelection as boolean[])[index]) return row;
-						}) as any[]
+						}) as any[],
 					)
-					"
+				"
 			/>
 
 			<!-- Selector de filas -->
 			<UDropdownMenu
-				:items="table?.tableApi
-					?.getAllColumns()
-					.filter((column) => column.getCanHide() && column.id !== 'actions' && column.id !== 'select')
-					.map((column) => ({
-						label: upperFirst(column.id),
-						type: 'checkbox' as const,
-						checked: column.getIsVisible(),
-						onUpdateChecked(checked: boolean) {
-							table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-						},
-						onSelect(e?: Event) {
-							e?.preventDefault()
-						}
-					}))
-					"
+				:items="
+					table?.tableApi
+						?.getAllColumns()
+						.filter(
+							(column) =>
+								column.getCanHide() &&
+								column.id !== 'actions' &&
+								column.id !== 'select',
+						)
+						.map((column) => ({
+							label: upperFirst(column.id),
+							type: 'checkbox' as const,
+							checked: column.getIsVisible(),
+							onUpdateChecked(checked: boolean) {
+								table?.tableApi
+									?.getColumn(column.id)
+									?.toggleVisibility(!!checked);
+							},
+							onSelect(e?: Event) {
+								e?.preventDefault();
+							},
+						}))
+				"
 				:content="{ align: 'end' }"
 			>
 				<UButton
@@ -207,14 +236,18 @@ const totalItems = computed(() => data.value?.count || 0);
 			}"
 			:loading="status === 'pending'"
 			sticky
-			:data="data?.data"
+			:data="pending ? oldDataBeforeChange?.data : data?.data"
 			:columns="columns"
 			class="cool-scrollbar-dark"
 			@update:sorting="
 				(event) => {
 					const [id] = event;
-					const property = props.filterOptions.find((o) => o.label == id?.id as string);
-					paramFilterSortPagination = sortingRouteManager([{ id: property?.id as string, desc: id?.desc }]);
+					const property = props.filterOptions.find(
+						(o) => o.label == (id?.id as string),
+					);
+					paramFilterSortPagination = sortingRouteManager([
+						{ id: property?.id as string, desc: id?.desc },
+					]);
 				}
 			"
 		/>

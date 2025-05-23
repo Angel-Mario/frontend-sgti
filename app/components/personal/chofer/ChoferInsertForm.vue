@@ -27,9 +27,11 @@ const state = reactive<Partial<Schema>>({
 	password: undefined,
 	telefono:
 		props.data && props.data.telefono === "" ? props.data.telefono : undefined,
-	residencia: props.data?.residencia ? props.data.residencia.toString() : undefined,
+	residencia: props.data?.residencia
+		? props.data.residencia.toString()
+		: undefined,
 	rutaNombre: props.data ? props.data.ruta?.nombre : undefined,
-	vehiculoMatricula: props.data ? props.data.vehiculo?.matricula : undefined
+	vehiculoMatricula: props.data ? props.data.vehiculo?.matricula : undefined,
 });
 
 const toast = useToast();
@@ -56,21 +58,28 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		method: "POST",
 	});
 }
-const authStore = useAuthStore()
-const query = shallowRef('')
-const { data: itemsRutaData, status: statusRuta } = useFetch<string[]>('/geografico/rutas/simplex', makeFetchOptions(query, toast, `Bearer ${authStore.token}`))
-const { data: itemsMatriculasData, status: statusMatricula } = useFetch<string[]>('/vehicular/vehiculos/simplex', makeFetchOptions(query, toast, `Bearer ${authStore.token}`))
-
+const authStore = useAuthStore();
+const query = shallowRef("");
+const { data: itemsRutaData, status: statusRuta } = useFetch<string[]>(
+	"/geografico/rutas/simplex",
+	makeFetchOptions(query, toast, `Bearer ${authStore.token}`),
+);
+const { data: itemsMatriculasData, status: statusMatricula } = useFetch<
+	string[]
+>(
+	"/vehicular/vehiculos/simplex",
+	makeFetchOptions(query, toast, `Bearer ${authStore.token}`),
+);
 
 const itemsRutaNombre = ref(itemsRutaData.value);
 const itemsMatricula = ref(itemsMatriculasData.value);
 
 watch(itemsRutaData, () => {
-	itemsRutaNombre.value = itemsRutaData.value
-})
+	itemsRutaNombre.value = itemsRutaData.value;
+});
 watch(itemsMatriculasData, () => {
-	itemsMatricula.value = itemsMatriculasData.value
-})
+	itemsMatricula.value = itemsMatriculasData.value;
+});
 
 // Flag to track if the form has been modified
 const isFormDirty = ref(false);
@@ -133,32 +142,14 @@ whenever(
 			required
 			class="col-span-5"
 		>
-			<UInput
-				v-model="state.fullName"
-				placeholder="Ej: Anibal Perez Garcia"
-			/>
+			<UInput v-model="state.fullName" placeholder="Ej: Anibal Perez Garcia" />
 		</UFormField>
 
-		<UFormField
-			label="Teléfono"
-			name="telefono"
-			class="col-span-3 col-start-7"
-		>
-			<UInput
-				v-model="state.telefono"
-				placeholder="Ej: 56463650"
-			/>
+		<UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
+			<UInput v-model="state.telefono" placeholder="Ej: 56463650" />
 		</UFormField>
-		<UFormField
-			label="Correo"
-			name="correo"
-			required
-			class="col-span-5"
-		>
-			<UInput
-				v-model="state.correo"
-				placeholder="Ej: anibalpg@uci.cu"
-			/>
+		<UFormField label="Correo" name="correo" required class="col-span-5">
+			<UInput v-model="state.correo" placeholder="Ej: anibalpg@uci.cu" />
 		</UFormField>
 		<UFormField
 			label="Carnet"
@@ -166,11 +157,7 @@ whenever(
 			required
 			class="col-span-3 col-start-7"
 		>
-			<UInput
-				v-model="state.carnet"
-				:maxlength="11"
-				placeholder="96124215561"
-			>
+			<UInput v-model="state.carnet" :maxlength="11" placeholder="96124215561">
 				<template #trailing>
 					<div
 						id="character-count"
@@ -183,11 +170,7 @@ whenever(
 				</template>
 			</UInput>
 		</UFormField>
-		<UFormField
-			label="Residencia"
-			name="residencia"
-			class="col-span-4"
-		>
+		<UFormField label="Residencia" name="residencia" class="col-span-4">
 			<UInput
 				v-model="state.residencia"
 				placeholder="Ej: Cotorro e/ 39 y 41 #2680"
@@ -243,7 +226,9 @@ whenever(
 			/>
 		</UFormField>
 
-		<div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
+		<div
+			class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"
+		>
 			<UButton
 				label="Cancelar"
 				color="neutral"

@@ -1,4 +1,3 @@
-import swc from "@vitejs/plugin-react-swc";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	compatibilityDate: "2024-11-01",
@@ -14,23 +13,16 @@ export default defineNuxtConfig({
 		"@vueuse/nuxt",
 		"@pinia/nuxt",
 	],
-	css: [
-		"./app/assets/css/main.css",
-		"./app/assets/css/quickLinkCard.css",
-		// "leaflet/dist/leaflet.css",
-	],
+	leaflet: {
+		markerCluster: true,
+	},
+	css: ["./app/assets/css/main.css", "./app/assets/css/quickLinkCard.css"],
 	app: {
 		pageTransition: { name: "page", mode: "out-in" },
 	},
 	experimental: {
 		buildCache: true,
-	},
-	vite: {
-		plugins: [
-			// For SWC to work with Vite
-			swc(),
-		],
-		esbuild: false, // Disable esbuild to use SWC
+		componentIslands: true,
 	},
 	plugins: ["./app/plugins/auth.init.ts"],
 	icon: {
@@ -47,14 +39,8 @@ export default defineNuxtConfig({
 			defaultPageSize: process.env.VUE_APP_DEFAULT_PAGE_SIZE,
 		},
 	},
-	nitro: {
-		prerender: {
-			// routes: ["/login"],
-			routes: ["/personal/usuarios"],
-			// ignore: ["/dynamic"],
-		},
+	routeRules: {
+		"/login": { prerender: true },
+		"/personal": { redirect: "/personal/usuarios" },
 	},
-	// build: {
-	// 	transpile: ["@vue-leaflet/vue-leaflet"],
-	// },
 });

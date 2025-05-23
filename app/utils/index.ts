@@ -31,6 +31,7 @@ export type {
 	PuntosRefRespone,
 	Usage,
 } from "./types/geografico/puntos-Ref";
+export type { Ruta, RutasResponse } from "./types/geografico/rutas";
 
 export type {
 	User,

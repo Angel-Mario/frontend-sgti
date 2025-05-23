@@ -19,27 +19,29 @@ const router = useRouter();
 const toast = useToast();
 const authStore = useAuthStore();
 
-
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-
+	event.preventDefault();
 	try {
-		const data = await $fetch<{ user: User } & AuthTokens | ErrorResponse>("/auth/login", {
-			method: "POST",
-			body: event.data,
-			baseURL: useRuntimeConfig().public.apiUrl,
-			onResponse: ({ response }) => {
-				if (response._data.error) {
-					throw new Error(response._data.message);
-				}
+		const data = await $fetch<({ user: User } & AuthTokens) | ErrorResponse>(
+			"/auth/login",
+			{
+				method: "POST",
+				body: event.data,
+				baseURL: useRuntimeConfig().public.apiUrl,
+				onResponse: ({ response }) => {
+					if (response._data.error) {
+						throw new Error(response._data.message);
+					}
+				},
 			},
-		})
+		);
 
-		if ('error' in data && data.error) {
+		if ("error" in data && data.error) {
 			toast.add({ title: "Error de autenticación", description: data.message });
 			return;
 		}
 
-		if ('token' in data) {
+		if ("token" in data) {
 			authStore.login(data);
 			router.push("/home");
 		}
@@ -48,7 +50,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 			toast.add({ title: "Error", description: error.message });
 		}
 	}
-}
+};
 
 whenever(
 	() => state.value.nombre_u === "",
@@ -60,16 +62,8 @@ whenever(
 
 <template>
 	<!-- Formulario de inicio de sesión -->
-	<UForm
-		:schema="schema"
-		:state="state"
-		class="space-y-2"
-		@submit="onSubmit"
-	>
-		<UFormField
-			name="nombre_u"
-			class="h-20 mt-4"
-		>
+	<UForm :schema="schema" :state="state" class="space-y-2" @submit="onSubmit">
+		<UFormField name="nombre_u" class="h-20 mt-4">
 			<UInput
 				v-model="state.nombre_u"
 				trailing-icon="lucide-user"
@@ -79,15 +73,14 @@ whenever(
 				:ui="{ base: 'peer bg-navbardark-500' }"
 			>
 				<label class="label-floating">
-					<span class="inline-flex px-1 bg-navbardark-500">Nombre de usuario</span>
+					<span class="inline-flex px-1 bg-navbardark-500"
+						>Nombre de usuario</span
+					>
 				</label>
 			</UInput>
 		</UFormField>
 		<!-- Password Field -->
-		<UFormField
-			name="password"
-			class="h-20"
-		>
+		<UFormField name="password" class="h-20">
 			<UInput
 				v-model="state.password"
 				trailing-icon="lucide-key-round"

@@ -12,7 +12,7 @@ export const makeDeleteOptions = (
 		update: (id: string | number, toast: Omit<Partial<Toast>, "id">) => void;
 		remove: (id: string | number) => void;
 		clear: () => void;
-	}
+	},
 ) => {
 	return {
 		headers: {

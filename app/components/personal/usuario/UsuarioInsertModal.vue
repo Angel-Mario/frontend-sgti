@@ -22,10 +22,11 @@ const localOpen = ref(props.open);
 		v-model:open="localOpen"
 		:title="props.data ? 'Mofificar usuario' : 'Añadir un nuevo usuario'"
 		:ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
-		:description="props.data
+		:description="
+			props.data
 				? 'Por favor, introduce los datos del usuario a modificar'
 				: 'Por favor, introduce los datos del nuevo usuario'
-			"
+		"
 	>
 		<template #body>
 			<PersonalUsuarioInsertForm
