@@ -20,7 +20,7 @@ const props = defineProps({
     ],
   },
   locations: {
-    type: Array<{ name: string, lat: number, lng: number }>,
+    type: Array<{ name?: string, lat: number, lng: number }>,
     required: true,
   },
   open: {

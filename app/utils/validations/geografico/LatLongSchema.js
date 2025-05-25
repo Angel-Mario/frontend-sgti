@@ -15,7 +15,6 @@ export const LatLongSchema = z.string().refine(
     return lat >= -90 && lat <= 90 && long >= -180 && long <= 180
   },
   {
-    message:
-			'El formato debe ser "latitud, longitud" con valores válidos (-90 a 90 para latitud, -180 a 180 para longitud)',
+    message: 'El formato debe ser "latitud, longitud" con valores válidos (-90 a 90 para latitud, -180 a 180 para longitud)',
   },
 )

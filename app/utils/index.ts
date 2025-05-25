@@ -17,12 +17,14 @@ export type {
   User,
 } from './types/auth'
 export type { ErrorResponse } from './types/errorResponse'
+export type { PuntoComb, PuntoCombPuntoRef, PuntosCombResponse } from './types/geografico/puntos-Comb'
 export type {
   PuntoRef,
   PuntosRefRespone,
   Usage,
 } from './types/geografico/puntos-Ref'
 export type { Ruta, RutasResponse } from './types/geografico/rutas'
+export type { Terminal, TerminalesResponse, TerminalPuntoRef } from './types/geografico/terminales'
 // types
 export type {
   Params,
@@ -44,6 +46,12 @@ export type { Vehiculo, VehiculoChofer } from './types/vehicular/vehiculo'
 export {
   AdministradorSchema,
   ChoferSchema,
+  DetailedMilitaryTimeSchema,
+  LatLongSchema,
+  PuntoCombSchema,
+  PuntoRefSchema,
+  RutaSchema,
   SuministradorSchema,
+  TerminalSchema,
   UsuarioSchema,
 } from './validations/index'

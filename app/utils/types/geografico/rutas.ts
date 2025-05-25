@@ -7,7 +7,7 @@ export interface RutasResponse {
 export interface Ruta {
   id: string
   nombre: string
-  distancia: string
+  distancia: number
   hora_salida: string
   hora_regreso: string
   puntoSalida: RutaPunto

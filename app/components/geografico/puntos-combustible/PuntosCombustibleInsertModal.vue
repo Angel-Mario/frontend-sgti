@@ -5,7 +5,7 @@ const props = defineProps({
     default: false,
   },
   data: {
-    type: Object as () => Ruta,
+    type: Object as () => PuntoComb,
     default: undefined,
   },
   refresh: {
@@ -22,18 +22,18 @@ const localOpen = ref(props.open)
     v-model:open="localOpen"
     :title="
       props.data
-        ? 'Mofificar ruta'
-        : 'Añadir una nueva ruta'
+        ? 'Modificar punto de combustible'
+        : 'Añadir un nuevo punto de combustible'
     "
-    :ui="{ content: 'sm:max-w-md', wrapper: 'sm:max-w-md' }"
+    :ui="{ content: 'sm:max-w-xl', wrapper: 'sm:max-w-xl' }"
     :description="
       props.data
-        ? 'Por favor, introduce los datos de la ruta a modificar'
-        : 'Por favor, introduce los datos de la nueva ruta'
+        ? 'Por favor, introduce los datos del punto de combustible a modificar'
+        : 'Por favor, introduce los datos del nuevo punto de combustible'
     "
   >
     <template #body>
-      <GeograficoRutasInsertForm
+      <GeograficoPuntosCombustibleInsertForm
         :data="props.data"
         :refresh="props.refresh"
         @close="localOpen = false"

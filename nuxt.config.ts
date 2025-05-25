@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/eslint',
   ],
-  plugins: ['./app/plugins/auth.init.ts'],
   devtools: { enabled: true },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

@@ -29,12 +29,12 @@ const items: BreadcrumbItem[] = [
         to: '/geografico/rutas',
       },
       {
-        label: 'Terminales',
-        to: '/geografico/terminales',
+        label: 'Puntos de Combustible',
+        to: '/geografico/puntos-combustible',
       },
       {
-        label: 'Hojas de ruta',
-        to: '/geografico/hojas-ruta',
+        label: 'Terminales',
+        to: '/geografico/terminales',
       },
     ],
   },

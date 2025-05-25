@@ -8,6 +8,8 @@ export const useAuthStore = defineStore('auth', {
 
   getters: {
     isAuthenticated: (state): boolean => !!state.user,
+
+    getToken: (state): string => state.token || useCookie('access_token').value || '',
   },
 
   actions: {
@@ -15,7 +17,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = response.user
       this.token = response.token
       useCookie('access_token').value = response.token
-
       return response.user
     },
 

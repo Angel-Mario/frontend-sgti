@@ -49,12 +49,13 @@ async function openInsertModal() {
       : () => {},
     data: undefined,
   })
-  await modal.open()
+  modal.open()
 }
 
 const modalMap = overlay.create(LazyGeograficoLeafletModal, {
   props: {
     open: false,
+    locations: [],
   },
 })
 
@@ -112,7 +113,7 @@ function getRowItems(row: Row<Ruta>) {
           ],
           title: `Ruta ${row.original.nombre}:`,
         })
-        await modalMap.open()
+        modalMap.open()
       },
     },
   ]

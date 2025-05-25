@@ -3,11 +3,11 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 
 definePageMeta({
   layout: 'authenticated',
-  pageTitle: 'Puntos Referentes',
-  pageDescription: 'Lista de Puntos Referentes',
+  pageTitle: 'Terminales',
+  pageDescription: 'Lista de Terminales',
   pageIcon: 'i-lucide-user',
-  pageKeywords: 'puntos referentes, lista, punto referente, admin',
-  name: 'puntos-referentes',
+  pageKeywords: 'terminales, lista, terminal, admin',
+  name: 'puntos-combustible',
 })
 
 const items: BreadcrumbItem[] = [
@@ -15,6 +15,7 @@ const items: BreadcrumbItem[] = [
     label: 'Home',
     to: '/home',
   },
+
   {
     slot: 'dropdown' as const,
     icon: 'i-lucide-ellipsis',
@@ -39,8 +40,8 @@ const items: BreadcrumbItem[] = [
     ],
   },
   {
-    label: 'Puntos Referentes',
-    to: '/geografico/puntos-referentes',
+    label: 'Puntos de Combustible',
+    to: '/geografico/puntos-combustible',
   },
 ]
 </script>
@@ -50,12 +51,12 @@ const items: BreadcrumbItem[] = [
     <RouteBreadCrumb :items="items">
       <section class="flex flex-col w-full row-span-1 px-6 rounded-2xl">
         <h1 class="text-2xl font-bold">
-          Listado de Puntos Referentes
+          Puntos de Combustible
         </h1>
         <USeparator color="primary" type="solid" />
       </section>
       <main class="w-full px-3 pb-2 overflow-hidden row-span-10 rounded-2xl">
-        <GeograficoPuntosReferentesTable />
+        <GeograficoPuntosCombustibleTable />
       </main>
     </RouteBreadCrumb>
   </div>

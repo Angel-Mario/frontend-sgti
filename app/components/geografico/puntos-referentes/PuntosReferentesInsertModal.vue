@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { GeograficoPuntosReferentesInsertForm } from '#components'
-
 const props = defineProps({
   open: {
     type: Boolean,

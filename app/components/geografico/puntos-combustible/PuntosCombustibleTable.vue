@@ -3,7 +3,7 @@ import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
 import {
   LazyGeograficoLeafletModal,
-  LazyGeograficoPuntosReferentesInsertModal,
+  LazyGeograficoPuntosCombustibleInsertModal,
 } from '#components'
 
 const childRef = useTemplateRef('child')
@@ -11,10 +11,16 @@ const childRef = useTemplateRef('child')
 const filterOptions = [
   { id: 'id', label: 'Id' },
   { id: 'nombre', label: 'Nombre' },
-  { id: 'latLong', label: 'latLong' },
+  { id: 'puntoRef', label: 'Punto Referente' },
 ]
-const fetchRoute = 'geografico/puntos-ref'
+const fetchRoute = 'geografico/puntos-combustible'
 const defaultSortingValue = 'Nombre'
+
+const columnVisibility = {
+  'Id': true,
+  'Nombre': true,
+  'Punto Referente': true,
+}
 
 // Table UI Component Resolvers
 const UButton = resolveComponent('UButton')
@@ -25,7 +31,7 @@ const UCheckbox = resolveComponent('UCheckbox')
 const overlay = useOverlay()
 
 // Modal for Insert Item
-const modal = overlay.create(LazyGeograficoPuntosReferentesInsertModal, {
+const modal = overlay.create(LazyGeograficoPuntosCombustibleInsertModal, {
   props: {
     open: false,
     data: undefined,
@@ -54,7 +60,7 @@ const modalMap = overlay.create(LazyGeograficoLeafletModal, {
 })
 
 // Row Dropdown definition
-function getRowItems(row: Row<PuntoRef>) {
+function getRowItems(row: Row<PuntoComb>) {
   return [
     {
       label: 'Editar',
@@ -91,14 +97,16 @@ function getRowItems(row: Row<PuntoRef>) {
       label: 'Ver en mapa',
       icon: 'i-lucide-map',
       async onSelect() {
-        const latLong = row.original.latLong.split(',')
+        const latLong = row.original.puntoRef.latLong.split(',')
         const lat = Number(latLong[0])
         const lng = Number(latLong[1])
         modalMap.patch({
           open: true,
           center: [lat, lng],
-          locations: [{ name: row.original.nombre, lat, lng }],
-          title: `Punto de referencia ${row.original.nombre}: [${row.original.latLong}]`,
+          locations: [
+            { name: row.original.puntoRef.nombre, lat, lng },
+          ],
+          title: `Viendo el Punto de Combustible: ${row.original.nombre}`,
         })
         modalMap.open()
       },
@@ -107,8 +115,8 @@ function getRowItems(row: Row<PuntoRef>) {
 }
 
 // Const Columns  Table
-const columns: TableColumn<PuntoRef>[] = [
-  makeColumnSelect<PuntoRef>(UCheckbox),
+const columns: TableColumn<PuntoComb>[] = [
+  makeColumnSelect<PuntoComb>(UCheckbox),
   {
     accessorKey: 'id',
     header: ({ column }) => makeColumnHeader(column, 'Id', UButton),
@@ -120,50 +128,18 @@ const columns: TableColumn<PuntoRef>[] = [
     id: 'Nombre',
   },
   {
-    accessorKey: 'latLong',
-    header: ({ column }) =>
-      makeColumnHeader(column, 'Latitud y Longitud', UButton),
-    id: 'latLong',
-    meta: {
-      class: {
-        td: 'text-center',
-        th: 'text-center',
-      },
-    },
-  },
-  {
-    accessorKey: 'usage',
-    header: 'Uso',
+    accessorKey: 'puntoRef',
+    header: ({ column }) => makeColumnHeader(column, 'Punto Referente', UButton),
     cell: ({ row }) => {
-      const usage = row.getValue('usage') as Usage
-      if (
-        usage.terminales.length === 0
-        && usage.puntos_combustible.length === 0
-        && usage.rutas.length === 0
-      ) {
-        return h('p', undefined, '[No está siendo utilizado]')
+      const puntoRef = row.getValue('Punto Referente') as PuntoCombPuntoRef
+      if (puntoRef) {
+        return h('div', undefined, [h('p', undefined, `Nombre: ${puntoRef.nombre}`), h('p', undefined, `Ubicación: ${puntoRef.latLong}`)])
       }
-      // Si está siendo utilizado
-      return h(
-        'div',
-        { class: 'flex items-center gap-3 sm:max-w-48 md:max-w-96' },
-        [
-          h('div', undefined, [
-            // Mostrar Puntos de Combustible
-            usage.puntos_combustible.length > 0
-              ? h('p', `Puntos de combustible: ${usage.puntos_combustible}`)
-              : '',
-            // Mostrar Rutas
-            usage.rutas.length > 0 ? h('p', `Rutas: ${usage.rutas}`) : '',
-            // Mostrar Terminales
-            usage.terminales.length > 0
-              ? h('p', `Terminales: ${usage.terminales}`)
-              : '',
-          ]),
-        ],
-      )
+      else {
+        return h('p', undefined, '[No está el valor de punto de referencia]')
+      }
     },
-    id: 'usage',
+    id: 'Punto Referente',
   },
   {
     id: 'actions',
@@ -200,6 +176,7 @@ const columns: TableColumn<PuntoRef>[] = [
     ref="child"
     :filter-options="filterOptions"
     :columns="columns"
+    :column-visibility="columnVisibility"
     :default-sorting-value="defaultSortingValue"
     :fetch-route="fetchRoute"
     @open-insert-modal="openInsertModal"

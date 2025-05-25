@@ -8,6 +8,7 @@ export default withNuxt(
     // ...@antfu/eslint-config options
     rules: {
       'n/prefer-global/process': 'off',
+      'no-console': 'warn',
     },
   }),
   ...oxlint.configs['flat/recommended'],

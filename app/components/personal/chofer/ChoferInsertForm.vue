@@ -25,8 +25,7 @@ const state = reactive<Partial<Schema>>({
   carnet: props.data ? props.data.carnet : undefined,
   correo: props.data ? props.data.correo : undefined,
   password: undefined,
-  telefono:
-		props.data && props.data.telefono === '' ? props.data.telefono : undefined,
+  telefono: props.data && props.data.telefono === '' ? props.data.telefono : undefined,
   residencia: props.data?.residencia
     ? props.data.residencia.toString()
     : undefined,
@@ -62,7 +61,7 @@ const authStore = useAuthStore()
 const query = shallowRef('')
 const { data: itemsRutaData, status: statusRuta } = useFetch<string[]>(
   '/geografico/rutas/simplex',
-  makeFetchOptions(query, toast, `Bearer ${authStore.token}`),
+  makeFetchOptions(query, toast, `Bearer ${authStore.getToken}`),
 )
 const { data: itemsMatriculasData, status: statusMatricula } = useFetch<
   string[]

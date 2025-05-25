@@ -83,7 +83,7 @@ const {
   makeFetchOptions(
     paramFilterSortPagination,
     toast,
-    `Bearer ${authStore.token}`,
+    `Bearer ${authStore.getToken}`,
   ),
 )
 
@@ -106,6 +106,9 @@ const oldDataBeforeChange = shallowRef(data.value)
 watch(data, (data, oldData) => {
   if (!data) {
     oldDataBeforeChange.value = oldData
+  }
+  else {
+    oldDataBeforeChange.value = data
   }
 })
 </script>

@@ -1,11 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type * as z from 'zod'
-import { LazyGeograficoLeafletModalEdit } from '#components'
 
 const props = defineProps({
   data: {
-    type: Object as () => PuntoRef,
+    type: Object as () => PuntoComb,
     default: undefined,
   },
   refresh: {
@@ -16,13 +15,13 @@ const props = defineProps({
 // Emiters definitions
 const emit = defineEmits(['close'])
 
-const schema = PuntoRefSchema()
+const schema = PuntoCombSchema()
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   nombre: props.data ? props.data.nombre : undefined,
-  latLong: props.data ? props.data.latLong : undefined,
+  puntoRef: props.data ? props.data.puntoRef.nombre : undefined,
 })
 
 const toast = useToast()
@@ -34,11 +33,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   console.log(dataForm, 'DataForm')
 
-  await $fetch(`geografico/puntos-ref/${props.data ? props.data.id : ''}`, {
+  await $fetch(`geografico/puntos-combustible/${props.data ? props.data.id : ''}`, {
     ...makePostPatchOptions(
       props.data
-        ? 'Actualizado correctamente el punto de referencia'
-        : 'Se ha registrado correctamente el punto de referencia',
+        ? 'Actualizado correctamente el punto de combustible'
+        : 'Se ha registrado correctamente el punto de combustible',
       dataForm,
       () => {
         props.refresh() // Actualiza los datos si es necesario
@@ -49,6 +48,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     method: 'POST',
   })
 }
+const authStore = useAuthStore()
+const query = shallowRef('')
+const { data: itemsPuntoRefData, status: statusPuntoRef } = useFetch<string[]>(
+  '/geografico/puntos-ref/simplex',
+  makeFetchOptions(query, toast, `Bearer ${authStore.getToken}`),
+)
+const itemsPuntoRefNombre = ref(itemsPuntoRefData.value)
+
+watch(itemsPuntoRefData, () => {
+  itemsPuntoRefNombre.value = itemsPuntoRefData.value
+})
 
 // Flag to track if the form has been modified
 const isFormDirty = ref(false)
@@ -62,41 +72,6 @@ watch(
   },
   { deep: true },
 )
-
-// Overlay Hooks
-const overlay = useOverlay()
-const modalMap = overlay.create(LazyGeograficoLeafletModalEdit, {
-  props: {
-    open: false,
-    sendData: async (data: { latLong: string }) => {
-      state.latLong = data.latLong
-    },
-    locations: [],
-  },
-})
-async function openModal() {
-  if (state.latLong) {
-    const latLong = state.latLong?.split(',')
-    const lat = Number(latLong[0])
-    const lng = Number(latLong[1])
-    if (state.latLong && lat && lng) {
-      modalMap.patch({
-        open: true,
-        locations: [{ name: state.nombre, lat, lng }],
-        center: [lat, lng],
-        title: `Editar Punto de referencia [${latLong}]`,
-      })
-    }
-  }
-  else {
-    modalMap.patch({
-      open: true,
-      locations: [],
-      title: 'Toca donde quieras crear un punto',
-    })
-  }
-  await modalMap.open()
-}
 </script>
 
 <template>
@@ -108,31 +83,27 @@ async function openModal() {
   >
     <UFormField
       class="col-span-5 pe-2"
-      label="Nombre del punto"
+      label="Nombre del Punto de Combustible"
       name="nombre"
       required
     >
-      <UInput v-model="state.nombre" placeholder="Ex: Parque de La leche" />
+      <UInput v-model="state.nombre" placeholder="Ex: Cupet Camacho" />
     </UFormField>
 
     <UFormField
-      label="Latitud y Longitud"
-      name="latLong"
+      label="Punto Referente"
+      name="puntoRef"
+      class="col-span-4 col-start-6"
       required
-      class="col-span-3 col-start-6 ml-4"
     >
-      <UInput v-model="state.latLong" placeholder="Ex: 19.4376, -98.5076" />
-    </UFormField>
-    <div class="flex items-end col-span-1 ml-6 ps-1">
-      <UButton
-        class="cursor-pointer h-fit w-fit"
-        icon="i-lucide-map"
-        size="md"
-        color="primary"
-        variant="soft"
-        @click="openModal"
+      <USelectMenu
+        v-model="state.puntoRef"
+        :items="itemsPuntoRefNombre"
+        :loading="statusPuntoRef === 'pending'"
+        class="w-full"
+        placeholder="[Punto Referente]"
       />
-    </div>
+    </UFormField>
 
     <div
       class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"

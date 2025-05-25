@@ -42,8 +42,8 @@ function onMapReady() {
   import('leaflet.markercluster')
 }
 const redIcon = L.icon({
-  iconUrl: '/app/assets/img/marker-icon.png', // Archivo SVG con tu color
-  shadowUrl: '/app/assets/img/marker-shadow.png',
+  iconUrl: '../_nuxt/assets/img/marker-icon-red.png', // Archivo SVG con tu color
+  shadowUrl: '../_nuxt/assets/img/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 })
@@ -83,7 +83,7 @@ const redIcon = L.icon({
             <template v-if="index === 0">
               <LMarker :lat-lng="[location.lat, location.lng]">
                 <LTooltip>
-                  Nombre: {{ location.name }}<br>
+                  {{ locations.length > 1 ? 'Origen' : 'Nombre' }}: {{ location.name }}<br>
                   Ubicación: {{ location.lat }}, {{ location.lng }}
                 </LTooltip>
               </LMarker>
@@ -94,7 +94,7 @@ const redIcon = L.icon({
                 :icon="redIcon"
               >
                 <LTooltip>
-                  Nombre: {{ location.name }}<br>
+                  Destino: {{ location.name }}<br>
                   Ubicación: {{ location.lat }}, {{ location.lng }}
                 </LTooltip>
               </LMarker>

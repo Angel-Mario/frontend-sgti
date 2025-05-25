@@ -74,13 +74,14 @@ const items = ref<NavigationMenuItem[][]>([
           label: 'Puntos combustible',
           icon: 'i-lucide-fuel',
           description: 'Lista de puntos de combustible',
+          to: '/geografico/puntos-combustible',
         },
         // GET UPDATE DELETE POST
         {
           label: 'Terminales',
           icon: 'i-lucide-caravan',
           description: 'Lista de terminales',
-          // to: "/components/link",
+          to: '/geografico/terminales',
         },
       ],
     },
