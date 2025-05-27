@@ -1,7 +1,7 @@
 import type { Toast } from '@nuxt/ui/runtime/composables/useToast.js'
 import type { FetchResponse } from 'ofetch'
 
-export function makePostPatchOptions(successMessage: string,	dataForm: unknown,	closeTrigger: () => void,	toast: {
+export function makePostPatchOptions(successMessage: string, dataForm: unknown, closeTrigger: () => void, toast: {
   toasts: globalThis.Ref<Toast[], Toast[]>
   add: (toast: Partial<Toast>) => Toast
   update: (id: string | number, toast: Omit<Partial<Toast>, 'id'>) => void

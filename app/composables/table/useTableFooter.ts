@@ -7,7 +7,7 @@ export function useTableFooter() {
     || useRuntimeConfig().public.defaultPageSize,
   )
   const paramFilterSortPagination = ref<
-		ParamsPagination | ParamsFilter | Params
+ParamsPagination | ParamsFilter | Params
   >({
     page: page.value,
     pageSize: useRuntimeConfig().public.defaultPageSize,

@@ -136,6 +136,7 @@ const items = ref<NavigationMenuItem[][]>([
           label: 'Solicitudes de Piezas',
           icon: 'i-lucide-cog',
           description: 'Lista de solicitudes de piezas',
+          to: '/vehicular/solicitudes-piezas',
         },
       ],
     },

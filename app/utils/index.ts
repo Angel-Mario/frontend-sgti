@@ -11,6 +11,7 @@ export { paginationRouteManager } from './functions/pagination'
 export { sortingRouteManager } from './functions/sorting'
 
 export type {
+  AuthChofer,
   AuthState,
   AuthTokens,
   LoginCredentials,

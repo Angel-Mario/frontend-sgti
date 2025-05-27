@@ -67,6 +67,7 @@ defineExpose({
   deleteSelection,
 })
 const authStore = useAuthStore()
+
 // Data Fetching Function
 const {
   data,
@@ -80,11 +81,11 @@ const {
   data: T[]
 }>(
   props.fetchRoute,
-  makeFetchOptions(
+  { ...makeFetchOptions(
     paramFilterSortPagination,
     toast,
     `Bearer ${authStore.getToken}`,
-  ),
+  ), deep: false, dedupe: 'defer', key: paramFilterSortPagination.value.toString() },
 )
 
 // redefinition RefreshMetodh
@@ -104,7 +105,7 @@ const totalItems = computed(() => data.value?.count || 0)
 const oldDataBeforeChange = shallowRef(data.value)
 // Show old state while loading new data on new request
 watch(data, (data, oldData) => {
-  if (!data) {
+  if (!data || status.value === 'error') {
     oldDataBeforeChange.value = oldData
   }
   else {
@@ -237,7 +238,7 @@ watch(data, (data, oldData) => {
       }"
       :loading="status === 'pending'"
       sticky
-      :data="pending ? oldDataBeforeChange?.data : data?.data"
+      :data="pending || status === 'error' ? oldDataBeforeChange?.data : data?.data"
       :columns="columns"
       class="cool-scrollbar-dark"
       @update:sorting="
@@ -246,9 +247,9 @@ watch(data, (data, oldData) => {
           const property = props.filterOptions.find(
             (o) => o.label === (id?.id as string),
           );
-          paramFilterSortPagination = sortingRouteManager([
+          paramFilterSortPagination = sortingRouteManager(
             { id: property?.id as string, desc: id?.desc },
-          ]);
+          );
         }
       "
     />

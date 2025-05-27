@@ -5,5 +5,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div>a  <img src="../assets/img/marker-icon.png"></div>
+  <div>a</div>
 </template>

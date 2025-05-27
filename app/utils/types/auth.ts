@@ -19,7 +19,41 @@ export interface LoginCredentials {
   password: string
 }
 
+export interface AuthChofer {
+  id: string
+  residencia: string
+  vehiculo: AuthVehiculo
+  ruta: AuthRuta
+}
+
+interface AuthRuta {
+  id: string
+  nombre: string
+  distancia: string
+  hora_salida: string
+  hora_regreso: string
+  puntoSalida: AuthPunto
+  puntoRegreso: AuthPunto
+}
+
+interface AuthPunto {
+  id: number
+  nombre: string
+  latLong: string
+}
+
+interface AuthVehiculo {
+  id: string
+  matricula: string
+  consumo: string
+  capacidad: string
+  marca: string
+  modelo: string
+  año: string
+}
+
 export interface AuthState {
   user: User | null
   token: string | null
+  chofer: AuthChofer | null
 }

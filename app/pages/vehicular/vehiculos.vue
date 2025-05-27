@@ -25,6 +25,10 @@ const items: BreadcrumbItem[] = [
         label: 'Vehículos',
         to: '/vehicular/vehiculos',
       },
+      {
+        label: 'Solicitudes de Piezas',
+        to: '/vehicular/solicitudes-piezas',
+      },
     ],
   },
   {

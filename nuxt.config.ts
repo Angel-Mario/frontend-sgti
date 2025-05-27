@@ -29,8 +29,9 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   experimental: {
-    buildCache: true,
+    // buildCache: true,
     componentIslands: true,
+    cookieStore: true,
   },
   compatibilityDate: '2024-11-01',
   eslint: {

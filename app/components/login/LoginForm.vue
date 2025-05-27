@@ -21,6 +21,7 @@ const authStore = useAuthStore()
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   event.preventDefault()
+  event.stopPropagation()
   try {
     const data = await $fetch<({ user: User } & AuthTokens) | ErrorResponse>(
       '/auth/login',
@@ -48,7 +49,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   catch (error) {
     if (error instanceof Error) {
-      toast.add({ title: 'Error', description: error.message })
+      toast.add({ title: 'Error de autenticación', description: error.message, ui: {
+        root: 'focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple',
+        icon: 'text-purple-500',
+        progress: 'bg-purple-500',
+      }, icon: 'i-lucide-lock-keyhole' })
     }
   }
 }

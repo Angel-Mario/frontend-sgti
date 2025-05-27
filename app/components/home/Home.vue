@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 const a = useMediaQuery('(width >= 64rem)')
 
-// const { user } = useAuthStore();
+const auth = useAuthStore()
+const user = auth.user
+onMounted(
+  () => {
+    auth.initialize()
+  },
+)
 </script>
 
 <template>
@@ -29,7 +35,9 @@ const a = useMediaQuery('(width >= 64rem)')
         </HomeProfile>
 
         <!-- Sección de enlaces -->
-        <HomeAdminLinks />
+        <HomeAdminLinks v-if="user?.roles.includes('admin')" v-once />
+        <HomeChoferLinks v-if="user?.roles.includes('chofer')" v-once />
+        <HomeAdminLinks v-if="user?.roles.includes('suministrador')" v-once />
         <HomeFooter v-if="!a" />
       </div>
     </div>

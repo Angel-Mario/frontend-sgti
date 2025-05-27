@@ -2,14 +2,14 @@ import type { Toast } from '@nuxt/ui/runtime/composables/useToast.js'
 import type { FetchResponse, ResolvedFetchOptions } from 'ofetch'
 
 export function makeFetchOptions(paramFilterSortPagination: Ref<
-		ParamsPagination | ParamsFilter | Params | string
->,	toast: {
+ParamsPagination | ParamsFilter | Params | string
+>, toast: {
   toasts: globalThis.Ref<Toast[], Toast[]>
   add: (toast: Partial<Toast>) => Toast
   update: (id: string | number, toast: Omit<Partial<Toast>, 'id'>) => void
   remove: (id: string | number) => void
   clear: () => void
-},	token: string) {
+}, token: string) {
   return {
     query: paramFilterSortPagination,
     // baseURL: "http://localhost:3000/api/",

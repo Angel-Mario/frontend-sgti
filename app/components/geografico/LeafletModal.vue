@@ -36,17 +36,19 @@ const props = defineProps({
 })
 const localOpen = ref(props.open)
 
-// TODO: fix marker router to make an red icon
 // When the map is ready
 function onMapReady() {
   import('leaflet.markercluster')
 }
-const redIcon = L.icon({
-  iconUrl: '../_nuxt/assets/img/marker-icon-red.png', // Archivo SVG con tu color
-  shadowUrl: '../_nuxt/assets/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-})
+let redIcon: L.Icon<L.IconOptions>
+if (props.locations.length > 1) {
+  redIcon = L.icon({
+    iconUrl: '/markers/marker-icon-red.png', // Archivo SVG con tu color
+    shadowUrl: '/markers/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  })
+}
 </script>
 
 <template>

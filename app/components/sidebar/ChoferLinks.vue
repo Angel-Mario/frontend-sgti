@@ -12,17 +12,17 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Reportar Avería',
       icon: 'i-lucide-badge-x',
-      // to: "/reporte-averia",
+      to: '/vehicular/reportar-averia',
     },
     {
       label: 'Ruta Asignada',
       icon: 'i-lucide-route',
-      // to: "/ruta-asignada",
+      to: '/personal/ruta-asignada',
     },
     {
       label: 'Solicar Piezas',
       icon: 'i-lucide-cog',
-      // to: "/solicitud-pieza",
+      to: '/vehicular/solicitar-pieza',
     },
   ],
 ])

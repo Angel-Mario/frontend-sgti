@@ -19,7 +19,7 @@ function handleLogout() {
 
 <template>
   <div :class="`flex ${align} items-center justify-center w-full h-full`">
-    <h2 class="mb-1 font-bold text-center text-md text-neutral-500">
+    <h2 v-once class="mb-1 font-bold text-center text-md text-neutral-500">
       usuario: {{ authStore.user?.nombre_u }}
     </h2>
     <UButton

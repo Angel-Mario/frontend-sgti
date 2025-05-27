@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 
-const authStore = useAuthStore()
+const user = useAuthStore().user
+const isAuthenticated = useAuthStore().isAuthenticated
 
 const fps = useFps()
 
@@ -41,18 +42,12 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
           </h1>
         </section>
         <div
-          v-if="authStore.isAuthenticated"
+          v-if="isAuthenticated"
           class="max-h-full px-2 py-3 overflow-x-hidden bg-gray-100 row-span-8 rounded-2xl dark:bg-navbardark-500 no-scrollbar h-fit"
         >
-          <template v-if="authStore.user?.roles.includes('admin')">
-            <SidebarAdminLinks />
-          </template>
-          <template v-else-if="authStore.user?.roles.includes('chofer')">
-            <SidebarChoferLinks />
-          </template>
-          <template v-else-if="authStore.user?.roles.includes('suministrador')">
-            <SidebarSuminLinks />
-          </template>
+          <SidebarAdminLinks v-if="user?.roles.includes('admin')" />
+          <SidebarChoferLinks v-else-if="user?.roles.includes('chofer')" />
+          <SidebarSuminLinks v-else-if="user?.roles.includes('suministrador')" />
         </div>
         <div class="row-span-2">
           <CurrentUser />

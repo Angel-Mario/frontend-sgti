@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     user: null,
+    chofer: null,
     token: null,
   }),
 
@@ -32,7 +33,23 @@ export const useAuthStore = defineStore('auth', {
         baseURL: useRuntimeConfig().public.apiUrl,
       })
       this.user = user
+      if (user.roles.includes('chofer'))
+        this.fetchChofer()
       return user
+    },
+    async fetchChofer(): Promise<AuthChofer> {
+      const token = this.token || useCookie('access_token').value
+      if (!token)
+        throw new Error('No access token available')
+
+      const chofer = await $fetch<AuthChofer>('/personal/choferes/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        baseURL: useRuntimeConfig().public.apiUrl,
+      })
+      this.chofer = chofer
+      return chofer
     },
 
     async logout(): Promise<void> {
@@ -50,6 +67,10 @@ export const useAuthStore = defineStore('auth', {
         catch {
           this.logout()
         }
+      }
+      if (this.user) {
+        if (this.user.roles?.includes('chofer'))
+          await this.fetchChofer()
       }
     },
   },
