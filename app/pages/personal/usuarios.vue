@@ -5,7 +5,6 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Usuarios',
   pageDescription: 'Lista de usuarios',
-  pageIcon: 'i-lucide-user',
   pageKeywords: 'usuarios, lista, usuario, admin',
   name: 'usuarios',
   middleware: ['auth'],

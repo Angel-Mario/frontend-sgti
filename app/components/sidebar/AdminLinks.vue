@@ -111,6 +111,13 @@ const items = ref<NavigationMenuItem[][]>([
       icon: 'i-lucide-bus-front',
       children: [
         {
+          // GET
+          label: 'Averías',
+          icon: 'i-lucide-badge-x',
+          description: 'Lista de averías',
+          to: '/vehicular/averias',
+        },
+        {
           // GET UPDATE DELETE POST
           label: 'Combustibles asignados',
           icon: 'i-lucide-chart-candlestick',

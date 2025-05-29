@@ -3,7 +3,7 @@
     <h2 class="mb-6 text-2xl font-bold text-gray-800 dark:text-white">
       Accesos Rápidos
     </h2>
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <HomeQuickLinkCard
         to="/personal/usuarios"
         title="Personal"
@@ -43,7 +43,7 @@
       <HomeQuickLinkCard
         to="/servicios/refuerzos"
         title="Refuerzos"
-        description="Tabla de horario"
+        description="Refuerzos asignados"
         compact
       >
         <UIcon name="i-lucide-trending-up" class="size-14" />

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
-import { LazyVehicularVehiculosInsertModal } from '#components'
-// TODO: order by Matricula asc verificar que funciona en la tabla
+import { LazyVehicularVehiculoInsertModal } from '#components'
+
 const childRef = useTemplateRef('child')
 const router = useRouter()
 
@@ -30,7 +30,7 @@ const overlay = useOverlay()
 const toast = useToast()
 
 // Modal for Insert Item
-const modal = overlay.create(LazyVehicularVehiculosInsertModal, {
+const modal = overlay.create(LazyVehicularVehiculoInsertModal, {
   props: {
     open: false,
     data: undefined,
@@ -48,7 +48,7 @@ async function openInsertModal() {
       : () => {},
     data: undefined,
   })
-  await modal.open()
+  modal.open()
 }
 
 // Row Dropdown definition
@@ -65,7 +65,7 @@ function getRowItems(row: Row<Vehiculo>) {
             : () => {},
           data: row.original,
         })
-        await modal.open()
+        modal.open()
       },
     },
     {
@@ -98,10 +98,6 @@ function getRowItems(row: Row<Vehiculo>) {
         })
       },
     },
-    // {
-    // 	label: "Ver detalles",
-    // 	icon: "i-lucide-eye",
-    // },
   ]
 }
 

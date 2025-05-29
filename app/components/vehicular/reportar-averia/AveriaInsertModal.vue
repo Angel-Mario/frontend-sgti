@@ -5,7 +5,7 @@ const props = defineProps({
     default: false,
   },
   data: {
-    type: Object as () => Usuario,
+    type: Object as () => Averia,
     default: undefined,
   },
   refresh: {

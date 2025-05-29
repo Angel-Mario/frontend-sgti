@@ -5,9 +5,9 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Puntos Referentes',
   pageDescription: 'Lista de Puntos Referentes',
-  pageIcon: 'i-lucide-user',
   pageKeywords: 'puntos referentes, lista, punto referente, admin',
   name: 'puntos-referentes',
+  middleware: ['auth'],
 })
 
 const items: BreadcrumbItem[] = [

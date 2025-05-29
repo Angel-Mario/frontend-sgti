@@ -5,9 +5,9 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Terminales',
   pageDescription: 'Lista de Terminales',
-  pageIcon: 'i-lucide-user',
-  pageKeywords: 'terminales, lista, terminal, admin',
+  pageKeywords: 'terminales, lista, terminal',
   name: 'terminales',
+  middleware: ['auth'],
 })
 
 const items: BreadcrumbItem[] = [

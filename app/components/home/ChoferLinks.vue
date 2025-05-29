@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { chofer } = useAuthStore()
+</script>
+
 <template>
   <section class="w-full lg:w-2/3">
     <h2 class="mb-6 text-2xl font-bold text-gray-800 dark:text-white">
@@ -32,10 +36,18 @@
       </HomeQuickLinkCard>
     </div>
     <!-- sección para la información del vehículo asignado al chofer -->
-    <div class="flex flex-col w-full h-full mt-3">
-      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+    <div v-if="chofer && chofer.vehiculo" class="flex flex-col mt-3 w-fit">
+      <h2 class="mt-3 mb-6 text-2xl font-bold text-gray-800 dark:text-white">
         Vehículo asignado
       </h2>
+      <section class="grid w-full grid-cols-2 p-6 bg-white shadow-md gap-x-3 gap-y-1 dark:bg-navbardark-500 rounded-xl hover:shadow-lg">
+        <p>Marca: {{ chofer.vehiculo.marca }}</p>
+        <p>Modelo: {{ chofer.vehiculo.modelo }}</p>
+        <p>Año: {{ chofer.vehiculo.año }}</p>
+        <p>Matrícula: {{ chofer.vehiculo.matricula }}</p>
+        <p>Modelo: {{ chofer.vehiculo.modelo }}</p>
+        <p>Capacidad: {{ chofer.vehiculo.capacidad }}</p>
+      </section>
     </div>
   </section>
 </template>

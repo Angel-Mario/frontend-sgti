@@ -56,4 +56,5 @@ export interface AuthState {
   user: User | null
   token: string | null
   chofer: AuthChofer | null
+  apiUrl: string
 }

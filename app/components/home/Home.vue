@@ -30,16 +30,15 @@ onMounted(
     <div class="container px-4 mx-auto xl:px-10">
       <div class="flex flex-col gap-8 lg:flex-row">
         <!-- Sección de perfil -->
-        <HomeProfile>
-          <HomeFooter v-if="a" />
-        </HomeProfile>
+        <HomeProfile />
 
         <!-- Sección de enlaces -->
-        <HomeAdminLinks v-if="user?.roles.includes('admin')" v-once />
-        <HomeChoferLinks v-if="user?.roles.includes('chofer')" v-once />
-        <HomeAdminLinks v-if="user?.roles.includes('suministrador')" v-once />
+        <LazyHomeAdminLinks v-if="user?.roles.includes('admin')" v-once />
+        <LazyHomeChoferLinks v-if="user?.roles.includes('chofer')" v-once />
+        <LazyHomeSuministradorLinks v-if="user?.roles.includes('suministrador')" v-once />
         <HomeFooter v-if="!a" />
       </div>
     </div>
+    <HomeFooter v-if="a" />
   </main>
 </template>

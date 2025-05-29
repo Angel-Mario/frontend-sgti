@@ -40,19 +40,26 @@ export type {
   ChoferVehiculo,
 } from './types/personal/chofer'
 export type { Suministrador } from './types/personal/suministrador'
-
 export type { Usuario } from './types/personal/usuario'
+
+export type { Averia } from './types/vehicular/averia'
+export type { ReportarAveriaPage } from './types/vehicular/reportar-averia-page'
+export type { SolicitudesPiezasResponse, SolicitudPieza, SolicitudPiezaChofer, SolicitudPiezaUser, SolicitudPiezaVehiculo } from './types/vehicular/solicitudes-piezas'
 export type { Vehiculo, VehiculoChofer } from './types/vehicular/vehiculo'
 
 export {
   AdministradorSchema,
+  AveriaSchema,
   ChoferSchema,
   DetailedMilitaryTimeSchema,
   LatLongSchema,
   PuntoCombSchema,
   PuntoRefSchema,
+  ReporteSchema,
   RutaSchema,
+  SolicitudPiezaSchema,
   SuministradorSchema,
   TerminalSchema,
   UsuarioSchema,
+  VehiculoSchema,
 } from './validations/index'

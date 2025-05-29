@@ -1,47 +1,33 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
-import { LazyPersonalChoferInsertModal } from '#components'
+import { LazyVehicularAveriaInsertModal } from '#components'
 
-// Table Ref
 const childRef = useTemplateRef('child')
+const router = useRouter()
 
-// Filter Options for search parameters
 const filterOptions = [
   { id: 'id', label: 'Id' },
-  { id: 'nombre_u', label: 'Usuario' },
-  { id: 'fullName', label: 'Nombre' },
-  { id: 'correo', label: 'Correo' },
-  { id: 'carnet', label: 'Carnet' },
-  { id: 'isActive', label: 'Estado' },
-  { id: 'telefono', label: 'Teléfono' },
-  { id: 'residencia', label: 'Residencia' },
+  { id: 'complejidad', label: 'Complejidad' },
+  { id: 'descripcion', label: 'Descripción' },
+  { id: 'tipo', label: 'Tipo' },
+  { id: 'piezas_necesarias', label: 'Piezas Necesarias' },
+  { id: 'vehiculo', label: 'Vehículo' },
 ]
-
-// columns Visibility Options
-const columnVisibility = {
-  Id: false,
-  Carnet: false,
-  Estado: false,
-}
-
-const fetchRoute = 'personal/choferes'
-const defaultSortingValue = 'Nombre'
+const fetchRoute = 'vehicular/averias'
+const defaultSortingValue = 'Complejidad'
 
 // Table UI Component Resolvers
 const UButton = resolveComponent('UButton')
 const UIcon = resolveComponent('UIcon')
-const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UCheckbox = resolveComponent('UCheckbox')
 
-// Custom Hooks
+// Overlay Hooks
 const overlay = useOverlay()
-const toast = useToast()
-const router = useRouter()
 
 // Modal for Insert Item
-const modal = overlay.create(LazyPersonalChoferInsertModal, {
+const modal = overlay.create(LazyVehicularAveriaInsertModal, {
   props: {
     open: false,
     data: undefined,
@@ -62,8 +48,8 @@ async function openInsertModal() {
   modal.open()
 }
 
-// Column Dropdown definition
-function getRowItems(row: Row<Chofer>) {
+// Row Dropdown definition
+function getRowItems(row: Row<Averia>) {
   return [
     {
       label: 'Editar',
@@ -76,26 +62,7 @@ function getRowItems(row: Row<Chofer>) {
             : () => {},
           data: row.original,
         })
-        await modal.open()
-      },
-    },
-    {
-      label: row.original.isActive ? 'Desactivar' : 'Activar',
-      icon: row.original.isActive ? 'i-lucide-circle-off' : 'i-lucide-circle',
-      async onSelect() {
-        $fetch(`${fetchRoute}/${row.original.id}`, {
-          ...makePostPatchOptions(
-            `Se ha ${
-              row.original.isActive ? 'desactivado' : 'activado'
-            } correctamente el chofer`,
-            { isActive: !row.original.isActive },
-            () => {
-              childRef?.value?.refreshMet()
-            },
-            toast,
-          ),
-          method: 'POST',
-        })
+        modal.open()
       },
     },
     {
@@ -112,91 +79,56 @@ function getRowItems(row: Row<Chofer>) {
         )
       },
     },
-    {
-      type: 'separator',
-    },
-    {
-      label: 'Copiar correo',
-      icon: 'i-lucide-copy',
-      onSelect() {
-        navigator.clipboard.writeText(row.original.correo)
-
-        toast.add({
-          title: 'El correo ha sido copiado al portapapeles',
-          color: 'success',
-          icon: 'i-lucide-circle-check',
-        })
-      },
-    },
   ]
 }
 
 // Const Columns  Table
-const columns: TableColumn<Chofer>[] = [
-  makeColumnSelect<Chofer>(UCheckbox),
+const columns: TableColumn<Averia>[] = [
+  makeColumnSelect<Averia>(UCheckbox),
   {
     accessorKey: 'id',
     header: 'Id',
     id: 'Id',
   },
   {
-    accessorKey: 'nombre_u',
-    header: ({ column }) => makeColumnHeader(column, 'Usuario', UButton),
-    id: 'Usuario',
-  },
-  {
-    accessorKey: 'fullName',
-    header: ({ column }) => makeColumnHeader(column, 'Nombre', UButton),
-    id: 'Nombre',
-  },
-  {
-    accessorKey: 'correo',
-    header: ({ column }) => makeColumnHeader(column, 'Correo', UButton),
-    id: 'Correo',
-  },
-  {
-    accessorKey: 'carnet',
-    header: ({ column }) => makeColumnHeader(column, 'Carnet', UButton),
-    id: 'Carnet',
-  },
-  {
-    accessorKey: 'isActive',
-    header: ({ column }) => makeColumnHeader(column, 'Estado', UButton),
-    cell: ({ row }) => {
-      const color = {
-        true: 'success' as const,
-        false: 'neutral' as const,
-      }[row.getValue('Estado') as string]
-
-      return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () =>
-        (row.getValue('Estado') as boolean) ? 'Activo' : 'Inactivo')
+    accessorKey: 'complejidad',
+    header: ({ column }) => makeColumnHeader(column, 'Complejidad', UButton),
+    id: 'Complejidad',
+    meta: {
+      class: {
+        td: 'text-center',
+        th: 'text-center',
+      },
     },
-    id: 'Estado',
   },
   {
-    accessorKey: 'telefono',
-    header: ({ column }) => makeColumnHeader(column, 'Teléfono', UButton),
-    cell: ({ row }) =>
-      row.getValue('Teléfono')
-        ? `+53${row.getValue('Teléfono')}`
-        : '[Sin teléfono]',
-    id: 'Teléfono',
+    accessorKey: 'descripcion',
+    header: ({ column }) => makeColumnHeader(column, 'Descripción', UButton),
+    id: 'Descripción',
   },
   {
-    accessorKey: 'residencia',
-    header: ({ column }) => makeColumnHeader(column, 'Residencia', UButton),
+    accessorKey: 'tipo',
+    header: ({ column }) => makeColumnHeader(column, 'Tipo', UButton),
     cell: ({ row }) =>
-      row.getValue('Residencia') ? row.getValue('Residencia') : '[Sin datos]',
-    id: 'Residencia',
+      row.getValue('Tipo')
+        ? row.getValue('Tipo')
+        : '[Sin tipo de avería]',
+    id: 'Tipo',
+    meta: {
+      class: {
+        td: 'text-center',
+        th: 'text-center',
+      },
+    },
   },
   {
-    accessorKey: 'ruta',
-    header: ({ column }) => makeColumnHeader(column, 'Ruta', UButton),
+    accessorKey: 'piezas_necesarias',
+    header: ({ column }) => makeColumnHeader(column, 'Capacidad', UButton),
     cell: ({ row }) =>
-      row.getValue('Ruta')
-        ? (row.getValue('Ruta') as ChoferRuta).nombre
-        : '[Sin ruta]',
-    id: 'Ruta',
+      row.getValue('Piezas Necesarias')
+        ? row.getValue('Piezas Necesarias')
+        : 'No se necesitan piezas',
+    id: 'Piezas Necesarias',
     meta: {
       class: {
         td: 'text-center',
@@ -219,7 +151,12 @@ const columns: TableColumn<Chofer>[] = [
               h(
                 'p',
                 undefined,
-                `Capacidad: ${(row.getValue('Vehículo') as ChoferVehiculo).capacidad}`,
+                `Marca: ${(row.getValue('Vehículo') as ChoferVehiculo).marca}`,
+              ),
+              h(
+                'p',
+                undefined,
+                `Modelo: ${(row.getValue('Vehículo') as ChoferVehiculo).modelo}`,
               ),
             ]),
             h(
@@ -280,11 +217,10 @@ const columns: TableColumn<Chofer>[] = [
 <template>
   <TableMain
     ref="child"
-    :filter-options="filterOptions"
+    :columns="columns"
     :default-sorting-value="defaultSortingValue"
     :fetch-route="fetchRoute"
-    :columns="columns"
-    :column-visibility="columnVisibility"
+    :filter-options="filterOptions"
     @open-insert-modal="openInsertModal"
   />
 </template>

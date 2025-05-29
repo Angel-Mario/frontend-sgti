@@ -5,7 +5,6 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Solicitudes de Piezas',
   pageDescription: 'Listado de solicitudes de piezas',
-  pageIcon: 'i-lucide-cog',
   pageKeywords: 'vehiculo, admin',
   name: 'solicitudes-piezas',
   middleware: ['auth'],
@@ -21,6 +20,19 @@ const items: BreadcrumbItem[] = [
     icon: 'i-lucide-ellipsis',
     label: 'Vehicular',
     children: [
+      {
+        label: 'Averías',
+        to: '/vehicular/averias',
+      },
+      {
+        label: 'Combustibles asignados',
+        to: '/vehicular/combustibles-asignados',
+      },
+      {
+        label: 'Hojas de ruta',
+        to: '/vehicular/hojas-ruta',
+      },
+
       {
         label: 'Vehículos',
         to: '/vehicular/vehiculos',

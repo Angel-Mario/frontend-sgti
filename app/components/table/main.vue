@@ -25,6 +25,16 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  remove: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+  insert: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 })
 defineEmits(['openInsertModal'])
 
@@ -85,7 +95,7 @@ const {
     paramFilterSortPagination,
     toast,
     `Bearer ${authStore.getToken}`,
-  ), deep: false, dedupe: 'defer', key: paramFilterSortPagination.value.toString() },
+  ), deep: false, dedupe: 'defer', key: props.fetchRoute + paramFilterSortPagination.value.toString() },
 )
 
 // redefinition RefreshMetodh
@@ -119,77 +129,87 @@ watch(data, (data, oldData) => {
     class="flex flex-col w-full h-fit max-h-full border-2 border-(--ui-border) rounded-2xl"
   >
     <div
-      class="flex justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
+      class="flex flex-wrap gap-y-1 justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
     >
-      <!-- Filter Text Field and search param dropdown -->
-      <UButtonGroup>
-        <UInput
-          id="globalFilter"
-          v-model="globalFilter"
-          class="max-w-48"
-          placeholder="Filtrar por..."
-          @keyup.enter="
-            paramFilterSortPagination = filteringRouteManager({
-              column: filterOption as string,
-              search: debounced as string,
-            })
+      <div class="flex items-center justify-center gap-x-3 gap-y-1">
+        <!-- Filter Text Field and search param dropdown -->
+        <UButtonGroup>
+          <UInput
+            id="globalFilter"
+            v-model="globalFilter"
+            class="w-36 sm:w-40 max-w-48"
+            placeholder="Filtrar por..."
+            @keyup.enter="
+              paramFilterSortPagination = filteringRouteManager({
+                column: filterOption as string,
+                search: debounced as string,
+              })
+            "
+          />
+          <USelectMenu
+            id="filterOption"
+            v-model="filterOption"
+            value-key="id"
+            :search-input="{ placeholder: 'Buscar' }"
+            :items="filterOptions"
+            class="w-28"
+            @change="
+              paramFilterSortPagination = filteringRouteManager({
+                column: filterOption as string,
+                search: debounced as string,
+              })
+            "
+          />
+        </UButtonGroup>
+        <!-- Refresh Button Image -->
+        <UButton
+          color="primary"
+          variant="ghost"
+          icon="i-custom-refresh"
+          @click="refresh()"
+        />
+      </div>
+
+      <div class="flex items-center justify-center ml-auto gap-x-3 gap-y-1">
+        <!-- Insert Button -->
+        <UButton
+          v-if="insert"
+          label="Añadir"
+          color="secondary"
+          variant="outline"
+          icon="i-lucide-plus"
+          class="ml-auto"
+          :ui="{ label: 'hidden sm:block' }"
+          @click="$emit('openInsertModal')"
+        />
+        <!-- Delete Button -->
+        <UButton
+          v-if="remove"
+          label="Eliminar"
+          color="error"
+          variant="outline"
+          icon="i-lucide-trash"
+          :ui="{ label: 'hidden sm:block' }"
+          :disabled="
+            !table?.tableApi?.getIsSomeRowsSelected()
+              && !table?.tableApi?.getIsAllRowsSelected()
+          "
+          @click="
+            handleDeleteRows(
+              props.fetchRoute,
+              refresh,
+              deleteSelection,
+              data?.data.filter((row, index) => {
+                if ((rowSelection as boolean[])[index]) return row;
+              }) as any[],
+            )
           "
         />
-        <USelectMenu
-          id="filterOption"
-          v-model="filterOption"
-          value-key="id"
-          :search-input="{ placeholder: 'Buscar' }"
-          :items="filterOptions"
-          class="w-28"
-          @change="
-            paramFilterSortPagination = filteringRouteManager({
-              column: filterOption as string,
-              search: debounced as string,
-            })
-          "
-        />
-      </UButtonGroup>
-      <!-- Refresh Button Image -->
-      <UButton
-        color="primary"
-        variant="ghost"
-        icon="i-custom-refresh"
-        @click="refresh()"
-      />
-      <!-- Insert Button -->
-      <UButton
-        label="Añadir"
-        color="secondary"
-        variant="outline"
-        icon="i-lucide-plus"
-        class="ml-auto"
-        @click="$emit('openInsertModal')"
-      />
-      <!-- Delete Button -->
-      <UButton
-        label="Eliminar"
-        color="error"
-        variant="outline"
-        icon="i-lucide-trash"
-        :disabled="
-          !table?.tableApi?.getIsSomeRowsSelected()
-            && !table?.tableApi?.getIsAllRowsSelected()
-        "
-        @click="
-          handleDeleteRows(
-            props.fetchRoute,
-            refresh,
-            deleteSelection,
-            data?.data.filter((row, index) => {
-              if ((rowSelection as boolean[])[index]) return row;
-            }) as any[],
-          )
-        "
-      />
+      </div>
 
       <!-- Selector de filas -->
       <UDropdownMenu
+        class="ml-auto sm:ml-0"
         :items="
           table?.tableApi
             ?.getAllColumns()

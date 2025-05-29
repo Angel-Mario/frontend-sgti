@@ -5,9 +5,9 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Rutas',
   pageDescription: 'Lista de Rutas',
-  pageIcon: 'i-lucide-route',
   pageKeywords: 'rutas, lista, ruta, admin',
   name: 'rutas',
+  middleware: ['auth'],
 })
 
 const items: BreadcrumbItem[] = [

@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/login': { prerender: true },
+    // '/login': { prerender: true ,},
     '/personal': { redirect: '/personal/usuarios' },
   },
 
