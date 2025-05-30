@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="T">
 import type { TableColumn } from '@nuxt/ui'
-import { LazyTablePagination } from '#components'
 import { getPaginationRowModel } from '@tanstack/vue-table'
 import { upperFirst } from 'scule'
 
@@ -37,7 +36,6 @@ const props = defineProps({
   },
 })
 defineEmits(['openInsertModal'])
-
 // CustomHooks For Managing the states
 const { table, rowSelection } = useTable()
 const { toast, globalFilter, debounced, filterOption } = useTableHeader(

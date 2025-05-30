@@ -22,6 +22,6 @@ interface Averia {
   id: string
   complejidad: string
   descripcion: string
-  tipo: null
-  piezas_necesarias: null
+  tipo: null | string
+  piezas_necesarias: null | string
 }

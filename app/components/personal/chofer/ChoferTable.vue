@@ -61,7 +61,7 @@ async function openInsertModal() {
   })
   modal.open()
 }
-
+const authStore = useAuthStore()
 // Column Dropdown definition
 function getRowItems(row: Row<Chofer>) {
   return [
@@ -76,7 +76,7 @@ function getRowItems(row: Row<Chofer>) {
             : () => {},
           data: row.original,
         })
-        await modal.open()
+        modal.open()
       },
     },
     {
@@ -93,6 +93,7 @@ function getRowItems(row: Row<Chofer>) {
               childRef?.value?.refreshMet()
             },
             toast,
+            `Bearer ${authStore.getToken}`,
           ),
           method: 'POST',
         })
@@ -109,6 +110,7 @@ function getRowItems(row: Row<Chofer>) {
             ? childRef?.value?.deleteSelection
             : () => {},
           [{ id: row.original.id }],
+          `Bearer ${authStore.getToken}`,
         )
       },
     },

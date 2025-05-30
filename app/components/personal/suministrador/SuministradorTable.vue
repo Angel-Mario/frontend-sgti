@@ -50,11 +50,11 @@ async function openInsertModal() {
       : () => {},
     data: undefined,
   })
-  await modal.open()
+  modal.open()
 }
-
+const authStore = useAuthStore()
 // Column Dropdown definition
-function getRowItems(row: Row<Administrador>) {
+function getRowItems(row: Row<Suministrador>) {
   return [
     {
       label: 'Editar',
@@ -67,7 +67,7 @@ function getRowItems(row: Row<Administrador>) {
             : () => {},
           data: row.original,
         })
-        await modal.open()
+        modal.open()
       },
     },
     {
@@ -84,6 +84,7 @@ function getRowItems(row: Row<Administrador>) {
               childRef?.value?.refreshMet()
             },
             toast,
+            `Bearer ${authStore.getToken}`,
           ),
           method: 'POST',
         })
@@ -100,6 +101,7 @@ function getRowItems(row: Row<Administrador>) {
             ? childRef?.value?.deleteSelection
             : () => {},
           [{ id: row.original.id }],
+          `Bearer ${authStore.getToken}`,
         )
       },
     },
@@ -123,8 +125,8 @@ function getRowItems(row: Row<Administrador>) {
 }
 
 // Const Columns  Table
-const columns: TableColumn<Administrador>[] = [
-  makeColumnSelect<Administrador>(UCheckbox),
+const columns: TableColumn<Suministrador>[] = [
+  makeColumnSelect<Suministrador>(UCheckbox),
   {
     accessorKey: 'id',
     header: 'Id',
@@ -153,6 +155,10 @@ const columns: TableColumn<Administrador>[] = [
   {
     accessorKey: 'cargo',
     header: ({ column }) => makeColumnHeader(column, 'Cargo', UButton),
+    cell: ({ row }) =>
+      row.getValue('Cargo')
+        ? row.getValue('Cargo')
+        : '[Sin cargo]',
     id: 'Cargo',
   },
   {

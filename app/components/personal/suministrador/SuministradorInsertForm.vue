@@ -27,8 +27,7 @@ const state = reactive<Partial<Schema>>({
   cargo: props.data ? props.data.cargo : undefined,
   correo: props.data ? props.data.correo : undefined,
   password: undefined,
-  telefono:
-		props.data && props.data.telefono === '' ? props.data.telefono : undefined,
+  telefono: props.data && props.data.telefono === '' ? props.data.telefono : undefined,
 })
 
 const toast = useToast()
@@ -40,6 +39,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   console.log(dataForm, 'DataForm')
 
+  const authStore = useAuthStore()
   await $fetch(`personal/suministradores/${props.data ? props.data.id : ''}`, {
     ...makePostPatchOptions(
       props.data
@@ -51,12 +51,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         emit('close', true)
       },
       toast,
+      `Bearer ${authStore.getToken}`,
     ),
     method: 'POST',
   })
   // Si el usuario es el actual, actualiza el usuario
-  if (props.data?.nombre_u === useAuthStore().user?.nombre_u) {
-    useAuthStore().fetchUser()
+  if (props.data?.nombre_u === authStore.user?.nombre_u) {
+    authStore.fetchUser()
   }
 }
 // Flag to track if the form has been modified
@@ -99,7 +100,10 @@ whenever(
       required
       class="col-span-4"
     >
-      <UInput v-model="state.nombre_u" placeholder="Ej: anibalpg" />
+      <UInput
+        v-model="state.nombre_u"
+        placeholder="Ej: anibalpg"
+      />
     </UFormField>
 
     <UFormField
@@ -121,14 +125,32 @@ whenever(
       required
       class="col-span-5"
     >
-      <UInput v-model="state.fullName" placeholder="Ej: Anibal Perez Garcia" />
+      <UInput
+        v-model="state.fullName"
+        placeholder="Ej: Anibal Perez Garcia"
+      />
     </UFormField>
 
-    <UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
-      <UInput v-model="state.telefono" placeholder="Ej: 5356463650" />
+    <UFormField
+      label="Teléfono"
+      name="telefono"
+      class="col-span-3 col-start-7"
+    >
+      <UInput
+        v-model="state.telefono"
+        placeholder="Ej: 5356463650"
+      />
     </UFormField>
-    <UFormField label="Correo" name="correo" required class="col-span-5">
-      <UInput v-model="state.correo" placeholder="Ej: anibalpg@uci.cu" />
+    <UFormField
+      label="Correo"
+      name="correo"
+      required
+      class="col-span-5"
+    >
+      <UInput
+        v-model="state.correo"
+        placeholder="Ej: anibalpg@uci.cu"
+      />
     </UFormField>
     <UFormField
       label="Carnet"
@@ -136,7 +158,11 @@ whenever(
       required
       class="col-span-3 col-start-7"
     >
-      <UInput v-model="state.carnet" :maxlength="11" placeholder="96124215561">
+      <UInput
+        v-model="state.carnet"
+        :maxlength="11"
+        placeholder="96124215561"
+      >
         <template #trailing>
           <div
             id="character-count"
@@ -149,16 +175,19 @@ whenever(
         </template>
       </UInput>
     </UFormField>
-    <UFormField label="Cargo" name="cargo" required class="col-span-5">
+    <UFormField
+      label="Cargo"
+      name="cargo"
+      required
+      class="col-span-5"
+    >
       <UInput
         v-model="state.cargo"
         placeholder="Ej: Director Transporte Habana"
       />
     </UFormField>
 
-    <div
-      class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full"
-    >
+    <div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
       <UButton
         label="Cancelar"
         color="neutral"

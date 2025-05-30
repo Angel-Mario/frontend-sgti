@@ -52,7 +52,7 @@ const modalMap = overlay.create(LazyGeograficoLeafletModal, {
     locations: [],
   },
 })
-
+const { token } = useAuthStore()
 // Row Dropdown definition
 function getRowItems(row: Row<PuntoRef>) {
   return [
@@ -81,6 +81,7 @@ function getRowItems(row: Row<PuntoRef>) {
             ? childRef?.value?.deleteSelection
             : () => {},
           [{ id: row.original.id.toString() }],
+          token ? `Bearer ${token}` : '',
         )
       },
     },

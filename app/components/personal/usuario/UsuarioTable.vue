@@ -50,7 +50,7 @@ async function openInsertModal() {
   })
   modal.open()
 }
-
+const authStore = useAuthStore()
 // Row Dropdown definition
 function getRowItems(row: Row<Usuario>) {
   return [
@@ -65,7 +65,7 @@ function getRowItems(row: Row<Usuario>) {
             : () => {},
           data: row.original,
         })
-        await modal.open()
+        modal.open()
       },
     },
     {
@@ -82,6 +82,7 @@ function getRowItems(row: Row<Usuario>) {
               childRef?.value?.refreshMet()
             },
             toast,
+            `Bearer ${authStore.getToken}`,
           ),
           method: 'POST',
         })
@@ -98,6 +99,7 @@ function getRowItems(row: Row<Usuario>) {
             ? childRef?.value?.deleteSelection
             : () => {},
           [{ id: row.original.id }],
+          `Bearer ${authStore.getToken}`,
         )
       },
     },
@@ -117,10 +119,6 @@ function getRowItems(row: Row<Usuario>) {
         })
       },
     },
-    // {
-    // label: "Ver detalles",
-    // icon: "i-lucide-eye",
-    // },
   ]
 }
 

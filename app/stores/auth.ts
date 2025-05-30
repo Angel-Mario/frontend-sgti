@@ -29,8 +29,8 @@ export const useAuthStore = defineStore('auth', {
         baseURL: this.apiUrl,
       })
       this.user = user
-      if (user.roles.includes('chofer'))
-        await this.fetchChofer()
+      // if (user.roles.includes('chofer'))
+      //   await this.fetchChofer()
       return user
     },
 

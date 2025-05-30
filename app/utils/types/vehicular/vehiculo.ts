@@ -1,12 +1,12 @@
 export interface Vehiculo {
-  id: string
-  matricula: string
-  consumo: string
-  capacidad: string
-  marca: string
-  modelo: null | string
-  año: null | string
+  año: undefined | number
+  capacidad: number | undefined
   chofer: VehiculoChofer | null
+  consumo: number | undefined
+  id: string
+  marca: string
+  matricula: string
+  modelo: undefined | string
 }
 
 export interface VehiculoChofer {

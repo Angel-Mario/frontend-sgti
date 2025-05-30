@@ -15,27 +15,17 @@ const props = defineProps({
 // Emiters definitions
 const emit = defineEmits(['close'])
 
-const schema = UsuarioSchema(!!props.usuario)
+const schema = VehiculoSchema()
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  nombre_u: props.usuario ? props.usuario.nombre_u : undefined,
-  fullName: props.usuario ? props.usuario.fullName : undefined,
-  carnet: props.usuario ? props.usuario.carnet : undefined,
-  correo: props.usuario ? props.usuario.correo : undefined,
-  password: undefined,
-  telefono:
-		props.usuario && props.usuario.telefono === ''
-		  ? props.usuario.telefono
-		  : undefined,
-  rol: props.usuario
-    ? props.usuario.roles[0] === 'admin'
-      ? 'Administrador'
-      : props.usuario.roles[0] === 'chofer'
-        ? 'Chofer'
-        : 'Suministrador'
-    : undefined,
+  año: props.data ? props.data.año || undefined : undefined,
+  capacidad: props.data ? props.data.capacidad || undefined : undefined,
+  consumo: props.data ? props.data.consumo || undefined : undefined,
+  marca: props.data ? props.data.marca : undefined,
+  matricula: props.data ? props.data.matricula : undefined,
+  modelo: props.data ? props.data.modelo || undefined : undefined,
 })
 
 const toast = useToast()
@@ -44,33 +34,26 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   const dataForm = {
     ...event.data,
-    rol: undefined,
-    roles: [
-      event.data.rol === 'Administrador'
-        ? 'admin'
-        : event.data.rol === 'Chofer'
-          ? 'chofer'
-          : 'suministrador',
-    ],
   }
   console.log(dataForm, 'DataForm')
 
-  await $fetch(`personal/usuarios/${props.usuario ? props.usuario.id : ''}`, {
+  const authStore = useAuthStore()
+  await $fetch(`vehicular/vehiculos/${props.data ? props.data.id : ''}`, {
     ...makePostPatchOptions(
-      props.usuario
-        ? 'Actualizado correctamente el usuario'
-        : 'Se ha registrado correctamente usuario',
+      props.data
+        ? 'Actualizado correctamente el vehículo'
+        : 'Se ha registrado correctamente vehículo',
       dataForm,
       () => {
         props.refresh() // Actualiza los datos si es necesario
         emit('close', true)
       },
       toast,
+      `Bearer ${authStore.getToken}`,
     ),
     method: 'POST',
   })
 }
-const items = ref(['Administrador', 'Chofer', 'Suministrador'])
 
 // Flag to track if the form has been modified
 const isFormDirty = ref(false)
@@ -86,9 +69,31 @@ watch(
 )
 // this cheks for optional changes
 whenever(
-  () => state.telefono === '',
+  () => (state.modelo === ''),
   () => {
-    state.telefono = undefined
+    state.modelo = undefined
+  },
+)
+
+whenever(
+  // @ts-expect-error Esto es un hack para que el consumo se limpie
+  () => (state.consumo === ''),
+  () => {
+    state.consumo = undefined
+  },
+)
+whenever(
+  // @ts-expect-error Esto es un hack para que el consumo se limpie
+  () => (state.capacidad === ''),
+  () => {
+    state.capacidad = undefined
+  },
+)
+whenever(
+  // @ts-expect-error Esto es un hack para que el consumo se limpie
+  () => (state.año === ''),
+  () => {
+    state.año = undefined
   },
 )
 </script>
@@ -103,57 +108,46 @@ whenever(
   >
     <UFormField
       class="col-span-4"
-      label="Nombre de usuario"
-      name="nombre_u"
+      label="Matrícula"
+      name="matricula"
       required
     >
-      <UInput v-model="state.nombre_u" placeholder="Ex: anibalpg" />
+      <UInput v-model="state.matricula" placeholder="Ex: B-123456" />
     </UFormField>
 
     <UFormField
-      label="Contraseña"
-      name="password"
-      :required="!props.usuario"
+      label="Consumo (litros/100km)"
+      name="consumo"
       class="col-span-3 col-start-7"
     >
       <UInput
-        v-model="state.password"
-        type="password"
-        :placeholder="props.usuario ? '••••••••••' : 'Ex: Ejemplo!*8'"
+        v-model="state.consumo"
+        type="number"
+        placeholder="Ex: 5"
       />
     </UFormField>
 
     <UFormField
-      label="Nombre y apellidos"
-      name="fullName"
+      label="Marca"
+      name="marca"
       required
       class="col-span-5"
     >
-      <UInput v-model="state.fullName" placeholder="Ex: Anibal Perez Garcia" />
+      <UInput v-model="state.marca" placeholder="Ex: Mercedes" />
     </UFormField>
 
-    <UFormField label="Teléfono" name="telefono" class="col-span-3 col-start-7">
-      <UInput v-model="state.telefono" placeholder="Ex: 56463650" />
+    <UFormField label="Capacidad (pasajeros)" name="capacidad" class="col-span-3 col-start-7">
+      <UInput v-model="state.capacidad" type="number" placeholder="Ex: 15" />
     </UFormField>
-    <UFormField label="Correo" name="correo" required class="col-span-5">
-      <UInput v-model="state.correo" placeholder="Ex: anibalpg@uci.cu" />
+    <UFormField label="Modelo" name="modelo" class="col-span-5">
+      <UInput v-model="state.modelo" placeholder="Ex: A-15" />
     </UFormField>
     <UFormField
-      label="Carnet"
-      name="carnet"
-      required
+      label="Año"
+      name="año"
       class="col-span-3 col-start-7"
     >
-      <UInput v-model="state.carnet" placeholder="96124215561" />
-    </UFormField>
-
-    <UFormField label="Rol" name="rol" required class="col-span-3 col-start-7">
-      <USelectMenu
-        v-model="state.rol"
-        :search-input="false"
-        :items="items"
-        class="w-full"
-      />
+      <UInput v-model="state.año" type="number" placeholder="1999" />
     </UFormField>
 
     <div
@@ -166,7 +160,7 @@ whenever(
         @click="$emit('close')"
       />
       <UButton
-        :label="usuario ? 'Actualizar' : 'Insertar'"
+        :label="data ? 'Actualizar' : 'Insertar'"
         color="neutral"
         type="submit"
         :disabled="!isFormDirty"

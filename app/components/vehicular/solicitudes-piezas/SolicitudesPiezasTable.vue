@@ -2,7 +2,6 @@
 import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
 
-const childRef = useTemplateRef('child')
 const router = useRouter()
 
 const filterOptions = [
@@ -19,25 +18,30 @@ const defaultSortingValue = 'Complejidad'
 // Table UI Component Resolvers
 const UButton = resolveComponent('UButton')
 const UIcon = resolveComponent('UIcon')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-const UCheckbox = resolveComponent('UCheckbox')
+const toast = useToast()
 
+const { token } = useAuthStore()
 // Row Dropdown definition
 function getRowItems(row: Row<Averia>) {
   return [
     {
-      label: 'Eliminar',
+      label: 'Aprobar',
       icon: 'i-lucide-trash',
-      onSelect() {
-        handleDeleteRows(
-          fetchRoute,
-          childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
-          childRef?.value?.deleteSelection
-            ? childRef?.value?.deleteSelection
-            : () => {},
-          [{ id: row.original.id }],
-        )
-      },
+      // async onSelect() {
+      //   $fetch(`${fetchRoute}/${row.original.id}`, {
+      //     ...makePostPatchOptions(
+      //       `Se ha ${
+      //         row.original.. ? 'desactivado' : 'activado'
+      //       } correctamente el usuario`,
+      //       { isActive: !row.original.isActive },
+      //       () => {
+      //         childRef?.value?.refreshMet()
+      //       },
+      //       toast,
+      //     ),
+      //     method: 'POST',
+      //   })
+      // },
     },
   ]
 }
@@ -148,7 +152,6 @@ const columns: TableColumn<Averia>[] = [
 
 <template>
   <TableMain
-    ref="child"
     :columns="columns"
     :default-sorting-value="defaultSortingValue"
     :fetch-route="fetchRoute"

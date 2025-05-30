@@ -1,16 +1,17 @@
 import type { Toast } from '@nuxt/ui/runtime/composables/useToast.js'
 import type { FetchResponse } from 'ofetch'
 
-export function makeDeleteOptions(successMessage: string,	dataForm: unknown,	refresh: () => void,	deleteSelection: () => void,	toast: {
+export function makeDeleteOptions(successMessage: string, dataForm: unknown, refresh: () => void, deleteSelection: () => void, toast: {
   toasts: globalThis.Ref<Toast[], Toast[]>
   add: (toast: Partial<Toast>) => Toast
   update: (id: string | number, toast: Omit<Partial<Toast>, 'id'>) => void
   remove: (id: string | number) => void
   clear: () => void
-}) {
+}, token?: string) {
   return {
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': token || '',
     },
     baseURL: useRuntimeConfig().public.apiUrl, // Usa el valor de la variable pública
     body: JSON.stringify(dataForm),

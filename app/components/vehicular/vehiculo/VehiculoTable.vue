@@ -50,7 +50,7 @@ async function openInsertModal() {
   })
   modal.open()
 }
-
+const authStore = useAuthStore()
 // Row Dropdown definition
 function getRowItems(row: Row<Vehiculo>) {
   return [
@@ -79,6 +79,7 @@ function getRowItems(row: Row<Vehiculo>) {
             ? childRef?.value?.deleteSelection
             : () => {},
           [{ id: row.original.id }],
+          `Bearer ${authStore.getToken}`,
         )
       },
     },

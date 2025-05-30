@@ -1,6 +1,6 @@
 import { makeDeleteOptions } from './makeDeleteOptions.ts'
 
-export async function handleDeleteRows<T extends { id: string }>(route: string,	refresh: () => void,	deleteSelection: () => void,	selected: T[] | undefined) {
+export async function handleDeleteRows<T extends { id: string }>(route: string, refresh: () => void, deleteSelection: () => void, selected: T[] | undefined, token?: string) {
   if (!selected)
     return
 
@@ -16,6 +16,7 @@ export async function handleDeleteRows<T extends { id: string }>(route: string,	
       refresh,
       deleteSelection,
       toast,
+      token,
     ),
   })
 }

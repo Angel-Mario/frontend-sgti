@@ -30,6 +30,8 @@ const state = reactive<Partial<Schema>>({
 })
 
 const toast = useToast()
+
+const authStore = useAuthStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   event.preventDefault() // Evita que el formulario se envíe de forma predeterminada
 
@@ -48,12 +50,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         emit('close', true)
       },
       toast,
+      `Bearer ${authStore.getToken}`,
     ),
     method: 'POST',
   })
   // Si el usuario es el actual, actualiza el usuario
-  if (props.data?.nombre_u === useAuthStore().user?.nombre_u) {
-    useAuthStore().fetchUser()
+  if (props.data?.nombre_u === authStore.user?.nombre_u) {
+    authStore.fetchUser()
   }
 }
 // Flag to track if the form has been modified
