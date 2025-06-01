@@ -4,6 +4,7 @@
     "": {
       "name": "nuxt-app",
       "dependencies": {
+        "@internationalized/date": "^3.8.1",
         "@nuxt/eslint": "1.4.1",
         "@nuxt/ui": "^3.0.2",
         "@nuxtjs/leaflet": "^1.2.6",

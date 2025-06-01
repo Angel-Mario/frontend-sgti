@@ -45,9 +45,9 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
           v-if="isAuthenticated"
           class="max-h-full px-2 py-3 overflow-x-hidden bg-gray-100 row-span-8 rounded-2xl dark:bg-navbardark-500 no-scrollbar h-fit"
         >
-          <LazySidebarAdminLinks v-if="user?.roles.includes('admin')" />
-          <LazySidebarChoferLinks v-else-if="user?.roles.includes('chofer')" />
-          <LazySidebarSuminLinks v-else-if="user?.roles.includes('suministrador')" />
+          <SidebarAdminLinks v-if="user?.roles.includes('admin')" />
+          <SidebarChoferLinks v-else-if="user?.roles.includes('chofer')" />
+          <SidebarSuminLinks v-else-if="user?.roles.includes('suministrador')" />
         </div>
         <div class="row-span-2">
           <CurrentUser />

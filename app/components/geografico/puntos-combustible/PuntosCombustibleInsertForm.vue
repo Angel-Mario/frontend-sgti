@@ -25,6 +25,8 @@ const state = reactive<Partial<Schema>>({
 })
 
 const toast = useToast()
+
+const authStore = useAuthStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   event.preventDefault() // Evita que el formulario se envíe de forma predeterminada
 
@@ -44,11 +46,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         emit('close', true)
       },
       toast,
+      `Bearer ${authStore.getToken}`,
     ),
     method: 'POST',
   })
 }
-const authStore = useAuthStore()
 const query = shallowRef('')
 const { data: itemsPuntoRefData, status: statusPuntoRef } = useFetch<string[]>(
   '/geografico/puntos-ref/simplex',

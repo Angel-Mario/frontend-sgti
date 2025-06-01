@@ -8,7 +8,7 @@ export interface SolicitudPieza {
   id: string
   tipo: string
   cantidad: string
-  estado: string
+  estado: 'pendiente' | 'aceptado' | 'rechazado'
   chofer: SolicitudPiezaChofer
 }
 

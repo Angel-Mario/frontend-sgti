@@ -20,13 +20,30 @@ const UButton = resolveComponent('UButton')
 const UIcon = resolveComponent('UIcon')
 const toast = useToast()
 
-const { token } = useAuthStore()
+const authStore = useAuthStore()
 // Row Dropdown definition
 function getRowItems(row: Row<Averia>) {
   return [
     {
       label: 'Aprobar',
       icon: 'i-lucide-trash',
+      // async onSelect() {
+      //   $fetch(`${fetchRoute}/${row.original.id}`, {
+      //     ...makePostPatchOptions(
+      //       `Se ha ${
+      //         row.original.. ? 'desactivado' : 'activado'
+      //       } correctamente el usuario`,
+      //       { isActive: !row.original.isActive },
+      //       () => {
+      //         childRef?.value?.refreshMet()
+      //       },
+      //       toast,
+      //     ),
+      //     method: 'POST',
+      //   })
+      // },
+      //       label: 'Cancelar',
+      // icon: 'i-lucide-trash',
       // async onSelect() {
       //   $fetch(`${fetchRoute}/${row.original.id}`, {
       //     ...makePostPatchOptions(

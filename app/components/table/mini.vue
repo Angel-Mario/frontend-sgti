@@ -35,12 +35,10 @@ defineEmits(['delete'])
 // CustomHooks For Managing the states
 const { table, rowSelection } = useTable()
 
-const refreshMet = ref(() => {})
 const deleteSelection = ref(() => {
   rowSelection.value = {}
 })
 defineExpose({
-  refreshMet,
   deleteSelection,
 })
 
@@ -52,6 +50,8 @@ const columnPinning = ref({
   left: [],
   right: ['actions'],
 })
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -62,8 +62,13 @@ const columnPinning = ref({
       class="flex flex-wrap gap-y-1 justify-start px-4 py-3.5 border-b gap-x-3 border-(--ui-border-accented)"
     >
       <div class="flex items-center justify-center ml-auto gap-x-3 gap-y-1">
-        <!-- Insert Button -->
-
+        <!-- Refresh Button Image -->
+        <UButton
+          color="primary"
+          variant="ghost"
+          icon="i-custom-refresh"
+          @click=" $emit('delete')"
+        />
         <!-- Delete Button -->
         <UButton
           v-if="remove"
@@ -77,7 +82,16 @@ const columnPinning = ref({
               && !table?.tableApi?.getIsAllRowsSelected()
           "
           @click="
-            $emit('delete')
+            handleDeleteRows(
+              props.fetchRoute,
+              () => $emit('delete'),
+              deleteSelection,
+              props.data.filter((row, index) => {
+                if ((rowSelection as boolean[])[index]) return row;
+              }) as any[],
+              `Bearer ${authStore.getToken}`,
+            )
+
           "
         />
       </div>

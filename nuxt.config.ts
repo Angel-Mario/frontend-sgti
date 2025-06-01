@@ -30,8 +30,8 @@ export default defineNuxtConfig({
   },
   experimental: {
     // buildCache: true,
-    componentIslands: true,
-    cookieStore: true,
+    // componentIslands: true,
+    // cookieStore: true,
   },
   compatibilityDate: '2024-11-01',
   eslint: {

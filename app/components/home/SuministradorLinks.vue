@@ -10,7 +10,7 @@
       <HomeQuickLinkCard
         to=""
         title="Asignar Combustible"
-        description="Reportar avería"
+        description="Asignar combustible por fecha "
         compact
       >
         <UIcon name="i-lucide-chart-candlestick" class="size-14" />

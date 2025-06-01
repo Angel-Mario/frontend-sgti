@@ -5,7 +5,6 @@ definePageMeta({
   layout: 'authenticated',
   pageTitle: 'Choferes',
   pageDescription: 'Lista de choferes',
-  pageIcon: 'i-lucide-users',
   pageKeywords: 'choferes, lista, choferes, admin',
   name: 'choferes',
   middleware: ['auth'],

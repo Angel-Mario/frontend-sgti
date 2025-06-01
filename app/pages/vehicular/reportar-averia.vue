@@ -6,6 +6,7 @@ definePageMeta({
   pageTitle: 'Reportar Avería',
   pageDescription: 'Reportar Avería',
   pageKeywords: 'Reportar Avería',
+  name: 'reportar-averia',
   middleware: ['auth'],
 })
 
@@ -13,6 +14,24 @@ const items: BreadcrumbItem[] = [
   {
     label: 'Home',
     to: '/home',
+  },
+  {
+    slot: 'dropdown' as const,
+    icon: 'i-lucide-ellipsis',
+    children: [
+      {
+        label: 'Reportar Avería',
+        to: '/vehicular/reportar-averia',
+      },
+      {
+        label: 'Ruta Asignada',
+        to: '/personal/ruta-asignada',
+      },
+      {
+        label: 'Solicitar Pieza',
+        to: '/vehicular/solicitar-pieza',
+      },
+    ],
   },
   {
     label: 'Reportar Avería',
@@ -24,13 +43,7 @@ const items: BreadcrumbItem[] = [
 <template>
   <div class="flex flex-col w-full h-screen bg-(--ui-bg)">
     <RouteBreadCrumb :items="items">
-      <section class="flex flex-col w-full row-span-1 px-6 rounded-2xl">
-        <h1 class="text-2xl font-bold">
-          Listado de Averías
-        </h1>
-        <USeparator color="primary" type="solid" />
-      </section>
-      <main class="w-full px-3 pb-2 overflow-hidden row-span-10 rounded-2xl">
+      <main class="w-full px-3 pb-2 overflow-hidden row-span-11 rounded-2xl">
         <VehicularReportarAveriaTable />
       </main>
     </RouteBreadCrumb>
