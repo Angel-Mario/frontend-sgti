@@ -34,7 +34,7 @@ onMounted(
 
         <!-- Sección de enlaces -->
         <LazyHomeAdminLinks v-if="user?.roles.includes('admin')" v-once />
-        <LazyHomeChoferLinks v-if="user?.roles.includes('chofer')" v-once />
+        <LazyHomeChoferLinks v-if="user?.roles.includes('chofer')" />
         <LazyHomeSuministradorLinks v-if="user?.roles.includes('suministrador')" v-once />
         <HomeFooter v-if="!a" />
       </div>

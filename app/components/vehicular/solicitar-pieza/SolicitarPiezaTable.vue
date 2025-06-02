@@ -123,7 +123,7 @@ const columns: TableColumn<Omit<SolicitudPieza, 'chofer'>>[] = [
         Registro de Solicitudes de Piezas
       </h1>
       <VehicularSolicitarPiezaInsertForm :refresh="refresh" class="mx-2" />
-      <UCollapsible class="flex flex-col w-full gap-2">
+      <UCollapsible v-if="data && data.length > 0" class="flex flex-col w-full gap-2">
         <UButton
           class="group"
           label="Listado de Solicitudes de Piezas"

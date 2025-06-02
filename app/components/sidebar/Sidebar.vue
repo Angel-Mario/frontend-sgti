@@ -55,11 +55,25 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
       </div>
     </template>
   </UDrawer>
-
+  <!--
   <div
     class="absolute w-20 h-20 shadow-xl overflow-hidden rotate-[40deg] -top-10 -left-12 bg-primary-500 z-60 hover:bg-primary-600 cursor-pointer"
     @click="toggleSidebar"
+  /> -->
+
+  <UButton
+    class="absolute w-20 h-8 -rotate-90 cursor-pointer -left-6 z-60 top-1/2"
+    color="neutral"
+    variant="ghost"
+    trailing-icon="i-lucide-chevron-down"
+    :ui="{
+      trailingIcon: open ? 'rotate-180 m-auto transition-transform duration-200' : 'rotate-0 m-auto transition-transform duration-200',
+    }"
+    block
+    size="xl"
+    @click="toggleSidebar"
   />
+
   <div ref="el" class="absolute z-30 flex items-end w-10 h-screen">
     <h1 class="select-none z-999">
       {{ fps }}

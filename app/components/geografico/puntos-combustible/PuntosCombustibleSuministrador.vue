@@ -7,6 +7,24 @@ const items: BreadcrumbItem[] = [
     to: '/home',
   },
   {
+    slot: 'dropdown' as const,
+    icon: 'i-lucide-ellipsis',
+    children: [
+      {
+        label: 'Asignar Combustible',
+        to: '/gestion/asignar-combustible',
+      },
+      {
+        label: 'Puntos de Combustible',
+        to: '/geografico/puntos-combustible',
+      },
+      {
+        label: 'Solicitar Refuerzo',
+        to: '/gestion/solicitar-refuerzo',
+      },
+    ],
+  },
+  {
     label: 'Puntos de Combustible',
     to: '/geografico/puntos-combustible',
   },

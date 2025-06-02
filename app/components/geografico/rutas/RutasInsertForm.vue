@@ -104,7 +104,7 @@ watch(
       <UInput v-model="state.hora_salida" placeholder="Ej: 10:00" />
     </UFormField>
 
-    <div class="flex items-end justify-end col-span-1 col-start-4 pe-1">
+    <div class="col-span-1 col-start-4 mt-6 pe-1">
       <UButton
         class="cursor-pointer h-fit w-fit"
         icon="i-custom-broom"
@@ -137,7 +137,7 @@ watch(
       <UInput v-model="state.hora_regreso" placeholder="Ej: 18:00" />
     </UFormField>
 
-    <div class="flex items-end justify-end col-span-1 col-start-4 pe-1">
+    <div class="col-span-1 col-start-4 mt-6 pe-1">
       <UButton
         class="cursor-pointer h-fit w-fit"
         icon="i-custom-broom"

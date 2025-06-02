@@ -57,6 +57,7 @@ export {
   PuntoRefSchema,
   ReporteSchema,
   RutaSchema,
+  SolicitudApoyoCercanoSchema,
   SolicitudPiezaSchema,
   SuministradorSchema,
   TerminalSchema,

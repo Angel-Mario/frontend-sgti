@@ -3,10 +3,10 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 
 definePageMeta({
   layout: 'authenticated',
-  pageTitle: 'Solicitar Pieza',
-  pageDescription: 'Solicitar Pieza',
-  pageKeywords: 'Solicitar Pieza',
-  name: 'solicitar-pieza',
+  pageTitle: 'Solicitar Apoyo',
+  pageDescription: 'Solicitar Apoyo',
+  pageKeywords: 'Solicitar Apoyo',
+  name: 'solicitar-apoyo',
   middleware: ['auth'],
 })
 
@@ -38,8 +38,8 @@ const items: BreadcrumbItem[] = [
     ],
   },
   {
-    label: 'Solicitar Pieza',
-    to: '/vehicular/solicitar-pieza',
+    label: 'Solicitar Apoyo',
+    to: '/vehicular/solicitar-apoyo',
   },
 ]
 </script>
@@ -48,7 +48,7 @@ const items: BreadcrumbItem[] = [
   <div class="flex flex-col w-full h-screen bg-(--ui-bg)">
     <RouteBreadCrumb :items="items">
       <main class="w-full px-3 pb-2 overflow-hidden row-span-11 rounded-2xl">
-        <VehicularSolicitarPiezaTable />
+        <VehicularSolicitarApoyoForm />
       </main>
     </RouteBreadCrumb>
   </div>

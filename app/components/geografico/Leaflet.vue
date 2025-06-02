@@ -23,6 +23,10 @@ const props = defineProps({
     type: Array<{ name: string, lat: number, lng: number }>,
     required: true,
   },
+  size: {
+    type: String,
+    default: '520px',
+  },
 })
 
 function onMapReady() {
@@ -42,7 +46,7 @@ if (props.locations.length > 1) {
 <template>
   <ClientOnly>
     <LMap
-      style="height: 520px"
+      :style="`height: ${props.size}`"
       :zoom="zoom"
       :bounds="bounds"
       :center="center as [number, number]"

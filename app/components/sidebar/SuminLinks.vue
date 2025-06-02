@@ -12,18 +12,23 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Asginar combustible',
       icon: 'i-lucide-chart-candlestick',
+      description: 'Asignar combustible',
+      to: '/gestion/asignar-combustible',
     },
     // GET POST DELETE UPDATE
     {
       label: 'Puntos combustible',
       icon: 'i-lucide-fuel',
       description: 'Lista de puntos de combustible',
+      to: '/geografico/puntos-combustible',
+
     },
     // POST
     {
       label: 'Solicitar Refuerzo',
       icon: 'i-lucide-mail-question',
       description: 'formulario de solicitud de refuerzo',
+      to: '/gestion/solicitar-refuerzo',
     },
   ],
 ])

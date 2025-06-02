@@ -1,5 +1,4 @@
 import * as z from 'zod'
-import { LatLongSchema } from './LatLongSchema'
 
 export function PuntoRefSchema() {
   return z.object({

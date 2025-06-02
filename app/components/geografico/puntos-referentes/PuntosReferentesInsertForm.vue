@@ -26,6 +26,7 @@ const state = reactive<Partial<Schema>>({
 })
 
 const toast = useToast()
+const authStore = useAuthStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   event.preventDefault() // Evita que el formulario se envíe de forma predeterminada
 
@@ -45,6 +46,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         emit('close', true)
       },
       toast,
+      `Bearer ${authStore.getToken}`,
     ),
     method: 'POST',
   })
@@ -95,7 +97,7 @@ async function openModal() {
       title: 'Toca donde quieras crear un punto',
     })
   }
-  await modalMap.open()
+  modalMap.open()
 }
 </script>
 
@@ -123,7 +125,7 @@ async function openModal() {
     >
       <UInput v-model="state.latLong" placeholder="Ex: 19.4376, -98.5076" />
     </UFormField>
-    <div class="flex items-end col-span-1 ml-6 ps-1">
+    <div class="col-span-1 mt-6 ml-6 ps-1">
       <UButton
         class="cursor-pointer h-fit w-fit"
         icon="i-lucide-map"

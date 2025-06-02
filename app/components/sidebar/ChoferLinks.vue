@@ -24,6 +24,11 @@ const items = ref<NavigationMenuItem[][]>([
       icon: 'i-lucide-cog',
       to: '/vehicular/solicitar-pieza',
     },
+    {
+      label: 'Solicitar Apoyo',
+      icon: 'i-lucide-phone-call',
+      to: '/vehicular/solicitar-apoyo',
+    },
   ],
 ])
 </script>

@@ -34,20 +34,30 @@ const authStore = useAuthStore()
       >
         <UIcon name="i-lucide-cog" class="size-14" />
       </HomeQuickLinkCard>
+
+      <HomeQuickLinkCard
+        :class="authStore.chofer ? 'mt-auto' : 'h-fit'"
+        to="/vehicular/solicitar-apoyo"
+        title="Solicitar apoyo"
+        description="Solicitar apoyo cercano"
+        compact
+      >
+        <UIcon name="i-lucide-phone-call" class="size-14" />
+      </HomeQuickLinkCard>
+      <div v-if="authStore.chofer && authStore.chofer.vehiculo" class="flex flex-col col-span-2 mx-auto mt-3 w-fit">
+        <h2 class="mt-3 mb-6 text-2xl font-bold text-gray-800 dark:text-white">
+          Vehículo asignado
+        </h2>
+        <section class="grid w-full grid-cols-2 p-6 bg-white shadow-md gap-x-3 gap-y-1 dark:bg-navbardark-500 rounded-xl hover:shadow-lg">
+          <p>Marca: {{ authStore.chofer.vehiculo.marca }}</p>
+          <p>Modelo: {{ authStore.chofer.vehiculo.modelo }}</p>
+          <p>Año: {{ authStore.chofer.vehiculo.año }}</p>
+          <p>Matrícula: {{ authStore.chofer.vehiculo.matricula }}</p>
+          <p>Modelo: {{ authStore.chofer.vehiculo.modelo }}</p>
+          <p>Capacidad: {{ authStore.chofer.vehiculo.capacidad }}</p>
+        </section>
+      </div>
     </div>
     <!-- sección para la información del vehículo asignado al chofer -->
-    <div v-if="authStore.chofer && authStore.chofer.vehiculo" class="flex flex-col mt-3 w-fit">
-      <h2 class="mt-3 mb-6 text-2xl font-bold text-gray-800 dark:text-white">
-        Vehículo asignado
-      </h2>
-      <section class="grid w-full grid-cols-2 p-6 bg-white shadow-md gap-x-3 gap-y-1 dark:bg-navbardark-500 rounded-xl hover:shadow-lg">
-        <p>Marca: {{ authStore.chofer.vehiculo.marca }}</p>
-        <p>Modelo: {{ authStore.chofer.vehiculo.modelo }}</p>
-        <p>Año: {{ authStore.chofer.vehiculo.año }}</p>
-        <p>Matrícula: {{ authStore.chofer.vehiculo.matricula }}</p>
-        <p>Modelo: {{ authStore.chofer.vehiculo.modelo }}</p>
-        <p>Capacidad: {{ authStore.chofer.vehiculo.capacidad }}</p>
-      </section>
-    </div>
   </section>
 </template>

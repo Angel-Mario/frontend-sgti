@@ -8,9 +8,9 @@
     </h2>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <HomeQuickLinkCard
-        to=""
+        to="/gestion/asignar-combustible"
         title="Asignar Combustible"
-        description="Asignar combustible por fecha "
+        description="Gestión de combustible"
         compact
       >
         <UIcon name="i-lucide-chart-candlestick" class="size-14" />
@@ -26,7 +26,7 @@
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
-        to=""
+        to="gestion/solicitar-refuerzo"
         title="Solicitar refuerzo"
         description="Solicitar refuerzo"
         compact
