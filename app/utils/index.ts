@@ -1,8 +1,9 @@
+export { exportToExcel } from './functions/exportExcel'
+export { exportJsonToExcel } from './functions/exportJsonToExcel'
 // functions
 export { filteringRouteManager } from './functions/filtering'
 export { handleDeleteRows } from './functions/handleDeleteRows'
 export { makeColumnHeader } from './functions/makeColumnHeader'
-
 export { makeColumnSelect } from './functions/makeColumnSelect'
 export { makeFetchOptions } from './functions/makeFetchOptions'
 export { makePostPatchOptions } from './functions/makePostPatchOptions'
@@ -42,6 +43,7 @@ export type {
 export type { Suministrador } from './types/personal/suministrador'
 export type { Usuario } from './types/personal/usuario'
 
+export type { Reporte, ReporteResponse } from './types/reportes/reportes'
 export type { Averia } from './types/vehicular/averia'
 export type { ReportarAveriaPage } from './types/vehicular/reportar-averia-page'
 export type { SolicitudesPiezasResponse, SolicitudPieza, SolicitudPiezaChofer, SolicitudPiezaUser, SolicitudPiezaVehiculo } from './types/vehicular/solicitudes-piezas'

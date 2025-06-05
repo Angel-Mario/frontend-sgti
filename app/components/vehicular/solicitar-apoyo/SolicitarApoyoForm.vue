@@ -183,10 +183,12 @@ async function openModal() {
         />
 
         <template #content>
-          <GeograficoLeaflet
-            :locations="data[0]?.latLong ? [{ name: 'Ubicación actual', lat: Number(data[0]?.latLong?.split(',')[0]), lng: Number(data[0]?.latLong?.split(',')[1]) }] : []"
-            size="440px"
-          />
+          <ClientOnly>
+            <GeograficoLeaflet
+              :locations="data[0]?.latLong ? [{ name: 'Ubicación actual', lat: Number(data[0]?.latLong?.split(',')[0]), lng: Number(data[0]?.latLong?.split(',')[1]) }] : []"
+              :center="[Number(data[0]?.latLong?.split(',')[0]), Number(data[0]?.latLong?.split(',')[1])]" size="440px"
+            />
+          </ClientOnly>
         </template>
       </UCollapsible>
     </div>

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type * as z from 'zod'
 
@@ -8,19 +8,19 @@ const props = defineProps({
     required: true,
   },
 })
+// Emiters definitions
+const emit = defineEmits(['close'])
 
-const schema = SolicitudPiezaSchema()
+const schema = ReporteSchema()
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  tipo: undefined,
-  cantidad: undefined,
+  asunto: undefined,
+  texto: undefined,
 })
 
 const toast = useToast()
-const authStore = useAuthStore()
-
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   event.preventDefault() // Evita que el formulario se envíe de forma predeterminada
 
@@ -29,18 +29,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }
   console.log(dataForm, 'DataForm')
 
-  await $fetch('vehicular/solicitudes-piezas/', {
-    ...makePostPatchOptions(
-      'Se ha registrado correctamente la solicitud de pieza',
-      dataForm,
-      () => {
-        props.refresh() // Actualiza los datos si es necesario
-        state.tipo = undefined
-        state.cantidad = undefined
-      },
-      toast,
-      `Bearer ${authStore.getToken}`,
-    ),
+  const authStore = useAuthStore()
+  await $fetch('gestion/reportes/', {
+    ...makePostPatchOptions('Se ha registrado correctamente el reporte', dataForm, () => {
+      props.refresh() // Actualiza los datos si es necesario
+      emit('close', true)
+    }, toast, `Bearer ${authStore.getToken}`),
     method: 'POST',
   })
 }
@@ -61,42 +55,43 @@ watch(
 
 <template>
   <UForm
-    class="grid grid-cols-8 space-y-4 gap-x-3"
+    class="grid grid-cols-1 space-y-4"
     :schema="schema"
     :state="state"
     @submit="onSubmit"
   >
     <UFormField
-      class="col-span-5 pe-2"
-      label="Tipo de pieza"
-      name="tipo"
+      label="Asunto del reporte"
+      name="asunto"
       required
     >
-      <UInput
-        v-model="state.tipo"
-        placeholder="Ej: Cigüeñal"
+      <UTextarea
+        v-model="state.asunto"
+        :rows="2"
+        autoresize
+        :maxrows="4"
+        :ui="{ root: 'w-full' }"
       />
     </UFormField>
 
     <UFormField
-      label="Cantidad de piezas"
-      name="cantidad"
-      class="col-span-3"
+      label="Información"
+      name="texto"
       required
     >
-      <UInput
-        v-model="state.cantidad"
-        type="number"
-        placeholder="Ej: 1"
+      <UTextarea
+        v-model="state.texto"
+        :rows="6"
+        :ui="{ root: 'w-full' }"
       />
     </UFormField>
 
     <div class="border-t border-(--ui-border) pt-4 gap-x-3 flex justify-end col-span-full">
       <UButton
-        label="Limpiar"
+        label="Cancelar"
         color="neutral"
         variant="outline"
-        @click="() => { state.tipo = undefined, state. cantidad = undefined }"
+        @click="$emit('close')"
       />
       <UButton
         label="Insertar"

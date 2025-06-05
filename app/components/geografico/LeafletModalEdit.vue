@@ -127,7 +127,7 @@ async function onMapReady() {
           @ready="onMapReady"
         >
           <LTileLayer
-            url="http://localhost:3003/api/tiles/{z}/{x}/{y}"
+            :url="useRuntimeConfig().public.mapProvider"
             layer-type="base"
             name="OpenStreetMap"
             :min-zoom="12"

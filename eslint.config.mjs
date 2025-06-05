@@ -24,5 +24,5 @@ export default withNuxt(
       ],
     },
   }),
-  ...oxlint.configs['flat/recommended'],
+  ...oxlint.configs['flat/all'],
 )

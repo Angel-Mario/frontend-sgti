@@ -34,6 +34,10 @@ const items: BreadcrumbItem[] = [
         label: 'Solicitar Pieza',
         to: '/vehicular/solicitar-pieza',
       },
+      {
+        label: 'Solicitar Apoyo',
+        to: '/vehicular/solicitar-apoyo',
+      },
     ],
   },
   {
@@ -60,7 +64,9 @@ if (!chofer)
         <USeparator color="primary" type="solid" />
       </section>
       <main class="w-full px-3 py-5 m-auto overflow-hidden row-span-10 rounded-2xl">
-        <GeograficoLeaflet :locations="[{ name: chofer.ruta.puntoSalida.nombre, lat: Number(chofer.ruta.puntoSalida.latLong.split(',')[0]), lng: Number(chofer.ruta.puntoSalida.latLong.split(',')[1]) }, { name: chofer.ruta.puntoRegreso.nombre, lat: Number(chofer.ruta.puntoRegreso.latLong.split(',')[0]), lng: Number(chofer.ruta.puntoRegreso.latLong.split(',')[1]) }]" :center="[Number(chofer.ruta.puntoSalida.latLong.split(',')[0]), Number(chofer.ruta.puntoSalida.latLong.split(',')[1])]" />
+        <ClientOnly>
+          <GeograficoLeaflet :locations="[{ name: chofer.ruta.puntoSalida.nombre, lat: Number(chofer.ruta.puntoSalida.latLong.split(',')[0]), lng: Number(chofer.ruta.puntoSalida.latLong.split(',')[1]) }, { name: chofer.ruta.puntoRegreso.nombre, lat: Number(chofer.ruta.puntoRegreso.latLong.split(',')[0]), lng: Number(chofer.ruta.puntoRegreso.latLong.split(',')[1]) }]" :center="[Number(chofer.ruta.puntoSalida.latLong.split(',')[0]), Number(chofer.ruta.puntoSalida.latLong.split(',')[1])]" />
+        </ClientOnly>
       </main>
     </RouteBreadCrumb>
   </div>

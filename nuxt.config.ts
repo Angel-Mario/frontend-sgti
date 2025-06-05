@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.VUE_APP_API_URL,
       defaultPageSize: process.env.VUE_APP_DEFAULT_PAGE_SIZE,
+      mapProvider: process.env.VUE_APP_MAP_PROVIDER,
     },
   },
 

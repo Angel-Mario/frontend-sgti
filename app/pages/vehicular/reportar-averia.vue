@@ -31,6 +31,10 @@ const items: BreadcrumbItem[] = [
         label: 'Solicitar Pieza',
         to: '/vehicular/solicitar-pieza',
       },
+      {
+        label: 'Solicitar Apoyo',
+        to: '/vehicular/solicitar-apoyo',
+      },
     ],
   },
   {

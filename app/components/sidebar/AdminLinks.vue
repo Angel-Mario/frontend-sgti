@@ -48,7 +48,7 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Reportes',
       icon: 'i-lucide-scroll-text',
-      // to: "/reportes",
+      to: '/reportes',
     },
     {
       label: 'Geográfico',

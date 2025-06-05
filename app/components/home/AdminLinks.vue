@@ -77,7 +77,7 @@
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
-        to="/vehicular/solicitudes-de-piezas"
+        to="/vehicular/solicitudes-piezas"
         title="Solicitudes de Piezas"
         description="Lista de solicitudes de piezas"
         compact
