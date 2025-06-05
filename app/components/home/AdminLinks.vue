@@ -59,7 +59,7 @@
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
-        to="/vehicular/hojas-de-ruta"
+        to="/vehicular/hojas-ruta"
         title="Hojas de ruta"
         description="Lista de hojas de rutas"
         compact

@@ -88,7 +88,6 @@ const items = ref<NavigationMenuItem[][]>([
     {
       label: 'Servicios',
       icon: 'i-lucide-file-volume-2',
-      to: '/components',
       children: [
         // GET UPDATE DELETE POST
         {
