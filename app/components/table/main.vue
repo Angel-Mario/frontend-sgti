@@ -34,6 +34,16 @@ const props = defineProps({
     required: false,
     default: true,
   },
+  desc: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  footer: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 })
 defineEmits(['openInsertModal'])
 // CustomHooks For Managing the states
@@ -52,7 +62,7 @@ const route = useRoute()
 const sorting = ref([
   {
     id: props.filterOptions.find(o => o.id === (route.query.sorting as string))?.label || (props.defaultSortingValue as string),
-    desc: route.query.order === 'desc' || false,
+    desc: route.query.order === 'desc' || props.desc,
   },
 ])
 
@@ -277,6 +287,7 @@ watch(data, (data, oldData) => {
       @handle-page-size-change="handlePageSizeChange"
     />
     <LazyTableFooter
+      v-if="footer"
       :row-selected="table?.tableApi?.getFilteredSelectedRowModel().rows.length"
       :total-items="totalItems"
     />

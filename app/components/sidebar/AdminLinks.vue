@@ -101,7 +101,7 @@ const items = ref<NavigationMenuItem[][]>([
           label: 'Refuerzos',
           icon: 'i-lucide-trending-up',
           description: 'Lista de refuerzos',
-          // to: "/components/modal",
+          to: '/servicios/refuerzos',
         },
       ],
     },

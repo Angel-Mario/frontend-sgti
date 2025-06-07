@@ -128,6 +128,7 @@ const columns: TableColumn<Reporte>[] = [
     :fetch-route="fetchRoute"
     :filter-options="filterOptions"
     :remove="false"
+    :footer="false"
     @open-insert-modal="openInsertModal"
   />
 </template>

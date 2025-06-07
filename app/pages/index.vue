@@ -5,5 +5,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div>a</div>
+  <div>Aqui debe aparecer un horario publico y un enlace al login con informacion de afectaciones en caso de que existieran</div>
 </template>

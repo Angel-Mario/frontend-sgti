@@ -1,8 +1,9 @@
 import * as z from 'zod'
 
-export function ReporteSchema() {
+export function SolicitudRefuerzoSchema() {
   return z.object({
-    descripcion: z.string({ message: 'Requerido' }),
+    terminalNombre: z.string({ message: 'Requerido' }),
+    vehiculosMatriculas: z.array(z.string().min(1)).nonempty(),
   },
   )
 }

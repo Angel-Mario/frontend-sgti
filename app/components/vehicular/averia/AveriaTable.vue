@@ -130,5 +130,6 @@ const columns: TableColumn<Averia>[] = [
     :filter-options="filterOptions"
     :insert="false"
     :remove="false"
+    :footer="false"
   />
 </template>

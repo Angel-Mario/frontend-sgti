@@ -176,7 +176,7 @@ whenever(
         placeholder="Ej: Cotorro e/ 39 y 41 #2680"
       />
     </UFormField>
-    <div class="flex items-end justify-end col-span-1 col-start-6 pe-1">
+    <div class="flex col-span-1 col-start-6 mt-6 pe-1ify-end pe-1">
       <UButton
         class="cursor-pointer h-fit w-fit"
         icon="i-custom-broom"

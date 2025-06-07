@@ -5,25 +5,26 @@ import type { Row } from '@tanstack/vue-table'
 // Table Ref
 const childRef = useTemplateRef('child')
 
+// Filter Options for search parameters
 const filterOptions = [
   { id: 'id', label: 'Id' },
-  { id: 'cantidad', label: 'Cantidad' },
   { id: 'estado', label: 'Estado' },
-  { id: 'tipo', label: 'Tipo de pieza' },
-  { id: 'vehiculo', label: 'Vehículo' },
+  { id: 'fecha', label: 'Fecha' },
+  { id: 'terminal', label: 'Terminal' },
 ]
-const fetchRoute = 'vehicular/solicitudes-piezas'
-const defaultSortingValue = 'Tipo de pieza'
+const fetchRoute = 'gestion/solicitud-refuerzo'
+const defaultSortingValue = 'Fecha'
 
 // Table UI Component Resolvers
 const UButton = resolveComponent('UButton')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-const toast = useToast()
 const UBadge = resolveComponent('UBadge')
-const UIcon = resolveComponent('UIcon')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
+
+// Overlay Hooks
+const overlay = useOverlay()
+const toast = useToast()
 
 const authStore = useAuthStore()
-const router = useRouter()
 
 function getAcceptReject(estado: string, id: string) {
   const aceptar = {
@@ -32,7 +33,7 @@ function getAcceptReject(estado: string, id: string) {
     async onSelect() {
       $fetch(`${fetchRoute}/${id}`, {
         ...makePostPatchOptions(
-          `Se ha aceptado correctamente la solicitud de piezas`,
+          `Se ha aceptado correctamente la solicitud de refuerzo`,
           { estado: 'aceptada' },
           () => {
             childRef?.value?.refreshMet()
@@ -50,7 +51,7 @@ function getAcceptReject(estado: string, id: string) {
     async onSelect() {
       $fetch(`${fetchRoute}/${id}`, {
         ...makePostPatchOptions(
-          `Se ha rechazado correctamente la solicitud de piezas`,
+          `Se ha rechazado correctamente la solicitud de refuerzo`,
           { estado: 'rechazada' },
           () => {
             childRef?.value?.refreshMet()
@@ -73,34 +74,39 @@ function getAcceptReject(estado: string, id: string) {
 }
 
 // Row Dropdown definition
-function getRowItems(row: Row<SolicitudPieza>) {
+function getRowItems(row: Row<SolicitudRefuerzo>) {
   return [
     ...getAcceptReject(row.original.estado, row.original.id),
   ]
 }
 
 // Const Columns  Table
-const columns: TableColumn<SolicitudPieza>[] = [
+const columns: TableColumn<SolicitudRefuerzo>[] = [
   {
     accessorKey: 'id',
     header: 'Id',
     id: 'Id',
   },
   {
-    accessorKey: 'tipo',
-    header: ({ column }) => makeColumnHeader(column, 'Tipo de pieza', UButton),
-    id: 'Tipo de pieza',
-  },
-  {
-    accessorKey: 'cantidad',
-    header: ({ column }) => makeColumnHeader(column, 'Cantidad', UButton),
-    id: 'Cantidad',
+    accessorKey: 'terminal',
+    header: ({ column }) => makeColumnHeader(column, 'Terminal', UButton),
+    id: 'Terminal',
+    cell: ({ row }) => {
+      const terminal = row.getValue('Terminal') as SolicitudRefuerzoTerminal
+
+      return h('p', undefined, terminal.nombre)
+    },
     meta: {
       class: {
         td: 'text-center',
         th: 'text-center',
       },
     },
+  },
+  {
+    accessorKey: 'fecha',
+    header: ({ column }) => makeColumnHeader(column, 'Fecha', UButton),
+    id: 'Fecha',
   },
   {
     accessorKey: 'estado',
@@ -122,44 +128,11 @@ const columns: TableColumn<SolicitudPieza>[] = [
       },
     },
   },
+
   {
-    accessorKey: 'chofer',
-    header: ({ column }) => makeColumnHeader(column, 'Vehículo', UButton),
-    cell: ({ row }) => {
-      const chofer = row.getValue('Vehículo') as SolicitudPiezaChofer
-      return chofer
-        ? h('div', { class: 'flex flex-row justify-center' }, [
-            h('div', undefined, [
-              h(
-                'p',
-                undefined,
-                chofer.vehiculo.matricula,
-              ),
-              h(
-                'p',
-                undefined,
-                `Capacidad: ${chofer.vehiculo.capacidad}`,
-              ),
-            ]),
-            h(
-              UButton,
-              {
-                color: 'primary',
-                variant: 'solid',
-                size: 'md',
-                class: 'text-xs cursor-pointer h-fit my-auto ms-2 me-2',
-                onClick: () => {
-                  router.push(
-                    `/vehicular/vehiculos?column=id&search=${chofer.vehiculo.id}`,
-                  )
-                },
-              },
-              () => h(UIcon, { name: 'i-lucide-square-arrow-out-up-right' }),
-            ),
-          ])
-        : '[Sin vehículo]'
-    },
-    id: 'Vehículo',
+    accessorKey: 'capacidadTotal',
+    header: 'Capacidad Total',
+    id: 'Capacidad Total',
     meta: {
       class: {
         td: 'text-center',
@@ -167,6 +140,30 @@ const columns: TableColumn<SolicitudPieza>[] = [
       },
     },
   },
+
+  {
+    accessorKey: 'vehiculos',
+    header: 'Vehículos',
+    id: 'Vehículos',
+    cell: ({ row }) => {
+      const vehiculos = row.getValue('Vehículos') as SolicitudRefuerzoVehiculo[]
+
+      return h(
+        'div',
+        { class: 'flex items-center gap-3 sm:max-w-48 md:max-w-96' },
+        vehiculos.map((vehiculo, index) =>
+          h('p', `${vehiculo.matricula}${index === vehiculos.length - 1 ? '' : ','}`),
+        ),
+      )
+    },
+    meta: {
+      class: {
+        td: 'text-center',
+        th: 'text-center',
+      },
+    },
+  },
+
   {
     id: 'actions',
     cell: ({ row }) => {
@@ -207,7 +204,8 @@ const columns: TableColumn<SolicitudPieza>[] = [
     :fetch-route="fetchRoute"
     :filter-options="filterOptions"
     :insert="false"
-    :remove="false"
+    :delete="false"
+    :desc="true"
     :footer="false"
   />
 </template>
