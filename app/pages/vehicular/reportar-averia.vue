@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Reportar Avería',
   pageKeywords: 'Reportar Avería',
   name: 'reportar-averia',
-  middleware: ['auth'],
+  middleware: ['car'],
 })
 
 const items: BreadcrumbItem[] = [

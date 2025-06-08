@@ -50,7 +50,7 @@
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
-        to="/vehicular/combustibles"
+        to="/vehicular/combustibles-asignados"
         title="Combustibles asignados"
         description="Gestión de combustibles"
         compact

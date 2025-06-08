@@ -7,15 +7,6 @@ const childRef = useTemplateRef('child')
 const authStore = useAuthStore()
 const toast = useToast()
 
-if (authStore.chofer && !authStore.chofer?.vehiculo) {
-  toast.add({ title: 'Sin vehículo asignado', description: 'Acción no permitida', ui: {
-    root: 'focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-purple',
-    icon: 'text-purple-500',
-    progress: 'bg-purple-500',
-  }, icon: 'i-lucide-lock-keyhole' })
-  const router = useRouter()
-  router.push('/home')
-}
 const query = shallowRef('')
 
 const fetchRoute = '/vehicular/averias'

@@ -94,7 +94,7 @@ const items = ref<NavigationMenuItem[][]>([
           label: 'Horario',
           icon: 'i-lucide-calendar-cog',
           description: 'Tabla de horarios',
-          to: '/components/navigation-menu',
+          to: '/servicios/horario',
         },
         // GET UPDATE DELETE POST
         {
@@ -121,7 +121,7 @@ const items = ref<NavigationMenuItem[][]>([
           label: 'Combustibles asignados',
           icon: 'i-lucide-chart-candlestick',
           description: 'Lista de combustibles asignados',
-          // to: "/composables/use-toast",
+          to: '/vehicular/combustibles-asignados',
         },
         // GET UPDATE DELETE POST
         {

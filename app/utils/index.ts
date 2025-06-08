@@ -27,6 +27,7 @@ export type {
 } from './types/geografico/puntos-Ref'
 export type { Ruta, RutasResponse } from './types/geografico/rutas'
 export type { Terminal, TerminalesResponse, TerminalPuntoRef } from './types/geografico/terminales'
+export type { CombustibleAsignado, CombustibleAsignadoChofer, CombustibleAsignadoChoferResponse, CombustibleAsignadoPuntoCombustible, CombustibleAsignadoPuntoRef, CombustibleAsignadoUser } from './types/gestion/combustible-asignado'
 export type { SolicitudRefuerzo, SolicitudRefuerzoResponse, SolicitudRefuerzoTerminal, SolicitudRefuerzoVehiculo } from './types/gestion/solicitud-refuerzo'
 // types
 export type {
@@ -41,12 +42,13 @@ export type {
   ChoferRuta,
   ChoferVehiculo,
 } from './types/personal/chofer'
-export type { Suministrador } from './types/personal/suministrador'
 
+export type { Suministrador } from './types/personal/suministrador'
 export type { Usuario } from './types/personal/usuario'
 export type { Reporte, ReporteResponse } from './types/reportes/reportes'
 export type { Averia } from './types/vehicular/averia'
 export type { ReportarAveriaPage } from './types/vehicular/reportar-averia-page'
+
 export type { SolicitudesPiezasResponse, SolicitudPieza, SolicitudPiezaChofer, SolicitudPiezaUser, SolicitudPiezaVehiculo } from './types/vehicular/solicitudes-piezas'
 
 export type { Vehiculo, VehiculoChofer } from './types/vehicular/vehiculo'
@@ -55,6 +57,7 @@ export {
   AdministradorSchema,
   AveriaSchema,
   ChoferSchema,
+  CombustibleAsignadoSchema,
   DetailedMilitaryTimeSchema,
   LatLongSchema,
   PuntoCombSchema,
