@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Lista de Terminales',
   pageKeywords: 'terminales, lista, terminal',
   name: 'terminales',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

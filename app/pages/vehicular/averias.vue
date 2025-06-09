@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Listado de averías',
   pageKeywords: 'vehiculo, admin',
   name: 'averias',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

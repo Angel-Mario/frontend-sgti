@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Solicitar Refuerzo',
   pageKeywords: 'solicitar refuerzo, solicitar, refuerzo, admin',
   name: 'solicitar-refuerzo',
-  middleware: ['auth'],
+  middleware: ['sumin'],
 })
 
 const items: BreadcrumbItem[] = [

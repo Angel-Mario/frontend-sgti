@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Asignar Combustible',
   pageKeywords: 'asignar combustible, asignar, combustible, admin',
   name: 'asignar-combustible',
-  middleware: ['auth'],
+  middleware: ['sumin'],
 })
 
 const items: BreadcrumbItem[] = [

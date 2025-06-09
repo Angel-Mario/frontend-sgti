@@ -8,7 +8,7 @@ definePageMeta({
   pageDescription: 'Listado de combustibles asignados',
   pageKeywords: 'chofer, admin',
   name: 'combustibles_asignados',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

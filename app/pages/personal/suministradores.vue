@@ -8,7 +8,7 @@ definePageMeta({
   pageIcon: 'i-lucide-user-pen',
   pageKeywords: 'suministradores, lista, suministrador, admin',
   name: 'suministradores',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 useHead({

@@ -6,7 +6,7 @@ definePageMeta({
   pageIcon: 'i-lucide-user',
   pageKeywords: 'puntos de combustible, lista, punto de combustible, admin',
   name: 'puntos-combustible',
-  middleware: ['auth'],
+  middleware: ['adminsumin'],
 })
 const { user } = useAuthStore()
 </script>

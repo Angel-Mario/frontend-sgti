@@ -8,7 +8,7 @@ definePageMeta({
   pageIcon: 'i-lucide-user-cog',
   pageKeywords: 'administradores, lista, administrador, admin',
   name: 'administradores',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 useHead({

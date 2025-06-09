@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Solicitar Pieza',
   pageKeywords: 'Solicitar Pieza',
   name: 'solicitar-pieza',
-  middleware: ['car'],
+  middleware: ['chofer', 'car'],
 })
 
 const items: BreadcrumbItem[] = [

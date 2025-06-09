@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Listado de solicitudes de piezas',
   pageKeywords: 'vehiculo, admin',
   name: 'solicitudes-piezas',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Lista de Rutas',
   pageKeywords: 'rutas, lista, ruta, admin',
   name: 'rutas',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

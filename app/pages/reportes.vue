@@ -8,6 +8,7 @@ definePageMeta({
   pageIcon: 'i-lucide-users',
   pageKeywords: 'reportes, lista, admin',
   name: 'reportes',
+  middleware: ['admin'],
 })
 
 useHead({

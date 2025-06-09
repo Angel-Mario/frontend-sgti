@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Lista de choferes',
   pageKeywords: 'choferes, lista, choferes, admin',
   name: 'choferes',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 useHead({

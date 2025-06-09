@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Servicios',
   pageKeywords: 'servicios, servicio, refuerzo, refuerzos',
   name: 'refuerzos',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

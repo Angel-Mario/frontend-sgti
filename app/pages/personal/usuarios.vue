@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Lista de usuarios',
   pageKeywords: 'usuarios, lista, usuario, admin',
   name: 'usuarios',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

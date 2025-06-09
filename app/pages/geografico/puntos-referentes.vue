@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Lista de Puntos Referentes',
   pageKeywords: 'puntos referentes, lista, punto referente, admin',
   name: 'puntos-referentes',
-  middleware: ['auth'],
+  middleware: ['admin'],
 })
 
 const items: BreadcrumbItem[] = [

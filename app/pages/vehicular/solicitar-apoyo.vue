@@ -7,7 +7,7 @@ definePageMeta({
   pageDescription: 'Solicitar Apoyo',
   pageKeywords: 'Solicitar Apoyo',
   name: 'solicitar-apoyo',
-  middleware: ['auth'],
+  middleware: ['chofer'],
 })
 
 const items: BreadcrumbItem[] = [
