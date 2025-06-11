@@ -18,6 +18,7 @@ export type {
   LoginCredentials,
   User,
 } from './types/auth'
+export type { CommonState } from './types/common.d'
 export type { ErrorResponse } from './types/errorResponse'
 export type { PuntoComb, PuntoCombPuntoRef, PuntosCombResponse } from './types/geografico/puntos-Comb'
 export type {

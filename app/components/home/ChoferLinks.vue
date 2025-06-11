@@ -3,7 +3,7 @@ const authStore = useAuthStore()
 </script>
 
 <template>
-  <section class="w-full lg:w-2/3">
+  <section v-if="authStore.chofer && authStore.chofer.vehiculo" class="w-full lg:w-2/3">
     <h2 class="mb-6 text-2xl font-bold text-gray-800 dark:text-white">
       Accesos Rápidos
     </h2>
@@ -59,5 +59,10 @@ const authStore = useAuthStore()
       </div>
     </div>
     <!-- sección para la información del vehículo asignado al chofer -->
+  </section>
+  <section v-else class="flex items-center justify-center w-full lg:w-2/3">
+    <h2 class="mb-6 text-2xl font-bold text-gray-800 opacity-75 dark:text-white">
+      [No tiene un vehículo asignado]
+    </h2>
   </section>
 </template>

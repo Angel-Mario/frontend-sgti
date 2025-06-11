@@ -1,7 +1,31 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const items = ref<NavigationMenuItem[][]>([
+const { chofer } = useAuthStore()
+
+const getItems = computed(() => {
+  return chofer && chofer.vehiculo
+    ? [{
+        label: 'Reportar Avería',
+        icon: 'i-lucide-badge-x',
+        to: '/vehicular/reportar-averia',
+      }, {
+        label: 'Ruta Asignada',
+        icon: 'i-lucide-route',
+        to: '/personal/ruta-asignada',
+      }, {
+        label: 'Solicar Piezas',
+        icon: 'i-lucide-cog',
+        to: '/vehicular/solicitar-pieza',
+      }, {
+        label: 'Solicitar Apoyo',
+        icon: 'i-lucide-phone-call',
+        to: '/vehicular/solicitar-apoyo',
+      }]
+    : [{}]
+})
+
+const items = reactive<NavigationMenuItem[][]>([
   [
     {
       label: 'Home',
@@ -9,26 +33,7 @@ const items = ref<NavigationMenuItem[][]>([
       description: 'Home',
       to: '/home',
     },
-    {
-      label: 'Reportar Avería',
-      icon: 'i-lucide-badge-x',
-      to: '/vehicular/reportar-averia',
-    },
-    {
-      label: 'Ruta Asignada',
-      icon: 'i-lucide-route',
-      to: '/personal/ruta-asignada',
-    },
-    {
-      label: 'Solicar Piezas',
-      icon: 'i-lucide-cog',
-      to: '/vehicular/solicitar-pieza',
-    },
-    {
-      label: 'Solicitar Apoyo',
-      icon: 'i-lucide-phone-call',
-      to: '/vehicular/solicitar-apoyo',
-    },
+    ...getItems.value,
   ],
 ])
 </script>

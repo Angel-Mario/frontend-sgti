@@ -21,7 +21,6 @@ const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
 // Overlay Hooks
-const overlay = useOverlay()
 const toast = useToast()
 
 const authStore = useAuthStore()
@@ -204,7 +203,7 @@ const columns: TableColumn<SolicitudRefuerzo>[] = [
     :fetch-route="fetchRoute"
     :filter-options="filterOptions"
     :insert="false"
-    :delete="false"
+    :remove="false"
     :desc="true"
     :footer="false"
   />

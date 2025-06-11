@@ -7,9 +7,15 @@ const isAuthenticated = useAuthStore().isAuthenticated
 const fps = useFps()
 
 const open = ref(false)
+const commonStore = useCommonStore()
+
+watch(commonStore, () => {
+  open.value = commonStore.isOpen
+})
 
 function toggleSidebar() {
-  open.value = !open.value
+  // open.value = !open.value
+  commonStore.openClose()
 }
 
 const el = useTemplateRef('el')
@@ -21,7 +27,7 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
 </script>
 
 <template>
-  <UDrawer v-model:open="open" :handle="true" direction="left">
+  <UDrawer v-model:open="open" :handle="true" direction="left" @close="toggleSidebar">
     <template #content>
       <div
         class="grid grid-rows-14 ps-6 pe-2.5 justify-center max-w-64 min-w-56 h-screen z-10 bg-(--ui-bg)"
@@ -61,7 +67,7 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
     @click="toggleSidebar"
   /> -->
 
-  <UButton
+  <!-- <UButton
     class="absolute w-20 h-8 -rotate-90 cursor-pointer -left-6 z-60 top-1/2"
     color="neutral"
     variant="ghost"
@@ -72,9 +78,11 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
     block
     size="xl"
     @click="toggleSidebar"
-  />
+  /> -->
 
-  <div ref="el" class="absolute z-30 flex items-end w-10 h-screen">
+  <div
+    ref="el" class="absolute z-30 flex items-end w-10 top-1/12 h-11/12"
+  >
     <h1 class="select-none z-999">
       {{ fps }}
     </h1>
