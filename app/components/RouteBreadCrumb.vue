@@ -9,14 +9,21 @@ defineProps({
 })
 
 const commonStore = useCommonStore()
+
+const notification = useTemplateRef('notification')
+
+onClickOutside(notification, (event) => {
+  if (notification?.value?.isDropdownOpen)
+    notification?.value?.toggleDropdown()
+})
 </script>
 
 <template>
   <div
-    class="z-20 w-full h-1/12 bg-(--ui-bg) items-center flex ps-2 border-b-2 border-b-gray-100/70 dark:border-white/25"
+    class="z-20 w-full h-1/12 bg-gradient-to-t light:from-blue-50 light:to-slate-50 dark:from-navbardark-500 dark:to-navbardark-700 items-center flex ps-2 border-b-2 border-b-gray-100/70 dark:border-white/25"
   >
     <UButton
-      class="w-10 h-10 -rotate-90 cursor-pointer bg-(--ui-bg) dark:bg-navbardark-700 mx-1"
+      class="w-10 h-10 mx-1 -rotate-90 bg-transparent cursor-pointer"
       color="neutral"
       variant="ghost"
       trailing-icon="i-lucide-align-justify"
@@ -33,7 +40,7 @@ const commonStore = useCommonStore()
       @click="useRouter().push('/home')"
     />
     <h1 class="mt-1 ml-1 mr-3 text-2xl font-bold text-center cursor-pointer text-primary-500" @click="useRouter().push('/home')">
-      SGTI <span class="dark:text-white">UCI</span>
+      SGTI <span class="text-white light:bg-primary-400 rounded-md px-1 py-0.5 dark:text-white">UCI</span>
     </h1>
     <UBreadcrumb :items="items">
       <template #dropdown="{ item }">
@@ -53,7 +60,9 @@ const commonStore = useCommonStore()
         <span class="mx-2 text-(--ui-text-muted)">/</span>
       </template>
     </UBreadcrumb>
-    <div class="my-2 w-72 ms-auto">
+
+    <div class="flex flex-row items-center justify-center my-2 ms-auto gap-x-2 me-2">
+      <Notificacions ref="notification" />
       <CurrentUser />
     </div>
   </div>

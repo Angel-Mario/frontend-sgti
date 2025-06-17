@@ -24,6 +24,7 @@
     "file-saver": "^2.0.5",
     "jspdf": "^3.0.1",
     "jwt-decode": "^4.0.0",
+    "leaflet-routing-machine": "^3.2.12",
     "leaflet.markercluster": "^1.5.3",
     "nuxt": "^3.17.4",
     "pinia": "^3.0.2",
@@ -38,9 +39,10 @@
     "@iconify-json/lucide": "^1.2.44",
     "@types/fabric": "^5.3.10",
     "@types/file-saver": "^2.0.7",
+    "@types/leaflet-routing-machine": "^3.2.8",
     "@types/leaflet.markercluster": "^1.5.5",
-    "eslint-plugin-oxlint": "^0.17.0",
-    "oxlint": "^0.17.0",
+    "eslint-plugin-oxlint": "^1.1.0",
+    "oxlint": "^1.1.0",
     "typescript": "^5.8.3"
   },
   "lint-staged": {

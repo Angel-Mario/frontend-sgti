@@ -10,7 +10,7 @@
         description="Gestiona el personal del sistema"
         compact
       >
-        <UIcon name="i-lucide-book-open" class="size-14" />
+        <UIcon name="i-lucide-book-open" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -19,7 +19,7 @@
         description="Gestión de reportes"
         compact
       >
-        <UIcon name="i-lucide-scroll-text" class="size-14" />
+        <UIcon name="i-lucide-scroll-text" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -28,7 +28,7 @@
         description="Gestión de rutas"
         compact
       >
-        <UIcon name="i-lucide-route" class="size-14" />
+        <UIcon name="i-lucide-route" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -37,7 +37,7 @@
         description="Tabla de horario"
         compact
       >
-        <UIcon name="i-lucide-calendar-cog" class="size-14" />
+        <UIcon name="i-lucide-calendar-cog" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -46,7 +46,7 @@
         description="Refuerzos asignados"
         compact
       >
-        <UIcon name="i-lucide-trending-up" class="size-14" />
+        <UIcon name="i-lucide-trending-up" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -55,7 +55,7 @@
         description="Gestión de combustibles"
         compact
       >
-        <UIcon name="i-lucide-chart-candlestick" class="size-14" />
+        <UIcon name="i-lucide-chart-candlestick" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -64,7 +64,7 @@
         description="Lista de hojas de rutas"
         compact
       >
-        <UIcon name="i-lucide-file-text" class="size-14" />
+        <UIcon name="i-lucide-file-text" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -73,7 +73,7 @@
         description="Gestión de vehículos"
         compact
       >
-        <UIcon name="i-lucide-bus" class="size-14" />
+        <UIcon name="i-lucide-bus" class="size-12" />
       </HomeQuickLinkCard>
 
       <HomeQuickLinkCard
@@ -82,7 +82,7 @@
         description="Lista de solicitudes de piezas"
         compact
       >
-        <UIcon name="i-lucide-cog" class="size-14" />
+        <UIcon name="i-lucide-cog" class="size-12" />
       </HomeQuickLinkCard>
     </div>
   </section>

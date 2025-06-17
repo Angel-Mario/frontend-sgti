@@ -28,9 +28,26 @@ const props = defineProps({
     default: '520px',
   },
 })
+const map = useTemplateRef('map')
 
 function onMapReady() {
   import('leaflet.markercluster')
+  if (props.locations.length > 1) {
+    import('leaflet-routing-machine')
+
+    const control = L.Routing.control({
+      routeWhileDragging: true,
+      plan: new L.Routing.Plan([
+        L.latLng(props.locations[0]!.lat, props.locations[0]!.lng),
+        L.latLng(props.locations[1]!.lat, props.locations[1]!.lng),
+      ], {
+        language: 'es',
+      }),
+      // @ts-expect-error libreria types.d.ts wrong
+      language: 'es',
+    })
+    control.addTo(map.value?.leafletObject as L.Map)
+  }
 }
 let redIcon: L.Icon<L.IconOptions>
 if (props.locations.length > 1) {
@@ -41,17 +58,27 @@ if (props.locations.length > 1) {
     iconAnchor: [12, 41],
   })
 }
+
+// Create Routing Control
+// const control = L.Routing.control({
+//   waypoints: [
+//     L.latLng(51.5, -0.09),
+//     L.latLng(51.51, -0.1),
+//   ],
+//   routeWhileDragging: true,
+// }).addTo(map)
 </script>
 
 <template>
   <ClientOnly>
     <LMap
+      ref="map"
       :style="`height: ${props.size}`"
       :zoom="zoom"
       :bounds="bounds"
       :center="center as [number, number]"
       :use-global-leaflet="true"
-      class="shadow-md rounded-xl"
+      class="text-black shadow-md rounded-xl"
       @ready="onMapReady"
     >
       <LTileLayer
@@ -88,3 +115,15 @@ if (props.locations.length > 1) {
     </LMap>
   </ClientOnly>
 </template>
+
+<style scoped>
+.light {
+  /* Force light mode in child components */
+  color-scheme: light !important;
+}
+
+.light :deep(*) {
+  color-scheme: light !important;
+  /* Add other necessary resets */
+}
+</style>

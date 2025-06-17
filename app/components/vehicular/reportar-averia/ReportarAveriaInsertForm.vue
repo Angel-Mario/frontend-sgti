@@ -73,6 +73,8 @@ whenever(
     state.piezas_necesarias = undefined
   },
 )
+
+const items = ref(['Baja', 'Media', 'Alta'])
 </script>
 
 <template>
@@ -88,9 +90,11 @@ whenever(
       name="complejidad"
       required
     >
-      <UInput
+      <USelectMenu
         v-model="state.complejidad"
-        placeholder="Ej: Alta"
+        :search-input="false"
+        :items="items"
+        class="w-full"
       />
     </UFormField>
     <UFormField

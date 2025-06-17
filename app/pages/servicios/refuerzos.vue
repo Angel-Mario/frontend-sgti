@@ -16,6 +16,21 @@ const items: BreadcrumbItem[] = [
     to: '/home',
   },
   {
+    slot: 'dropdown' as const,
+    icon: 'i-lucide-ellipsis',
+    label: 'Personal',
+    children: [
+      {
+        label: 'Horario',
+        to: '/servicios/horario',
+      },
+      {
+        label: 'Refuerzos',
+        to: '/servicios/refuerzos',
+      },
+    ],
+  },
+  {
     label: 'Refuerzos',
     to: '/servicios/refuerzos',
   },

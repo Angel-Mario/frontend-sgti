@@ -13,7 +13,7 @@ useHead({
 </script>
 
 <template>
-  <div class="flex justify-center w-screen h-screen dark bg-navbardark-700">
+  <div class="flex justify-center w-screen h-screen light:bg-gradient-to-br light:from-slate-100 light:via-white light:to-blue-100 dark:bg-navbardark-700">
     <LoginPanel />
   </div>
 </template>

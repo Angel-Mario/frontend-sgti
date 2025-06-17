@@ -13,7 +13,7 @@ useHead({
 </script>
 
 <template>
-  <div class="flex justify-center w-full h-screen">
+  <div class="flex justify-center w-full h-screen lg:overflow-hidden">
     <Home />
   </div>
 </template>

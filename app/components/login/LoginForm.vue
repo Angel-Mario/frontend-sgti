@@ -64,6 +64,7 @@ whenever(
     state.value.nombre_u = undefined
   },
 )
+const showPassword = ref(false) // 👁️ Controla visibilidad de contraseña
 </script>
 
 <template>
@@ -87,8 +88,7 @@ whenever(
     <UFormField name="password" class="h-20">
       <UInput
         v-model="state.password"
-        trailing-icon="lucide-key-round"
-        type="password"
+        :type="showPassword ? 'text' : 'password'"
         placeholder=""
         size="xl"
         autocomplete="current-password"
@@ -97,6 +97,17 @@ whenever(
         <label class="label-floating">
           <span class="inline-flex px-1 bg-navbardark-500">Contraseña</span>
         </label>
+        <!-- Botón para mostrar/ocultar contraseña -->
+        <template #trailing>
+          <UButton
+            variant="link"
+            color="neutral"
+            size="xs"
+            :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+            :padded="false"
+            @click="showPassword = !showPassword"
+          />
+        </template>
       </UInput>
     </UFormField>
 

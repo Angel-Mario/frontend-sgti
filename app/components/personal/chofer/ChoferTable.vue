@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 import type { Row } from '@tanstack/vue-table'
-import { LazyPersonalChoferInsertModal } from '#components'
+import { ConfirmDialog, LazyPersonalChoferInsertModal } from '#components'
 
 // Table Ref
 const childRef = useTemplateRef('child')
@@ -61,6 +61,15 @@ async function openInsertModal() {
   })
   modal.open()
 }
+const modalConfirm = overlay.create(
+  ConfirmDialog,
+  {
+    props: {
+      message: '',
+      resolve: () => {},
+    },
+  },
+)
 const authStore = useAuthStore()
 // Column Dropdown definition
 function getRowItems(row: Row<Chofer>) {
@@ -103,15 +112,18 @@ function getRowItems(row: Row<Chofer>) {
       label: 'Eliminar',
       icon: 'i-lucide-trash',
       onSelect() {
-        handleDeleteRows(
-          fetchRoute,
-          childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
-          childRef?.value?.deleteSelection
-            ? childRef?.value?.deleteSelection
-            : () => {},
-          [{ id: row.original.id }],
-          `Bearer ${authStore.getToken}`,
-        )
+        modalConfirm.open({
+          message: 'Se eliminará el registro seleccionado',
+          resolve: () => handleDeleteRows(
+            fetchRoute,
+            childRef?.value?.refreshMet ? childRef?.value?.refreshMet : () => {},
+            childRef?.value?.deleteSelection
+              ? childRef?.value?.deleteSelection
+              : () => {},
+            [{ id: row.original.id }],
+            `Bearer ${authStore.getToken}`,
+          ),
+        })
       },
     },
     {

@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
-  css: ['./app/assets/css/main.css', './app/assets/css/quickLinkCard.css'],
+  css: ['./app/assets/css/main.css', './app/assets/css/quickLinkCard.css', 'leaflet-routing-machine/dist/leaflet-routing-machine.css'],
   runtimeConfig: {
     public: {
       apiUrl: process.env.VUE_APP_API_URL,
@@ -24,7 +24,6 @@ export default defineNuxtConfig({
   routeRules: {
     // '/login': { prerender: true ,},
     '/personal': { redirect: '/personal/usuarios' },
-    '/': { redirect: '/login' },
   },
 
   future: {

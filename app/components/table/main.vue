@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T">
 import type { TableColumn } from '@nuxt/ui'
+import { LazyConfirmDialog } from '#components'
 import { getPaginationRowModel } from '@tanstack/vue-table'
 import { upperFirst } from 'scule'
 
@@ -130,6 +131,17 @@ watch(data, (data, oldData) => {
     oldDataBeforeChange.value = data
   }
 })
+
+const overlay = useOverlay()
+const modal = overlay.create(
+  LazyConfirmDialog,
+  {
+    props: {
+      message: '',
+      resolve: () => {},
+    },
+  },
+)
 </script>
 
 <template>
@@ -203,14 +215,22 @@ watch(data, (data, oldData) => {
               && !table?.tableApi?.getIsAllRowsSelected()
           "
           @click="
-            handleDeleteRows(
-              props.fetchRoute,
-              refresh,
-              deleteSelection,
-              data?.data.filter((row, index) => {
+            () => {
+              const dataLength = (data?.data.filter((row, index) => {
                 if ((rowSelection as boolean[])[index]) return row;
-              }) as any[],
-            )
+              }) as any[])
+
+              modal.open({
+                message: dataLength.length > 1 ? `Se eliminarán los ${dataLength.length} registros seleccionados` : `Se eliminará el registro seleccionado`,
+                resolve: () => handleDeleteRows(
+                  props.fetchRoute,
+                  refresh,
+                  deleteSelection,
+                  dataLength,
+                  `Bearer ${authStore.getToken}`,
+                ),
+              })
+            }
           "
         />
       </div>

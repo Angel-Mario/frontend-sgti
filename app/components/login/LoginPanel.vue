@@ -9,7 +9,7 @@
         <LoginFigureDecoration />
       </div>
       <div class="flex justify-center w-full col-span-3">
-        <div class="flex flex-col items-center justify-center py-2 ps-2 pe-6">
+        <div class="flex flex-col items-center justify-center py-2 ps-2 pe-6 dark">
           <div class="flex justify-center mb-3">
             <h1 class="text-2xl font-bold select-none text-primary-500">
               Login

@@ -83,8 +83,10 @@ const { isSwiping: _isSwiping, direction: _direction } = usePointerSwipe(el, {
   <div
     ref="el" class="absolute z-30 flex items-end w-10 top-1/12 h-11/12"
   >
-    <h1 class="select-none z-999">
-      {{ fps }}
-    </h1>
+    <DevOnly>
+      <h1 class="select-none z-999">
+        {{ fps }}
+      </h1>
+    </DevOnly>
   </div>
 </template>
